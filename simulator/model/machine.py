@@ -152,6 +152,9 @@ class Machine(EoModel):
         # 대신 큐에서 작업을 선택하여 실행합니다.
         part = self.dispatch.select(available_parts)
         
+        if part in self.queue:
+            self.queue.remove(part)
+
         op = part.job.current_op()
         if op is None:
             print(f"[Machine {self.name}] Job {part.job.id}의 현재 Operation이 없음 - 큐에서 제거")
@@ -281,6 +284,8 @@ class Machine(EoModel):
             done_ev = Event('job_completed', {'part': part}, dest_model='transducer')
             self.schedule(done_ev, 0)
         else:
+            if part in self.queue:
+                self.queue.remove(part)
             # 다음 기계로 전송
             current_op = part.job.current_op()
             nxt = current_op.select_machine() if current_op else None
