@@ -1,14 +1,14 @@
 {
   "M1": {
-    "M2": { "distribution": "normal", "mean": 1.5, "std": 0.3 },
-    "M3": { "distribution": "uniform", "low": 1.5, "high": 2.5 }
+    "M2": { "distribution": "normal", "mean": 10, "std": 0.0 },
+    "M3": { "distribution": "normal", "mean": 20, "std": 0.0 }
   },
   "M2": {
-    "M1": { "distribution": "normal", "mean": 1.0, "std": 0.2 },
-    "M3": { "distribution": "normal", "mean": 1.2, "std": 0.4 }
+    "M1": { "distribution": "normal", "mean": 30, "std": 0.0 },
+    "M3": { "distribution": "normal", "mean": 40, "std": 0.0 }
   },
   "M3": {
-    "M1": { "distribution": "uniform", "low": 1.0, "high": 2.0 },
-    "M2": { "distribution": "exponential", "rate": 0.5 }
+    "M1": { "distribution": "normal", "mean": 50, "std": 0.0 },
+    "M2": { "distribution": "normal", "mean": 60, "std": 0.0 }
   }
 }

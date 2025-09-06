@@ -69,6 +69,7 @@ class ModelBuilder:
             # Job 생성 시 release_time 포함
             job_release_time = release_map.get(j['job_id'], 0.0)
             jobs[j['job_id']] = Job(j['job_id'], j['part_id'], ops, job_release_time)
+            print(f"[ModelBuilder] Job {j['job_id']} 생성: {len(ops)}개의 Operation, Release Time: {job_release_time}")
 
         machines = []
         for mname, info in init_m.items():

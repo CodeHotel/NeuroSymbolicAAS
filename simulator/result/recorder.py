@@ -1,13 +1,23 @@
+# simulator/result/recorder.py
+
 import os
 import pandas as pd
-from simulator.engine.simulator import EoModel
 
 class Recorder:
     records = []
+    enabled = True  # ← 스위치
+
+    @classmethod
+    def reset(cls):
+        cls.records.clear()
+
+    @classmethod
+    def _on(cls):
+        return bool(getattr(cls, "enabled", True))
 
     @classmethod
     def log_queue(cls, part, machine, time, operation_id, queue_length, queue_ops):
-        """큐 대기 진입 시, 대기 중인 operation ID 목록까지 함께 기록"""
+        if not cls._on(): return            # ← 필수
         cls.records.append({
             'part': part.id,
             'job': part.job.id,
@@ -21,6 +31,7 @@ class Recorder:
 
     @classmethod
     def log_start(cls, part, machine, time, operation_id, queue_length):
+        if not cls._on(): return
         cls.records.append({
             'part': part.id,
             'job': part.job.id,
@@ -34,6 +45,7 @@ class Recorder:
 
     @classmethod
     def log_end(cls, part, machine, time, operation_id):
+        if not cls._on(): return
         cls.records.append({
             'part': part.id,
             'job': part.job.id,
@@ -47,6 +59,7 @@ class Recorder:
 
     @classmethod
     def log_transfer(cls, part, src_machine, dest_machine, time, delay):
+        if not cls._on(): return
         cls.records.append({
             'part': part.id,
             'job': part.job.id,
@@ -61,6 +74,7 @@ class Recorder:
 
     @classmethod
     def log_done(cls, part, time):
+        if not cls._on(): return
         cls.records.append({
             'part': part.id,
             'job': part.job.id,

@@ -1,5 +1,5 @@
 [
   { "job_id": "J1", "part_id": "P1", "release_time": 0.0 },
-  { "job_id": "J2", "part_id": "P2", "release_time": 2.0 },
-  { "job_id": "J3", "part_id": "P3", "release_time": 4.0 }
+  { "job_id": "J2", "part_id": "P2", "release_time": 0.0 },
+  { "job_id": "J3", "part_id": "P3", "release_time": 0.0 }
 ]

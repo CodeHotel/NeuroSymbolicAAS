@@ -178,6 +178,7 @@ class Machine(EoModel):
         #     return
             
         dur = op.sample_duration()
+        print(f"[{self.name}] Job {part.job.id}의 Operation {op.id} 시작 (예상 소요 시간: {dur:.2f}초)")
 
         self.status = 'busy'
         self.running = part
@@ -236,6 +237,8 @@ class Machine(EoModel):
         else:
             transfer_time = 0.0
         
+        print(f"[{self.name}] {target_machine}로 전송 시간: {transfer_time:.2f}초")
+
         # 전송 이벤트 스케줄링
         ev = Event('part_arrival', {'part': part}, dest_model=target_machine)
         self.schedule(ev, transfer_time)
@@ -293,11 +296,13 @@ class Machine(EoModel):
             # 시뮬레이션 기반 최적화를 위한 기계 선택
             if nxt is None:
                 candidates = part.job.current_op().candidates
-                if candidates:
-                    # 시뮬레이션 기반 최적화에서는 최적화 알고리즘이 결정해야 함
-                    # 여기서는 기본 휴리스틱으로 첫 번째 후보 선택 (임시)
+                # ✅ NSGA가 주입한 선택 콜백을 최우선 사용
+                if getattr(self.simulator, "select_next_machine", None):
+                    nxt = self.simulator.select_next_machine(
+                        part.job.id, part.job.current_op().id, candidates
+                    )
+                elif candidates:
                     nxt = candidates[0]
-                    print(f"[시뮬레이션 기반 할당] Job {part.job.id}의 {part.job.current_op().id}를 {nxt}로 할당 (최적화 알고리즘이 결정해야 함)")
                 else:
                     print(f"경고: Job {part.job.id}의 Operation {part.job.current_op().id}에 후보 기계가 없습니다.")
                     # Job을 완료된 것으로 처리 (중복 방지)
