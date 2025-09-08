@@ -1,8 +1,8 @@
 operation_id,job_id,status,location,input_timestamp,output_timestamp
-O31,J3,completed,M1,0.0,70.0
-O32,J3,completed,M1,0.0,70.0
-O11,J1,completed,M1,0.0,80.0
-O12,J1,completed,M1,0.0,80.0
-O13,J1,completed,M1,0.0,80.0
-O21,J2,completed,M2,0.0,65.0
-O22,J2,completed,M2,0.0,65.0
+O31,J3,completed,M1,0.0,68.0
+O32,J3,completed,M1,0.0,68.0
+O11,J1,completed,M1,0.0,97.0
+O12,J1,completed,M1,0.0,97.0
+O13,J1,completed,M1,0.0,97.0
+O21,J2,completed,M2,0.0,137.0
+O22,J2,completed,M2,0.0,137.0

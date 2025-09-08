@@ -3,7 +3,7 @@ from simulator.builder import ModelBuilder
 import pandas as pd
 import os
 import argparse
-from simulator.NSGA.NSGA import nsga2_run
+from simulator.NSGA.NSGA import nsga2_run_partial
 from simulator.NSGA.pin_api import PinSpec, decode_pins
 from typing import List
 
@@ -129,7 +129,7 @@ def replay_solution(ch, scenario_path: str, results_dir: str = "results"):
 
     # 모델 구성
     builder = ModelBuilder(scenario_path, use_dynamic_scheduling=True)
-    machines, gen, tx = builder.build()
+    machines, gen, tx, agv_controller, agvs = builder.build()
 
     # 시뮬레이터 생성/등록
     sim = Simulator()
@@ -138,6 +138,9 @@ def replay_solution(ch, scenario_path: str, results_dir: str = "results"):
         sim.register(m)
     sim.register(gen)
     sim.register(tx)
+    sim.register(agv_controller)
+    for agv in agvs:
+        sim.register(agv)
 
     # 선택 콜백 주입 (op_id -> machine)
     plan = {op_id: mac for op_id, mac in zip(ch.op_seq, ch.mac_seq)}
@@ -181,18 +184,26 @@ if __name__ == '__main__':
     # 기존 인자들 아래에 추가
     parser.add_argument('--pins', type=str, default=None,
                     help='핀셋 매핑 JSON 경로: [{"job_id":"J1","op_id":"O11","machine":"M1","agv":"AGV_1"}, ...]')
-    # RL 대비해서 n_max도 받고만 있기 - 나중에 삭제 필요 
-    parser.add_argument('--n_max', type=int, default=None, help='(미사용) 추후 RL용 슬롯 크기')
+    # RL 대비해서 n_max도 받고만 있기
+    parser.add_argument("--n_max", type=int, default=0, help="Num of operations to be governed by NSGA")
 
-    
+    # AGV 관련
+    parser.add_argument('--agv_count', type=int, default=1, help='AGV 수')
+
     args = parser.parse_args()
     scenario_path = args.scenario
-
+     
     if args.use_nsga:
         print("="*60)
         print("NSGA-II 최적화 실행")
         print("="*60)
-        pareto = nsga2_run(scenario_path, pop_size=args.pop, generations=args.gen, seed=args.seed)
+        pareto, metrics, selected_ops = nsga2_run_partial(
+            scenario_path=args.scenario,
+            n_max=args.n_max,         # ← 고정값
+            pop_size=args.pop,
+            generations=args.gen,
+            seed=args.seed,
+        )
         print("\n[파레토 프론트 상위] (makespan, total_agv_time)")
         for i, (ch, (f1, f2)) in enumerate(pareto[:10], 1):
             print(f"{i:2d}) Cmax={f1:.3f}, AGVmove={f2:.3f}")
@@ -210,7 +221,7 @@ if __name__ == '__main__':
     # 시뮬레이터 설정
     # 기존과 동일하게 use_dynamic_scheduling=True 유지 (동적 스케줄링 사용 시)
     builder = ModelBuilder(scenario_path, use_dynamic_scheduling=True)
-    machines, gen, tx = builder.build()
+    machines, gen, tx, agv_controller, agvs = builder.build()
 
     # Simulator 생성
     sim = Simulator()
@@ -222,6 +233,9 @@ if __name__ == '__main__':
         sim.register(m)
     sim.register(gen)
     sim.register(tx)
+    sim.register(agv_controller)
+    for agv in agvs:
+        sim.register(agv)
 
    # 핀셋 로드 (없으면 빈 dict)
     sim.pins = {}

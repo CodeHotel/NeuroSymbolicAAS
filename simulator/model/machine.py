@@ -240,8 +240,12 @@ class Machine(EoModel):
         print(f"[{self.name}] {target_machine}로 전송 시간: {transfer_time:.2f}초")
 
         # 전송 이벤트 스케줄링
-        ev = Event('part_arrival', {'part': part}, dest_model=target_machine)
-        self.schedule(ev, transfer_time)
+        fetch_ev = Event(
+            'agv_fetch_request',
+            {'part' : part, 'job': part.job, 'source_machine': self.name},
+        dest_model='AGVController'
+        )   
+        self.schedule(fetch_ev, 0.0)    
         
         # 전송 횟수 로그
         transfer_count = self.transfer_counts.get(part.job.id, 0)
@@ -355,24 +359,16 @@ class Machine(EoModel):
             #     self.control_tower.update_job_status(part.job.id, job_status)
 
             # AGV 배송 시작 로깅
-            self.log_agv_activity('delivery_start', part.job.id, nxt, delay)
+            self.log_agv_activity('fetch_request', part.job.id, nxt, 0.0)
             
             Recorder.log_transfer(part, self.name, nxt, EoModel.get_time(), delay)
 
-            ev = Event('part_arrival', {'part': part}, dest_model=nxt)
-            self.schedule(ev, delay)
-            
-            # AGV 복귀 시간 계산 (배송 시간과 동일하다고 가정)
-            return_delay = delay
-            
-            # AGV 배송 완료 및 복귀 로깅을 위한 이벤트 스케줄링
-            agv_return_ev = Event('agv_delivery_complete', {
-                'job_id': part.job.id,
-                'destination': nxt,
-                'delivery_time': delay,
-                'return_time': return_delay
-            }, dest_model=self.name)
-            self.schedule(agv_return_ev, delay + return_delay)
+            fetch_ev = Event('agv_fetch_request', {
+                'part': part,
+                'job': part.job,
+                'source_machine': self.name
+                }, dest_model='AGVController')
+            self.schedule(fetch_ev, 0.0)
         
         self.running = None
         self.status = 'idle'

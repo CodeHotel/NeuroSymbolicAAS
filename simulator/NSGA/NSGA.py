@@ -115,6 +115,35 @@ def init_population(pop_size: int, op_tokens: List[str], op_to_candidates: Dict[
         pop.append(Chromosome(op_seq, mac_seq, agv_seq))
     return pop
 
+def init_population_partial(pop_size: int,
+                            sel_ops: List[str],
+                            op_to_candidates: Dict[str, List[str]]) -> List[Chromosome]:
+    pop = []
+    for _ in range(pop_size):
+        # op_seq: 선택된 op만 섞음 (선행제약은 시뮬레이터가 실행시점에 보장하므로 여기선 단순 셔플)
+        op_seq = sel_ops[:]
+        random.shuffle(op_seq)
+
+        # mac_seq: 각 op별 후보 중 랜덤
+        mac_seq = []
+        for oid in op_seq:
+            cands = op_to_candidates.get(oid, [])
+            mac_seq.append(random.choice(cands) if cands else None)
+
+        agv_seq = ["AGV_1" for _ in op_seq]  # placeholder
+        pop.append(Chromosome(op_seq, mac_seq, agv_seq))
+    return pop
+
+def sample_ops_for_nsga(scenario_path: str, n_max: int, seed: int = 0):
+    """전역 op 리스트에서 무작위로 n_max개만 뽑아 부분 인코딩 대상으로 사용"""
+    op_tokens, op_to_candidates = build_operation_index(scenario_path)
+    n = min(max(int(n_max), 0), len(op_tokens))
+    random.seed(seed)
+    selected = random.sample(op_tokens, n) if n > 0 else []
+    # 후보 사전도 부분 집합으로 슬라이스
+    sel_cands = {oid: op_to_candidates.get(oid, []) for oid in selected}
+    return selected, sel_cands
+
 # ===== 3) 평가: 시뮬레이터를 "콜백"으로 구동 =====
 def evaluate(ch: Chromosome, scenario_path: str) -> Tuple[float, float]:
     """
@@ -127,7 +156,7 @@ def evaluate(ch: Chromosome, scenario_path: str) -> Tuple[float, float]:
     Recorder.records.clear()   # 혹시 남은 기록 있으면 비움
     # (1) 모델 구성
     builder = ModelBuilder(scenario_path, use_dynamic_scheduling=True)
-    machines, gen, tx = builder.build()  # Job/Operation은 동적 할당 모드  :contentReference[oaicite:5]{index=5}
+    machines, gen, tx, agv_controller, agvs = builder.build()  # Job/Operation은 동적 할당 모드  :contentReference[oaicite:5]{index=5}
 
     # (2) 시뮬레이터 생성 및 등록
     sim = Simulator()
@@ -136,6 +165,10 @@ def evaluate(ch: Chromosome, scenario_path: str) -> Tuple[float, float]:
         sim.register(m)
     sim.register(gen)
     sim.register(tx)
+
+    sim.register(agv_controller)
+    for agv in agvs:
+        sim.register(agv)
 
     # (3) "선택 콜백" 주입: op_id -> 머신 이름 매핑을 빠르게 조회하도록 dict 구성
     # ch.op_seq와 ch.mac_seq는 같은 길이이며, 같은 위치의 op에 대한 머신 배정
@@ -164,6 +197,70 @@ def evaluate(ch: Chromosome, scenario_path: str) -> Tuple[float, float]:
         makespan = Recorder.get_makespan() if hasattr(Recorder, "get_makespan") else float("inf")
 
     # f2: 총 AGV 이동시간 -> 각 Machine.agv_logs에서 delivery/return 합산
+    total_agv_time = 0.0
+    for m in machines:
+        if hasattr(m, "agv_logs"):
+            for rec in m.agv_logs:
+                if rec["activity_type"] in ("delivery_start", "return_home"):
+                    total_agv_time += float(rec.get("duration", 0.0))
+
+    return float(makespan), float(total_agv_time)
+
+def evaluate_partial(ch: Chromosome,
+                     scenario_path: str,
+                     selected_ops: List[str]) -> Tuple[float, float]:
+    from simulator.result.recorder import Recorder
+    Recorder.enabled = False
+    Recorder.records.clear()
+
+    # 1) 모델 구성 (동적 라우팅 모드)
+    builder = ModelBuilder(scenario_path, use_dynamic_scheduling=True)
+    machines, gen, tx, agv_controller, agvs = builder.build()
+
+    # 2) 시뮬레이터 등록
+    sim = Simulator()
+    for m in machines:
+        m.simulator = sim
+        sim.register(m)
+    sim.register(gen)
+    sim.register(tx)
+    sim.register(agv_controller)
+    for agv in agvs:
+        sim.register(agv)
+
+    # 3) plan: 염색체에 포함된 (선택된) op -> machine
+    plan: Dict[str, str] = {op_id: mac for op_id, mac in zip(ch.op_seq, ch.mac_seq)}
+    selset = set(selected_ops)
+
+    # [룰기반] 후보[0] 폴백 (원하면 큐부하 최소 등으로 교체 가능)
+    def rule_next_machine(job_id: str, op_id: str, candidates: List[str]):
+        return candidates[0] if candidates else None
+
+    # 하이브리드 선택 훅
+    def select_next_machine(job_id: str, op_id: str, candidates: List[str]):
+        if op_id in selset:
+            m = plan.get(op_id)
+            if m in (candidates or []):
+                return m
+            # 계획-후보 불일치 시 안전 폴백
+            return candidates[0] if candidates else None
+        # 비선택 op는 룰기반
+        return rule_next_machine(job_id, op_id, candidates)
+
+    sim.select_next_machine = select_next_machine
+
+    # 4) 실행
+    if hasattr(gen, "initialize"):
+        gen.initialize()
+    sim.run()
+
+    # 5) 목적함수 (makespan, total_agv_time)
+    makespan = getattr(sim, "current_time", None)
+    if makespan is None and hasattr(Recorder, "get_makespan"):
+        makespan = Recorder.get_makespan()
+    if makespan is None:
+        makespan = float("inf")
+
     total_agv_time = 0.0
     for m in machines:
         if hasattr(m, "agv_logs"):
@@ -248,6 +345,20 @@ def mutate(ind: Chromosome, op_to_candidates, p=0.1):
         if random.random()<p:
             cands = op_to_candidates.get(oid, [])
             if cands: ind.mac_seq[t] = random.choice(cands)
+
+def repair_partial(ch: Chromosome, op_to_candidates: Dict[str, List[str]]) -> Chromosome:
+    fixed = False
+    mac_seq = ch.mac_seq[:]
+    for i, oid in enumerate(ch.op_seq):
+        cands = op_to_candidates.get(oid, [])
+        if not cands:
+            continue
+        if mac_seq[i] not in cands:
+            mac_seq[i] = random.choice(cands)
+            fixed = True
+    if fixed:
+        return Chromosome(ch.op_seq[:], mac_seq, ch.agv_seq[:])
+    return ch
 
 def nsga2_run(scenario_path: str, pop_size=50, generations=50, seed=0):
     import os, csv, math, copy, random
@@ -371,4 +482,67 @@ def nsga2_run(scenario_path: str, pop_size=50, generations=50, seed=0):
     pareto = [(pop[i], fits[i]) for i in fronts[0]]
     return pareto
 
+def nsga2_run_partial(scenario_path: str,
+                      n_max: int,
+                      pop_size: int = 40,
+                      generations: int = 40,
+                      seed: int = 0):
+    # (a) 부분 대상 샘플링
+    sel_ops, sel_cands = sample_ops_for_nsga(scenario_path, n_max, seed)
+
+    # (b) 초기해
+    pop = init_population_partial(pop_size, sel_ops, sel_cands)
+
+    # (c) 세대 반복
+    fits = [evaluate_partial(repair_partial(ch, sel_cands), scenario_path, sel_ops) for ch in pop]
+    metrics = []
+    for gen in range(generations):
+        # 토너먼트/크로스/변이 (기존 연산자 재사용해도 됨; op_seq·mac_seq 길이가 sel_ops 길이임)
+        # --- 예시: 간단 토너먼트+균등교차+언어한 변이 ---
+        new_pop = []
+        while len(new_pop) < pop_size:
+            a, b = random.sample(range(pop_size), 2)
+            pa = pop[a]; pb = pop[b]
+            # 균등 교차
+            cut = random.randrange(1, len(sel_ops)) if len(sel_ops) > 1 else 1
+            child1 = Chromosome(pa.op_seq[:cut]+pb.op_seq[cut:],
+                                pa.mac_seq[:cut]+pb.mac_seq[cut:],
+                                pa.agv_seq[:cut]+pb.agv_seq[cut:])
+            child2 = Chromosome(pb.op_seq[:cut]+pa.op_seq[cut:],
+                                pb.mac_seq[:cut]+pa.mac_seq[cut:],
+                                pb.agv_seq[:cut]+pa.agv_seq[cut:])
+            # 간단 변이(스왑/재할당)
+            if len(child1.op_seq) > 1 and random.random() < 0.3:
+                i, j = random.sample(range(len(child1.op_seq)), 2)
+                child1.op_seq[i], child1.op_seq[j] = child1.op_seq[j], child1.op_seq[i]
+                child1.mac_seq[i], child1.mac_seq[j] = child1.mac_seq[j], child1.mac_seq[i]
+            if random.random() < 0.3:
+                k = random.randrange(len(child1.mac_seq))
+                cands = sel_cands.get(child1.op_seq[k], [])
+                if cands: child1.mac_seq[k] = random.choice(cands)
+            # 두 번째 애도 동일 처리
+            if len(child2.op_seq) > 1 and random.random() < 0.3:
+                i, j = random.sample(range(len(child2.op_seq)), 2)
+                child2.op_seq[i], child2.op_seq[j] = child2.op_seq[j], child2.op_seq[i]
+                child2.mac_seq[i], child2.mac_seq[j] = child2.mac_seq[j], child2.mac_seq[i]
+            if random.random() < 0.3:
+                k = random.randrange(len(child2.mac_seq))
+                cands = sel_cands.get(child2.op_seq[k], [])
+                if cands: child2.mac_seq[k] = random.choice(cands)
+
+            new_pop.extend([child1, child2])
+
+        pop = [repair_partial(ch, sel_cands) for ch in new_pop[:pop_size]]
+        fits = [evaluate_partial(ch, scenario_path, sel_ops) for ch in pop]
+
+        # (옵션) 메트릭 로깅 (HV/스프레드 등)
+        hv = hv_2d(fits)
+        best_f1 = min(f[0] for f in fits)
+        best_f2 = min(f[1] for f in fits)
+        metrics.append({"gen": gen, "hv": hv, "best_f1": best_f1, "best_f2": best_f2})
+
+    # 파레토 전선에서 하나(예: f1 기준 최저)를 베스트로 리턴
+    fronts = nondominated_sort(fits)                       # ← 비지배 정렬
+    pareto  = [(pop[i], fits[i]) for i in fronts[0]]       # ← 파레토 프론트 구성
+    return pareto, metrics, sel_ops
 

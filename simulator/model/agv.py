@@ -98,23 +98,23 @@ class AGV(EoModel):
             print(f"[{self.name}] 현재 {self.status.name} 상태로 인해 fetch 요청을 거부합니다.")
             return
             
+        part = payload.get('part')          # ✅ Part 받기
+        job  = part.job if part else payload['job']  # 하위호환
         source_machine = payload['source_machine']
-        job = payload['job']
         
         print(f"[{self.name}] {source_machine}에서 Job {job.id} fetch 시작")
         
         # 로깅
-        self._log_event('fetch_request', {
-            'source_machine': source_machine,
-            'job_id': job.id
-        })
+        self._log_event('fetch_request', {'source_machine': source_machine, 'job_id': job.id})
+
         
         # current_task를 먼저 설정
         self.current_task = {
             'type': 'fetch',
             'source_machine': source_machine,
-            'job': job
-        }
+            'part': part,                   # ✅ Part 저장
+            'job': job                      # (옵션) 참고용
+     }
         
         # 작업 시작 시간 기록
         self.task_start_time = EoModel.get_time()
@@ -124,27 +124,25 @@ class AGV(EoModel):
     
     def _handle_delivery_request(self, payload):
         """작업 배송 요청 처리"""
-        if self.status != AGVStatus.IDLE:
+        if self.status not in (AGVStatus.IDLE, AGVStatus.LOADING):
             print(f"[{self.name}] 현재 {self.status.name} 상태로 인해 delivery 요청을 거부합니다.")
             return
             
+        part = payload['part']               
+        job  = part.job
         destination_machine = payload['destination_machine']
-        job = payload['job']
         
         print(f"[{self.name}] {destination_machine}로 Job {job.id} delivery 시작")
-        
-        # 로깅
-        self._log_event('delivery_request', {
-            'destination_machine': destination_machine,
-            'job_id': job.id
-        })
-        
-        # current_task를 먼저 설정
+
+        self._log_event('delivery_request', {'destination_machine': destination_machine, 'job_id': job.id})
+
         self.current_task = {
             'type': 'delivery',
             'destination_machine': destination_machine,
+            'part': part,                  
             'job': job
         }
+
         
         # 작업 시작 시간 기록
         self.task_start_time = EoModel.get_time()
@@ -259,11 +257,12 @@ class AGV(EoModel):
     
     def _handle_fetch_complete(self, payload):
         """작업 가져오기 완료 처리"""
+        part = self.current_task.get('part') if self.current_task else None
         job = payload['job']
         source_machine = payload['source_machine']
         
         # 작업을 AGV에 적재
-        self.carried_jobs.append(job)
+        self.carried_jobs.append(part)
         old_status = self.status
         self.status = AGVStatus.LOADING
         
@@ -277,11 +276,12 @@ class AGV(EoModel):
             self._log_task('fetch', source_machine, None, job.id, self.task_start_time, EoModel.get_time())
         
         # 적재 완료 후 delivery 요청
-        self._request_delivery(job)
+        self._request_delivery(part)
     
-    def _request_delivery(self, job):
+    def _request_delivery(self, part):
         """배송 요청"""
         # 현재 작업의 다음 operation이 할당된 기계 찾기
+        job = part.job
         current_op = job.current_op()
         if current_op and current_op.candidates:
             # 첫 번째 후보 기계로 배송 (실제로는 최적화 알고리즘이 결정)
@@ -291,9 +291,9 @@ class AGV(EoModel):
             
             # AGV 컨트롤러에 배송 요청
             ev = Event('agv_delivery_request', {
-                'agv_id': self.agv_id,
-                'destination_machine': destination,
-                'job': job
+            'agv_id': self.agv_id,
+            'destination_machine': destination,
+            'part': part              # ✅ Part 전달
             }, dest_model='AGVController')
             self.schedule(ev, 0)
         else:
@@ -302,12 +302,13 @@ class AGV(EoModel):
     
     def _handle_delivery_complete(self, payload):
         """배송 완료 처리"""
-        job = payload['job']
+        part = self.current_task.get('part') if self.current_task else None
+        job  = part.job
         destination_machine = payload['destination_machine']
         
         # 작업을 AGV에서 제거
-        if job in self.carried_jobs:
-            self.carried_jobs.remove(job)
+        if part in self.carried_jobs:
+            self.carried_jobs.remove(part)
         
         print(f"[{self.name}] Job {job.id}를 {destination_machine}에 배송 완료")
         
@@ -317,8 +318,8 @@ class AGV(EoModel):
         
         # 작업을 목적지 기계에 전달
         ev = Event('part_arrival', {
-            'part': job,  # 간단화를 위해 job을 part로 사용
-            'agv_id': self.agv_id
+        'part': part,                   # ✅ 여기가 핵심 수정
+        'agv_id': self.agv_id
         }, dest_model=destination_machine)
         self.schedule(ev, 0)
         

@@ -4,13 +4,15 @@ from simulator.domain.domain import Job, Operation
 from simulator.model.machine import Machine
 from simulator.model.generator import Generator
 from simulator.model.transducer import Transducer
+from simulator.control.agv_controller import AGVController
+from simulator.model.agv import AGV
 
 def load(fp):
     with open(fp, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 class ModelBuilder:
-    def __init__(self, subpath, use_dynamic_scheduling=False):
+    def __init__(self, subpath, use_dynamic_scheduling=False, agv_count: int = 1):
         # 절대 경로로 변환
         if os.path.isabs(subpath):
             self.path = subpath
@@ -19,6 +21,7 @@ class ModelBuilder:
             self.path = os.path.join(base, subpath)
         
         self.use_dynamic_scheduling = use_dynamic_scheduling
+        self.agv_count = agv_count
 
     def build(self):
         jobs_j   = load(os.path.join(self.path, 'jobs.json'))
@@ -86,6 +89,9 @@ class ModelBuilder:
             if hasattr(machine, 'set_logger'):
                 machine.set_logger(agv_logger)
 
+        agvs = [AGV(str(i+1)) for i in range(self.agv_count)]
+        agv_controller = AGVController(agvs)
+
         gen = Generator(releases, jobs)
         tx  = Transducer()
-        return machines, gen, tx
+        return machines, gen, tx, agv_controller, agvs
