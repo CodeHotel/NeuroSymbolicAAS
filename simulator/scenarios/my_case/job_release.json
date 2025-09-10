@@ -1,103 +1,103 @@
 [
   {
     "job_id": "J1",
-    "release_time": 0
+    "release_time": 18
   },
   {
     "job_id": "J2",
-    "release_time": 0
+    "release_time": 7
   },
   {
     "job_id": "J3",
-    "release_time": 0
+    "release_time": 12
   },
   {
     "job_id": "J4",
-    "release_time": 0
+    "release_time": 11
   },
   {
     "job_id": "J5",
-    "release_time": 0
+    "release_time": 19
   },
   {
     "job_id": "J6",
-    "release_time": 0
+    "release_time": 12
   },
   {
     "job_id": "J7",
-    "release_time": 0
+    "release_time": 7
   },
   {
     "job_id": "J8",
-    "release_time": 0
+    "release_time": 8
   },
   {
     "job_id": "J9",
-    "release_time": 0
+    "release_time": 6
   },
   {
     "job_id": "J10",
-    "release_time": 0
+    "release_time": 8
   },
   {
     "job_id": "J11",
-    "release_time": 0
+    "release_time": 18
   },
   {
     "job_id": "J12",
-    "release_time": 0
+    "release_time": 4
   },
   {
     "job_id": "J13",
-    "release_time": 0
+    "release_time": 4
   },
   {
     "job_id": "J14",
-    "release_time": 0
+    "release_time": 12
   },
   {
     "job_id": "J15",
-    "release_time": 0
+    "release_time": 17
   },
   {
     "job_id": "J16",
-    "release_time": 0
+    "release_time": 13
   },
   {
     "job_id": "J17",
-    "release_time": 0
+    "release_time": 8
   },
   {
     "job_id": "J18",
-    "release_time": 0
+    "release_time": 4
   },
   {
     "job_id": "J19",
-    "release_time": 0
+    "release_time": 15
   },
   {
     "job_id": "J20",
-    "release_time": 0
+    "release_time": 9
   },
   {
     "job_id": "J21",
-    "release_time": 0
+    "release_time": 18
   },
   {
     "job_id": "J22",
-    "release_time": 0
+    "release_time": 2
   },
   {
     "job_id": "J23",
-    "release_time": 0
+    "release_time": 8
   },
   {
     "job_id": "J24",
-    "release_time": 0
+    "release_time": 12
   },
   {
     "job_id": "J25",
-    "release_time": 0
+    "release_time": 7
   },
   {
     "job_id": "J26",
@@ -105,18 +105,18 @@
   },
   {
     "job_id": "J27",
-    "release_time": 0
+    "release_time": 20
   },
   {
     "job_id": "J28",
-    "release_time": 0
+    "release_time": 1
   },
   {
     "job_id": "J29",
-    "release_time": 0
+    "release_time": 15
   },
   {
     "job_id": "J30",
-    "release_time": 0
+    "release_time": 7
   }
 ]

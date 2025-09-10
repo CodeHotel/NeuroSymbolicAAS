@@ -6,6 +6,27 @@ class AGVController(EoModel):
         self.agvs = {agv.agv_id: agv for agv in agv_list}
         self.idle_pool = set(self.agvs.keys())
 
+    def save_state(self):
+        # 현재 보유 AGV ID들과 idle 풀만 저장 (객체는 그대로 유지)
+        return {
+            "agv_ids": list(self.agvs.keys()),
+            "idle_pool": list(self.idle_pool),
+        }
+
+    def load_state(self, st, registry=None):
+        # 기존 self.agvs(객체 매핑)는 그대로 두고, idle_pool만 복원
+        saved_ids = st.get("agv_ids")
+        if saved_ids:
+            # 혹시라도 agvs가 비었다면, saved_ids를 바탕으로 안전 복구
+            if not getattr(self, "agvs", None):
+                self.agvs = {agv_id: self.agvs.get(agv_id) for agv_id in saved_ids if self.agvs and agv_id in self.agvs}
+            # registry로부터 보강(선택)
+            if registry and hasattr(registry, "get"):
+                # 필요하면 registry에서 AGV 객체 재결합하는 로직을 여기에 추가
+                pass
+        # idle 풀 복원 (없으면 모든 AGV를 idle로 가정)
+        self.idle_pool = set(st.get("idle_pool", saved_ids or list(self.agvs.keys())))
+
     def _earliest_available_time(self):
         now = EoModel.get_time()
         # idle이면 지금(now), 아니면 그 AGV의 arrival_time(없으면 무한대)

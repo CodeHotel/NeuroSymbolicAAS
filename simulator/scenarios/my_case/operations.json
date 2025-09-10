@@ -42,26 +42,6 @@
     ]
   },
   {
-    "operation_id": "O023",
-    "job_id": "J2",
-    "type": "welding",
-    "machines": [
-      "M1",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O024",
-    "job_id": "J2",
-    "type": "testing",
-    "machines": [
-      "M1",
-      "M2",
-      "M3",
-      "M4"
-    ]
-  },
-  {
     "operation_id": "O031",
     "job_id": "J3",
     "type": "drilling",
@@ -74,6 +54,25 @@
   {
     "operation_id": "O032",
     "job_id": "J3",
+    "type": "welding",
+    "machines": [
+      "M1",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O033",
+    "job_id": "J3",
+    "type": "drilling",
+    "machines": [
+      "M1",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "operation_id": "O041",
+    "job_id": "J4",
     "type": "assembly",
     "machines": [
       "M2",
@@ -81,7 +80,7 @@
     ]
   },
   {
-    "operation_id": "O041",
+    "operation_id": "O042",
     "job_id": "J4",
     "type": "testing",
     "machines": [
@@ -92,7 +91,7 @@
     ]
   },
   {
-    "operation_id": "O042",
+    "operation_id": "O043",
     "job_id": "J4",
     "type": "welding",
     "machines": [
@@ -101,18 +100,16 @@
     ]
   },
   {
-    "operation_id": "O043",
-    "job_id": "J4",
-    "type": "testing",
+    "operation_id": "O051",
+    "job_id": "J5",
+    "type": "welding",
     "machines": [
       "M1",
-      "M2",
-      "M3",
       "M4"
     ]
   },
   {
-    "operation_id": "O051",
+    "operation_id": "O052",
     "job_id": "J5",
     "type": "testing",
     "machines": [
@@ -123,7 +120,7 @@
     ]
   },
   {
-    "operation_id": "O052",
+    "operation_id": "O053",
     "job_id": "J5",
     "type": "drilling",
     "machines": [
@@ -153,9 +150,9 @@
   {
     "operation_id": "O063",
     "job_id": "J6",
-    "type": "assembly",
+    "type": "welding",
     "machines": [
-      "M2",
+      "M1",
       "M4"
     ]
   },
@@ -199,57 +196,27 @@
     ]
   },
   {
-    "operation_id": "O074",
-    "job_id": "J7",
-    "type": "welding",
-    "machines": [
-      "M1",
-      "M4"
-    ]
-  },
-  {
     "operation_id": "O081",
     "job_id": "J8",
-    "type": "assembly",
+    "type": "testing",
     "machines": [
+      "M1",
       "M2",
+      "M3",
       "M4"
     ]
   },
   {
     "operation_id": "O082",
     "job_id": "J8",
-    "type": "testing",
+    "type": "assembly",
     "machines": [
-      "M1",
       "M2",
-      "M3",
       "M4"
-    ]
-  },
-  {
-    "operation_id": "O083",
-    "job_id": "J8",
-    "type": "drilling",
-    "machines": [
-      "M1",
-      "M2",
-      "M3"
     ]
   },
   {
     "operation_id": "O091",
-    "job_id": "J9",
-    "type": "testing",
-    "machines": [
-      "M1",
-      "M2",
-      "M3",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O092",
     "job_id": "J9",
     "type": "welding",
     "machines": [
@@ -258,26 +225,8 @@
     ]
   },
   {
-    "operation_id": "O093",
+    "operation_id": "O092",
     "job_id": "J9",
-    "type": "assembly",
-    "machines": [
-      "M2",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O094",
-    "job_id": "J9",
-    "type": "assembly",
-    "machines": [
-      "M2",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O101",
-    "job_id": "J10",
     "type": "testing",
     "machines": [
       "M1",
@@ -287,7 +236,34 @@
     ]
   },
   {
+    "operation_id": "O101",
+    "job_id": "J10",
+    "type": "assembly",
+    "machines": [
+      "M2",
+      "M4"
+    ]
+  },
+  {
     "operation_id": "O102",
+    "job_id": "J10",
+    "type": "assembly",
+    "machines": [
+      "M2",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O103",
+    "job_id": "J10",
+    "type": "assembly",
+    "machines": [
+      "M2",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O104",
     "job_id": "J10",
     "type": "welding",
     "machines": [
@@ -298,34 +274,14 @@
   {
     "operation_id": "O111",
     "job_id": "J11",
-    "type": "testing",
+    "type": "welding",
     "machines": [
       "M1",
-      "M2",
-      "M3",
       "M4"
     ]
   },
   {
     "operation_id": "O112",
-    "job_id": "J11",
-    "type": "assembly",
-    "machines": [
-      "M2",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O113",
-    "job_id": "J11",
-    "type": "assembly",
-    "machines": [
-      "M2",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O114",
     "job_id": "J11",
     "type": "testing",
     "machines": [
@@ -347,39 +303,69 @@
   {
     "operation_id": "O122",
     "job_id": "J12",
-    "type": "drilling",
+    "type": "testing",
     "machines": [
       "M1",
       "M2",
-      "M3"
+      "M3",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O123",
+    "job_id": "J12",
+    "type": "welding",
+    "machines": [
+      "M1",
+      "M4"
     ]
   },
   {
     "operation_id": "O131",
     "job_id": "J13",
-    "type": "welding",
+    "type": "assembly",
     "machines": [
-      "M1",
+      "M2",
       "M4"
     ]
   },
   {
     "operation_id": "O132",
     "job_id": "J13",
-    "type": "welding",
-    "machines": [
-      "M1",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O141",
-    "job_id": "J14",
     "type": "drilling",
     "machines": [
       "M1",
       "M2",
       "M3"
+    ]
+  },
+  {
+    "operation_id": "O133",
+    "job_id": "J13",
+    "type": "drilling",
+    "machines": [
+      "M1",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "operation_id": "O134",
+    "job_id": "J13",
+    "type": "drilling",
+    "machines": [
+      "M1",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "operation_id": "O141",
+    "job_id": "J14",
+    "type": "welding",
+    "machines": [
+      "M1",
+      "M4"
     ]
   },
   {
@@ -394,10 +380,11 @@
   {
     "operation_id": "O143",
     "job_id": "J14",
-    "type": "assembly",
+    "type": "drilling",
     "machines": [
+      "M1",
       "M2",
-      "M4"
+      "M3"
     ]
   },
   {
@@ -412,16 +399,26 @@
   {
     "operation_id": "O151",
     "job_id": "J15",
-    "type": "drilling",
+    "type": "assembly",
     "machines": [
-      "M1",
       "M2",
-      "M3"
+      "M4"
     ]
   },
   {
     "operation_id": "O152",
     "job_id": "J15",
+    "type": "testing",
+    "machines": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O153",
+    "job_id": "J15",
     "type": "drilling",
     "machines": [
       "M1",
@@ -430,57 +427,39 @@
     ]
   },
   {
-    "operation_id": "O153",
-    "job_id": "J15",
-    "type": "testing",
-    "machines": [
-      "M1",
-      "M2",
-      "M3",
-      "M4"
-    ]
-  },
-  {
     "operation_id": "O154",
     "job_id": "J15",
-    "type": "testing",
+    "type": "drilling",
     "machines": [
       "M1",
       "M2",
-      "M3",
-      "M4"
+      "M3"
     ]
   },
   {
     "operation_id": "O161",
     "job_id": "J16",
-    "type": "assembly",
+    "type": "testing",
     "machines": [
+      "M1",
       "M2",
+      "M3",
       "M4"
     ]
   },
   {
     "operation_id": "O162",
     "job_id": "J16",
-    "type": "welding",
+    "type": "drilling",
     "machines": [
       "M1",
-      "M4"
+      "M2",
+      "M3"
     ]
   },
   {
     "operation_id": "O163",
     "job_id": "J16",
-    "type": "assembly",
-    "machines": [
-      "M2",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O171",
-    "job_id": "J17",
     "type": "testing",
     "machines": [
       "M1",
@@ -490,16 +469,16 @@
     ]
   },
   {
-    "operation_id": "O172",
+    "operation_id": "O171",
     "job_id": "J17",
-    "type": "welding",
+    "type": "assembly",
     "machines": [
-      "M1",
+      "M2",
       "M4"
     ]
   },
   {
-    "operation_id": "O173",
+    "operation_id": "O172",
     "job_id": "J17",
     "type": "drilling",
     "machines": [
@@ -509,18 +488,26 @@
     ]
   },
   {
-    "operation_id": "O174",
-    "job_id": "J17",
-    "type": "testing",
+    "operation_id": "O181",
+    "job_id": "J18",
+    "type": "welding",
     "machines": [
       "M1",
-      "M2",
-      "M3",
       "M4"
     ]
   },
   {
-    "operation_id": "O181",
+    "operation_id": "O182",
+    "job_id": "J18",
+    "type": "drilling",
+    "machines": [
+      "M1",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "operation_id": "O183",
     "job_id": "J18",
     "type": "testing",
     "machines": [
@@ -531,7 +518,7 @@
     ]
   },
   {
-    "operation_id": "O182",
+    "operation_id": "O184",
     "job_id": "J18",
     "type": "welding",
     "machines": [
@@ -542,6 +529,25 @@
   {
     "operation_id": "O191",
     "job_id": "J19",
+    "type": "welding",
+    "machines": [
+      "M1",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O192",
+    "job_id": "J19",
+    "type": "drilling",
+    "machines": [
+      "M1",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "operation_id": "O193",
+    "job_id": "J19",
     "type": "testing",
     "machines": [
       "M1",
@@ -551,74 +557,29 @@
     ]
   },
   {
-    "operation_id": "O192",
-    "job_id": "J19",
-    "type": "assembly",
-    "machines": [
-      "M2",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O193",
-    "job_id": "J19",
-    "type": "drilling",
-    "machines": [
-      "M1",
-      "M2",
-      "M3"
-    ]
-  },
-  {
-    "operation_id": "O194",
-    "job_id": "J19",
-    "type": "drilling",
-    "machines": [
-      "M1",
-      "M2",
-      "M3"
-    ]
-  },
-  {
     "operation_id": "O201",
     "job_id": "J20",
-    "type": "welding",
+    "type": "drilling",
     "machines": [
       "M1",
-      "M4"
+      "M2",
+      "M3"
     ]
   },
   {
     "operation_id": "O202",
     "job_id": "J20",
-    "type": "drilling",
+    "type": "testing",
     "machines": [
       "M1",
       "M2",
-      "M3"
-    ]
-  },
-  {
-    "operation_id": "O203",
-    "job_id": "J20",
-    "type": "welding",
-    "machines": [
-      "M1",
+      "M3",
       "M4"
     ]
   },
   {
     "operation_id": "O211",
     "job_id": "J21",
-    "type": "assembly",
-    "machines": [
-      "M2",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O212",
-    "job_id": "J21",
     "type": "drilling",
     "machines": [
       "M1",
@@ -627,17 +588,8 @@
     ]
   },
   {
-    "operation_id": "O221",
-    "job_id": "J22",
-    "type": "assembly",
-    "machines": [
-      "M2",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O222",
-    "job_id": "J22",
+    "operation_id": "O212",
+    "job_id": "J21",
     "type": "welding",
     "machines": [
       "M1",
@@ -645,11 +597,30 @@
     ]
   },
   {
-    "operation_id": "O231",
-    "job_id": "J23",
+    "operation_id": "O221",
+    "job_id": "J22",
+    "type": "drilling",
+    "machines": [
+      "M1",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "operation_id": "O222",
+    "job_id": "J22",
     "type": "assembly",
     "machines": [
       "M2",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O231",
+    "job_id": "J23",
+    "type": "welding",
+    "machines": [
+      "M1",
       "M4"
     ]
   },
@@ -665,74 +636,61 @@
   {
     "operation_id": "O233",
     "job_id": "J23",
-    "type": "welding",
+    "type": "assembly",
     "machines": [
-      "M1",
+      "M2",
       "M4"
     ]
   },
   {
     "operation_id": "O234",
     "job_id": "J23",
-    "type": "testing",
+    "type": "welding",
     "machines": [
       "M1",
-      "M2",
-      "M3",
       "M4"
     ]
   },
   {
     "operation_id": "O241",
     "job_id": "J24",
-    "type": "testing",
+    "type": "assembly",
     "machines": [
-      "M1",
       "M2",
-      "M3",
       "M4"
     ]
   },
   {
     "operation_id": "O242",
     "job_id": "J24",
-    "type": "assembly",
+    "type": "welding",
     "machines": [
-      "M2",
+      "M1",
       "M4"
     ]
   },
   {
     "operation_id": "O243",
     "job_id": "J24",
-    "type": "assembly",
+    "type": "welding",
     "machines": [
-      "M2",
+      "M1",
       "M4"
     ]
   },
   {
     "operation_id": "O244",
     "job_id": "J24",
-    "type": "drilling",
+    "type": "testing",
     "machines": [
       "M1",
       "M2",
-      "M3"
+      "M3",
+      "M4"
     ]
   },
   {
     "operation_id": "O251",
-    "job_id": "J25",
-    "type": "drilling",
-    "machines": [
-      "M1",
-      "M2",
-      "M3"
-    ]
-  },
-  {
-    "operation_id": "O252",
     "job_id": "J25",
     "type": "testing",
     "machines": [
@@ -743,17 +701,57 @@
     ]
   },
   {
-    "operation_id": "O261",
-    "job_id": "J26",
-    "type": "welding",
+    "operation_id": "O252",
+    "job_id": "J25",
+    "type": "assembly",
+    "machines": [
+      "M2",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O253",
+    "job_id": "J25",
+    "type": "assembly",
+    "machines": [
+      "M2",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O254",
+    "job_id": "J25",
+    "type": "drilling",
     "machines": [
       "M1",
-      "M4"
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "operation_id": "O261",
+    "job_id": "J26",
+    "type": "drilling",
+    "machines": [
+      "M1",
+      "M2",
+      "M3"
     ]
   },
   {
     "operation_id": "O262",
     "job_id": "J26",
+    "type": "testing",
+    "machines": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O271",
+    "job_id": "J27",
     "type": "welding",
     "machines": [
       "M1",
@@ -761,27 +759,16 @@
     ]
   },
   {
-    "operation_id": "O263",
-    "job_id": "J26",
-    "type": "drilling",
+    "operation_id": "O272",
+    "job_id": "J27",
+    "type": "welding",
     "machines": [
       "M1",
-      "M2",
-      "M3"
+      "M4"
     ]
   },
   {
-    "operation_id": "O264",
-    "job_id": "J26",
-    "type": "drilling",
-    "machines": [
-      "M1",
-      "M2",
-      "M3"
-    ]
-  },
-  {
-    "operation_id": "O271",
+    "operation_id": "O273",
     "job_id": "J27",
     "type": "drilling",
     "machines": [
@@ -791,7 +778,7 @@
     ]
   },
   {
-    "operation_id": "O272",
+    "operation_id": "O274",
     "job_id": "J27",
     "type": "drilling",
     "machines": [
@@ -812,6 +799,35 @@
   {
     "operation_id": "O282",
     "job_id": "J28",
+    "type": "drilling",
+    "machines": [
+      "M1",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "operation_id": "O291",
+    "job_id": "J29",
+    "type": "drilling",
+    "machines": [
+      "M1",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "operation_id": "O292",
+    "job_id": "J29",
+    "type": "welding",
+    "machines": [
+      "M1",
+      "M4"
+    ]
+  },
+  {
+    "operation_id": "O293",
+    "job_id": "J29",
     "type": "testing",
     "machines": [
       "M1",
@@ -821,49 +837,21 @@
     ]
   },
   {
-    "operation_id": "O291",
-    "job_id": "J29",
+    "operation_id": "O301",
+    "job_id": "J30",
     "type": "welding",
     "machines": [
       "M1",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O292",
-    "job_id": "J29",
-    "type": "assembly",
-    "machines": [
-      "M2",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O301",
-    "job_id": "J30",
-    "type": "assembly",
-    "machines": [
-      "M2",
       "M4"
     ]
   },
   {
     "operation_id": "O302",
     "job_id": "J30",
-    "type": "welding",
+    "type": "assembly",
     "machines": [
-      "M1",
-      "M4"
-    ]
-  },
-  {
-    "operation_id": "O303",
-    "job_id": "J30",
-    "type": "drilling",
-    "machines": [
-      "M1",
       "M2",
-      "M3"
+      "M4"
     ]
   }
 ]

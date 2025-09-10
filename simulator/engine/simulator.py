@@ -69,6 +69,14 @@ class EoModel:
 
     def handle_event(self, event):
         raise NotImplementedError
+    
+    def save_state(self):
+        """모델별 직렬화 가능한 dict 반환 (객체 참조는 ID로 치환)"""
+        return {}
+
+    def load_state(self, state_dict, registry):
+        """저장된 dict 기반으로 상태 복원 (registry로 ID→객체 매핑)"""
+        return
 
 class Simulator:
     def __init__(self):
@@ -94,108 +102,55 @@ class Simulator:
             self.machines.append(model)
 
     def snapshot(self):
-        """현재 시뮬레이터 상태의 스냅샷을 생성합니다 (최적화된 버전)."""
-        # 이벤트 큐 복사 (최소한의 정보만)
-        event_queue_copy = []
-        for event in self.event_queue:
-            # 이벤트의 핵심 정보만 복사
-            event_copy = Event(
-                event.event_type,
-                event.payload,  # payload는 이미 최소한의 정보
-                event.dest_model,
-                event.time
-            )
-            event_copy.src_model = event.src_model
-            event_queue_copy.append(event_copy)
-        
-        # 기계 상태 복사 (Job 객체 대신 Job 상태만 저장)
-        machines_state = {}
-        for machine in self.machines:
-            # Job 객체들을 최소한의 상태 정보로 변환
-            queued_jobs_state = [job.save_state() for job in machine.queued_jobs]
-            running_jobs_state = [job.save_state() for job in machine.running_jobs]
-            finished_jobs_state = [job.save_state() for job in machine.finished_jobs]
-            
-            machines_state[machine.name] = {
-                'status': machine.status,
-                'next_available_time': machine.next_available_time,
-                'queued_jobs': queued_jobs_state,
-                'running_jobs': running_jobs_state,
-                'finished_jobs': finished_jobs_state,
-                'transfer_counts': copy.deepcopy(getattr(machine, 'transfer_counts', {}))
-            }
-        
-        # RNG 상태 저장
+    # RNG
         rng_state = random.getstate()
-        
-        return SimulatorState(
-            self.current_time,
-            event_queue_copy,
-            {},  # models_state는 비움 (기계 상태에 포함됨)
-            machines_state,
-            rng_state
-        )
 
-    def restore(self, state):
-        """스냅샷에서 상태를 복원합니다 (최적화된 버전)."""
+        # 이벤트 큐
+        event_queue_copy = []
+        for ev in self.event_queue:
+            event_copy = Event(ev.event_type,
+                            self._encode_payload(ev.payload),
+                            ev.dest_model,
+                            ev.time)
+            event_copy.src_model = ev.src_model
+            event_queue_copy.append(event_copy)
+
+        # 모델 상태
+        models_state = {}
+        for name, model in self.models.items():
+            if hasattr(model, 'save_state'):
+                models_state[name] = model.save_state()
+
+        # 전역 시간
+        return SimulatorState(self.current_time, event_queue_copy, models_state, {}, rng_state)
+
+
+    def restore(self, state: SimulatorState):
         self.current_time = state.current_time
-        
-        # 이벤트 큐 복원
-        self.event_queue = []
-        for event in state.event_queue:
-            self.push(event)
-        
-        # 기계 상태 복원 (Job 객체들을 찾아서 상태만 복원)
-        for machine_name, machine_state in state.machines_state.items():
-            for machine in self.machines:
-                if machine.name == machine_name:
-                    machine.status = machine_state['status']
-                    machine.next_available_time = machine_state['next_available_time']
-                    if 'transfer_counts' in machine_state:
-                        machine.transfer_counts = machine_state['transfer_counts']
-                    
-                    # 모든 Job 객체들을 수집 (한 번만)
-                    all_jobs = []
-                    for m in self.machines:
-                        all_jobs.extend(m.queued_jobs)
-                        all_jobs.extend(m.running_jobs)
-                        all_jobs.extend(m.finished_jobs)
-                    
-                    # Job 상태 복원 (최적화된 방식)
-                    machine.queued_jobs = []
-                    machine.running_jobs = []
-                    machine.finished_jobs = []
-                    
-                    # Job ID로 빠른 검색을 위한 딕셔너리 생성
-                    job_dict = {job.id: job for job in all_jobs}
-                    
-                    # queued_jobs 복원
-                    for job_state in machine_state['queued_jobs']:
-                        job_id = job_state.get('job_id', job_state.get('id'))
-                        if job_id in job_dict:
-                            job = job_dict[job_id]
-                            job.restore_state(job_state)
-                            machine.queued_jobs.append(job)
-                    
-                    # running_jobs 복원
-                    for job_state in machine_state['running_jobs']:
-                        job_id = job_state.get('job_id', job_state.get('id'))
-                        if job_id in job_dict:
-                            job = job_dict[job_id]
-                            job.restore_state(job_state)
-                            machine.running_jobs.append(job)
-                    
-                    # finished_jobs 복원
-                    for job_state in machine_state['finished_jobs']:
-                        job_id = job_state.get('job_id', job_state.get('id'))
-                        if job_id in job_dict:
-                            job = job_dict[job_id]
-                            job.restore_state(job_state)
-                            machine.finished_jobs.append(job)
-                    break
-        
-        # RNG 상태 복원
+
+        # RNG
         random.setstate(state.rng_state)
+
+        # 레지스트리는 모델/큐가 복원되며 업데이트되므로 먼저 모델부터 복원
+        # 1) 모델별 load_state 호출 (큐 구조 등 내부 리스트 비우고 재구성)
+        #    registry는 load_state 호출 순환 중에도 쓰이므로 매 단계 업데이트
+        #    우선 빈 registry를 만들고 최소 머신/AGV를 먼저 등록
+        # (모델들은 load_state 내에서 잡/파트 id를 보고 내부 구조를 채움)
+        for name, model in self.models.items():
+            if hasattr(model, 'load_state'):
+                # 최신 레지스트리
+                reg = self._build_registry()
+                model.load_state(state.models_state.get(name, {}), reg)
+
+        # 이벤트 큐 복원 (payload 역직렬화)
+        reg = self._build_registry()
+        self.event_queue = []
+        for ev in state.event_queue:
+            payload = self._decode_payload(ev.payload, reg)
+            ev2 = Event(ev.event_type, payload, ev.dest_model, ev.time)
+            ev2.src_model = ev.src_model
+            heapq.heappush(self.event_queue, ev2)
+
 
     def legal_actions(self):
         """현재 결정 시점에서 가능한 모든 액션을 반환합니다."""
@@ -402,6 +357,71 @@ class Simulator:
         if current_op:
             return self._get_min_duration(current_op) * 0.5
         return 0.0
+    
+    # simulator/engine/simulator.py 내부 (Simulator 클래스)
+
+    def _build_registry(self):
+        reg = {
+            'machines': {m.name: m for m in self.machines},
+            'agvs': {},
+            'jobs': {},
+            'parts': {}
+        }
+        # 1) AGVController 내부의 AGV들부터 등록
+        agv_ctrl = self.models.get('AGVController')
+        if agv_ctrl and hasattr(agv_ctrl, 'agvs'):
+            for agv_id, agv in agv_ctrl.agvs.items():
+                reg['agvs'][str(agv_id)] = agv  # 키를 문자열로 정규화(지문도 문자열 키 사용)
+        
+        # 2) 모델들 순회 (혹시 개별 AGV가 모델로 등록돼 있으면 추가)
+        for model in self.models.values():
+            if hasattr(model, 'agv_id'):
+                reg['agvs'][str(model.agv_id)] = model
+
+            # 머신에서 jobs/parts 수집
+            if hasattr(model, 'queued_jobs'):
+                for q in (list(model.queued_jobs) +
+                        list(getattr(model, 'running_jobs', [])) +
+                        list(getattr(model, 'finished_jobs', []))):
+                    reg['jobs'][q.id] = q
+
+            if hasattr(model, 'queue'):  # parts 큐
+                for p in list(model.queue):
+                    reg['parts'][p.id] = p
+
+            # AGV가 들고 있는 파트 (개별 모델이 AGV일 수도 있으니 체크)
+            if hasattr(model, 'carried_jobs'):
+                for part in getattr(model, 'carried_jobs', []):
+                    reg['parts'][part.id] = part
+                    if hasattr(part, 'job'):
+                        reg['jobs'][part.job.id] = part.job
+
+        return reg
+
+
+    def _encode_payload(self, payload):
+    # 객체 → ID로 치환
+        def enc(x):
+            from simulator.domain.domain import Job, Part
+            if hasattr(x, 'id') and hasattr(x, '__class__'):
+                # Part/Job은 id 사용
+                if x.__class__.__name__ == 'Part': return {'__type__': 'part', 'id': x.id}
+                if x.__class__.__name__ == 'Job':  return {'__type__': 'job',  'id': x.id}
+            return x
+        if isinstance(payload, dict):
+            return {k: enc(v) for k,v in payload.items()}
+        return payload
+
+    def _decode_payload(self, payload, reg):
+        def dec(x):
+            if isinstance(x, dict) and '__type__' in x:
+                if x['__type__'] == 'part': return reg['parts'].get(x['id'])
+                if x['__type__'] == 'job':  return reg['jobs'].get(x['id'])
+            return x
+        if isinstance(payload, dict):
+            return {k: dec(v) for k,v in payload.items()}
+        return payload
+
 
     def rollout_value(self, policy="ECT"):
         """휴리스틱 롤아웃을 통해 상한을 계산합니다."""

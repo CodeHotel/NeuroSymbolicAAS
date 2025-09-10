@@ -51,6 +51,29 @@ class Machine(EoModel):
         
         # 간단한 AGV 로깅 시스템
         self.agv_logs = []  # AGV 활동 로그
+
+    def save_state(self):
+        return {
+            'status': self.status,
+            'next_available_time': self.next_available_time,
+            'queue_parts': [p.id for p in list(self.queue)],
+            'running_part': (self.running.id if self.running else None),
+            'queued_jobs': [j.id for j in list(self.queued_jobs)],
+            'running_jobs': [j.id for j in list(self.running_jobs)],
+            'finished_jobs': [j.id for j in list(self.finished_jobs)],
+            'transfer_counts': dict(self.transfer_counts)
+        }
+
+    def load_state(self, st, reg):
+        from collections import deque
+        self.status = st.get('status', 'idle')
+        self.next_available_time = st.get('next_available_time', 0.0)
+        self.transfer_counts = dict(st.get('transfer_counts', {}))
+        self.queue = deque([reg['parts'][pid] for pid in st.get('queue_parts', []) if pid in reg['parts']])
+        self.running = reg['parts'].get(st.get('running_part')) if st.get('running_part') else None
+        self.queued_jobs  = deque([reg['jobs'][jid] for jid in st.get('queued_jobs', []) if jid in reg['jobs']])
+        self.running_jobs = deque([reg['jobs'][jid] for jid in st.get('running_jobs', []) if jid in reg['jobs']])
+        self.finished_jobs = [reg['jobs'][jid] for jid in st.get('finished_jobs', []) if jid in reg['jobs']]
         
     def log_agv_activity(self, activity_type, job_id, destination=None, duration=0.0):
         """AGV 활동 로깅"""

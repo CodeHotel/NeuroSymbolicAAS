@@ -36,6 +36,47 @@ class AGV(EoModel):
         self.logger = None  # AGVLogger 인스턴스
         self.task_start_time = None  # 현재 작업 시작 시간
         
+    def save_state(self):
+        def task_to_dict(t):
+            if not t: return None
+            d = dict(t)
+            if 'part' in d and d['part'] is not None: d['part'] = {'__type__':'part','id': d['part'].id}
+            if 'job'  in d and d['job']  is not None: d['job']  = {'__type__':'job', 'id': d['job'].id}
+            return d
+
+        return {
+            'agv_id': self.agv_id,
+            'status': self.status.name,
+            'current_location': self.current_location,
+            'destination': self.destination,
+            'carried_parts': [p.id for p in self.carried_jobs],
+            'current_task': task_to_dict(self.current_task),
+            'departure_time': self.departure_time,
+            'arrival_time': self.arrival_time,
+            'distance': self.distance,
+            'task_start_time': self.task_start_time
+        }
+
+    def load_state(self, st, reg):
+        from enum import Enum
+        self.status = type(self.status)[st['status']]
+        self.current_location = st.get('current_location')
+        self.destination = st.get('destination')
+        self.carried_jobs = [reg['parts'][pid] for pid in st.get('carried_parts', []) if pid in reg['parts']]
+        ct = st.get('current_task')
+        if ct:
+            self.current_task = {
+                **{k:v for k,v in ct.items() if k not in ('part','job')},
+                'part': reg['parts'].get(ct['part']['id']) if ct.get('part') else None,
+                'job':  reg['jobs'].get(ct['job']['id'])  if ct.get('job') else None,
+            }
+        else:
+            self.current_task = None
+        self.departure_time = st.get('departure_time', 0.0)
+        self.arrival_time   = st.get('arrival_time', 0.0)
+        self.distance       = st.get('distance', 0.0)
+        self.task_start_time = st.get('task_start_time', None)
+
     def set_logger(self, logger):
         """로거 설정"""
         self.logger = logger
