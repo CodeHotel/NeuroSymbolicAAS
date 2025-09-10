@@ -3,8 +3,6 @@ from simulator.builder import ModelBuilder
 import pandas as pd
 import os
 import argparse
-from simulator.NSGA.NSGA import nsga2_run_partial
-from simulator.NSGA.pin_api import PinSpec, decode_pins
 from typing import List
 
 def _op_mean(op) -> float:
@@ -114,61 +112,6 @@ def save_all_operation_info(machines, filename='results/operation_info.csv'):
         pd.DataFrame(all_ops).to_csv(filename, index=False)
         print(f"[경고] 저장할 operation 정보가 없습니다. (빈 CSV 저장) -> {filename}")
 
-def replay_solution(ch, scenario_path: str, results_dir: str = "results"):
-    from simulator.result.recorder import Recorder
-    Recorder.enabled = True    # 최종 실행에서는 기록 켬
-    Recorder.records.clear()   # 이전 평가에서 쌓인 로그 완전히 비움
-    """최종 염색체로 한 번 더 시뮬레이터를 돌려서 trace/CSV/엑셀 로그 생성."""
-    from simulator.result.recorder import Recorder
-    if hasattr(Recorder, "reset"):
-        Recorder.reset()
-    elif hasattr(Recorder, "clear"):
-        Recorder.clear()
-    import os
-    os.makedirs(results_dir, exist_ok=True)
-
-    # 모델 구성
-    builder = ModelBuilder(scenario_path, use_dynamic_scheduling=True)
-    machines, gen, tx, agv_controller, agvs, src = builder.build()
-
-    # 시뮬레이터 생성/등록
-    sim = Simulator()
-    for m in machines:
-        m.simulator = sim
-        sim.register(m)
-    sim.register(gen)
-    sim.register(tx)
-    sim.register(agv_controller)
-    for agv in agvs:
-        agv.simlulator = sim
-        sim.register(agv)
-    sim.register(src)
-
-    # 선택 콜백 주입 (op_id -> machine)
-    plan = {op_id: mac for op_id, mac in zip(ch.op_seq, ch.mac_seq)}
-    def select_next_machine(job_id: str, op_id: str, candidates):
-        sel = plan.get(op_id)
-        return sel if (candidates and sel in candidates) else (candidates[0] if candidates else None)
-    sim.select_next_machine = select_next_machine
-
-    # 초기화 및 실행
-    if hasattr(gen, "initialize"):
-        gen.initialize()
-    sim.run()
-
-    # 트랜스듀서 최종 저장 (trace.csv/.xlsx 등)
-    if hasattr(tx, "finalize"):
-        tx.finalize()
-
-    # (선택) 머신별 AGV 로그 저장
-    for m in machines:
-        if hasattr(m, "save_agv_logs"):
-            try:
-                m.save_agv_logs(results_dir)
-            except Exception as e:
-                print(f"[경고] {getattr(m,'name','machine')} AGV 로그 저장 실패: {e}")
-
-
 if __name__ == '__main__':
     # 명령행 인수 파싱 (최적화 관련 옵션 제거)
     parser = argparse.ArgumentParser(description='시뮬레이터 실행기 (NSGA-II 지원)')
@@ -176,43 +119,11 @@ if __name__ == '__main__':
     parser.add_argument('--print_queues_interval', type=float, default=None, help='큐 상태 출력 주기(초)')
     parser.add_argument('--print_job_summary_interval', type=float, default=None, help='Job 요약 출력 주기(초)')
 
-    # ▼ NSGA 관련
-    parser.add_argument('--use_nsga', action='store_true', help='NSGA-II로 최적화 실행')
-    parser.add_argument('--pop', type=int, default=50, help='NSGA 인구수')
-    parser.add_argument('--gen', type=int, default=50, help='NSGA 세대수')
-    parser.add_argument('--seed', type=int, default=0, help='NSGA 시드')
-
-    # 룰 기반 관련
-    # 기존 인자들 아래에 추가
-    parser.add_argument('--pins', type=str, default=None,
-                    help='핀셋 매핑 JSON 경로: [{"job_id":"J1","op_id":"O11","machine":"M1","agv":"AGV_1"}, ...]')
-    # RL 대비해서 n_max도 받고만 있기
-    parser.add_argument("--n_max", type=int, default=0, help="Num of operations to be governed by NSGA")
-
     # AGV 관련
     parser.add_argument('--agv_count', type=int, default=1, help='AGV 수')
 
     args = parser.parse_args()
     scenario_path = args.scenario
-     
-    if args.use_nsga:
-        print("="*60)
-        print("NSGA-II 최적화 실행")
-        print("="*60)
-        pareto, metrics, selected_ops = nsga2_run_partial(
-            scenario_path=args.scenario,
-            n_max=args.n_max,         # ← 고정값
-            pop_size=args.pop,
-            generations=args.gen,
-            seed=args.seed,
-        )
-        print("\n[파레토 프론트 상위] (makespan, total_agv_time)")
-        for i, (ch, (f1, f2)) in enumerate(pareto[:10], 1):
-            print(f"{i:2d}) Cmax={f1:.3f}, AGVmove={f2:.3f}")
-        best_ch, (best_cmax, best_agv) = pareto[0]
-        print(f"\n[Best 선택] Cmax={best_cmax:.3f}, AGVmove={best_agv:.3f} → 로그 생성")
-        replay_solution(best_ch, scenario_path, results_dir='results')
-        raise SystemExit(0)
 
     print("="*60)
     print("단일 패스 시뮬레이션 실행")
@@ -240,15 +151,6 @@ if __name__ == '__main__':
         agv.simulator = sim
         sim.register(agv)
     sim.register(src)
-
-   # 핀셋 로드 (없으면 빈 dict)
-    sim.pins = {}
-    if args.pins:
-        import json
-        with open(args.pins, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        pin_list = [PinSpec(**item) for item in data]  # item: {job_id, op_id, machine?, agv?}
-        sim.pins = decode_pins(pin_list)
 
     m_by_name = {m.name: m for m in machines}
 
