@@ -6,6 +6,17 @@ class AGVController(EoModel):
         self.agvs = {agv.agv_id: agv for agv in agv_list}
         self.idle_pool = set(self.agvs.keys())
 
+    def _earliest_available_time(self):
+        now = EoModel.get_time()
+        # idle이면 지금(now), 아니면 그 AGV의 arrival_time(없으면 무한대)
+        etas = []
+        for agv in self.agvs.values():
+            if agv.agv_id in self.idle_pool:
+                etas.append(now)
+            else:
+                etas.append(getattr(agv, 'arrival_time', float('inf')))
+        return (min(etas) if etas else now)
+
     def handle_event(self, evt):
         et = evt.event_type
         p  = evt.payload
@@ -16,19 +27,22 @@ class AGVController(EoModel):
             src  = p['source_machine']
             agv_id = self._acquire_idle_agv()
             if agv_id is None:
-                self.schedule(Event('agv_fetch_request', p, 'AGVController'), 1.0)
+                t = self._earliest_available_time()
+                delay = max(0, t - EoModel.get_time()) + 0.1
+                self.schedule(Event('agv_fetch_request', p, 'AGVController'), delay)
                 return
             ev = Event('agv_fetch_request',
-                       {'part': part, 'job': job, 'source_machine': src},
+                       {'part': part,
+                        'job': job,
+                        'source_machine': src},
                        dest_model=f"AGV_{agv_id}")
             self.schedule(ev, 0)
 
         elif et == 'agv_delivery_request':
             agv_id = p['agv_id']
-            dst    = p['destination_machine']
             part   = p['part']
             ev = Event('agv_delivery_request',
-                       {'destination_machine': dst, 'part': part},
+                       {'part' : part},
                        dest_model=f"AGV_{agv_id}")
             self.schedule(ev, 0)
 

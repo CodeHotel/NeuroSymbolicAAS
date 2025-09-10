@@ -6,6 +6,7 @@ from simulator.model.generator import Generator
 from simulator.model.transducer import Transducer
 from simulator.control.agv_controller import AGVController
 from simulator.model.agv import AGV
+from simulator.model.source_station import SourceStation
 
 def load(fp):
     with open(fp, 'r', encoding='utf-8') as f:
@@ -30,14 +31,9 @@ class ModelBuilder:
         trans    = load(os.path.join(self.path, 'machine_transfer_time.json'))
         # machines.json이 있으면 사용, 없으면 initial_machine_status.json 사용
         machines_file = os.path.join(self.path, 'machines.json')
-        init_machines_file = os.path.join(self.path, 'initial_machine_status.json')
         
-        if os.path.exists(machines_file):
-            init_m = load(machines_file)
-        else:
-            init_m = load(init_machines_file)
+        init_m = load(machines_file)
         releases = load(os.path.join(self.path, 'job_release.json'))
-
         op_map    = {o['operation_id']: o for o in ops_j}
         
         # 동적 라우팅 사용 (정적 라우팅 제거)
@@ -74,6 +70,9 @@ class ModelBuilder:
             jobs[j['job_id']] = Job(j['job_id'], j['part_id'], ops, job_release_time)
             print(f"[ModelBuilder] Job {j['job_id']} 생성: {len(ops)}개의 Operation, Release Time: {job_release_time}")
 
+        src = SourceStation()
+
+
         machines = []
         for mname, info in init_m.items():
             # 각 머신별 transfer map만 전달
@@ -89,9 +88,14 @@ class ModelBuilder:
             if hasattr(machine, 'set_logger'):
                 machine.set_logger(agv_logger)
 
-        agvs = [AGV(str(i+1)) for i in range(self.agv_count)]
+        agvs = []
+        for i in range(self.agv_count):
+            agv = AGV(str(i+1))
+            # ✅ transfer map 세팅
+            agv.set_transfer_times(trans)   # trans는 builder에서 이미 로딩한 전체 transfer dict
+            agvs.append(agv)
         agv_controller = AGVController(agvs)
 
         gen = Generator(releases, jobs)
         tx  = Transducer()
-        return machines, gen, tx, agv_controller, agvs
+        return machines, gen, tx, agv_controller, agvs, src

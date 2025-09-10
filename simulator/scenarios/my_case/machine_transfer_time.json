@@ -1,14 +1,112 @@
 {
+  "GEN": {
+    "M1": {
+      "distribution": "normal",
+      "mean": 8,
+      "std": 0.0
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 2,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 4,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 4,
+      "std": 0.0
+    }
+  },
   "M1": {
-    "M2": { "distribution": "normal", "mean": 10, "std": 0.0 },
-    "M3": { "distribution": "normal", "mean": 20, "std": 0.0 }
+    "GEN": {
+      "distribution": "normal",
+      "mean": 8,
+      "std": 0.0
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 4,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 1,
+      "std": 0.0
+    }
   },
   "M2": {
-    "M1": { "distribution": "normal", "mean": 30, "std": 0.0 },
-    "M3": { "distribution": "normal", "mean": 40, "std": 0.0 }
+    "GEN": {
+      "distribution": "normal",
+      "mean": 2,
+      "std": 0.0
+    },
+    "M1": {
+      "distribution": "normal",
+      "mean": 4,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 5,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 2,
+      "std": 0.0
+    }
   },
   "M3": {
-    "M1": { "distribution": "normal", "mean": 50, "std": 0.0 },
-    "M2": { "distribution": "normal", "mean": 60, "std": 0.0 }
+    "GEN": {
+      "distribution": "normal",
+      "mean": 4,
+      "std": 0.0
+    },
+    "M1": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 5,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    }
+  },
+  "M4": {
+    "GEN": {
+      "distribution": "normal",
+      "mean": 4,
+      "std": 0.0
+    },
+    "M1": {
+      "distribution": "normal",
+      "mean": 1,
+      "std": 0.0
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 2,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    }
   }
 }

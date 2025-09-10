@@ -129,7 +129,7 @@ def replay_solution(ch, scenario_path: str, results_dir: str = "results"):
 
     # 모델 구성
     builder = ModelBuilder(scenario_path, use_dynamic_scheduling=True)
-    machines, gen, tx, agv_controller, agvs = builder.build()
+    machines, gen, tx, agv_controller, agvs, src = builder.build()
 
     # 시뮬레이터 생성/등록
     sim = Simulator()
@@ -140,7 +140,9 @@ def replay_solution(ch, scenario_path: str, results_dir: str = "results"):
     sim.register(tx)
     sim.register(agv_controller)
     for agv in agvs:
+        agv.simlulator = sim
         sim.register(agv)
+    sim.register(src)
 
     # 선택 콜백 주입 (op_id -> machine)
     plan = {op_id: mac for op_id, mac in zip(ch.op_seq, ch.mac_seq)}
@@ -221,7 +223,7 @@ if __name__ == '__main__':
     # 시뮬레이터 설정
     # 기존과 동일하게 use_dynamic_scheduling=True 유지 (동적 스케줄링 사용 시)
     builder = ModelBuilder(scenario_path, use_dynamic_scheduling=True)
-    machines, gen, tx, agv_controller, agvs = builder.build()
+    machines, gen, tx, agv_controller, agvs, src = builder.build()
 
     # Simulator 생성
     sim = Simulator()
@@ -235,7 +237,9 @@ if __name__ == '__main__':
     sim.register(tx)
     sim.register(agv_controller)
     for agv in agvs:
+        agv.simulator = sim
         sim.register(agv)
+    sim.register(src)
 
    # 핀셋 로드 (없으면 빈 dict)
     sim.pins = {}
@@ -251,6 +255,8 @@ if __name__ == '__main__':
     # Generator 초기화 (이벤트 초기 생성)
     if hasattr(gen, "initialize"):
         gen.initialize()
+
+    sim.select_next_machine = rule_next_machine
 
     # 시뮬레이션 실행 (한 번만)
     sim.run(print_queues_interval=args.print_queues_interval, 

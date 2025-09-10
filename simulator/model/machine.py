@@ -293,75 +293,12 @@ class Machine(EoModel):
         else:
             if part in self.queue:
                 self.queue.remove(part)
-            # 다음 기계로 전송
-            current_op = part.job.current_op()
-            nxt = current_op.select_machine() if current_op else None
-            
-            # 시뮬레이션 기반 최적화를 위한 기계 선택
-            if nxt is None:
-                candidates = part.job.current_op().candidates
-                # ✅ NSGA가 주입한 선택 콜백을 최우선 사용
-                if getattr(self.simulator, "select_next_machine", None):
-                    nxt = self.simulator.select_next_machine(
-                        part.job.id, part.job.current_op().id, candidates
-                    )
-                elif candidates:
-                    nxt = candidates[0]
-                else:
-                    print(f"경고: Job {part.job.id}의 Operation {part.job.current_op().id}에 후보 기계가 없습니다.")
-                    # Job을 완료된 것으로 처리 (중복 방지)
-                    part.job.set_status(JobStatus.DONE)
-                    part.job.set_location(None)
-                    if part.job not in self.finished_jobs:
-                        self.finished_jobs.append(part.job)
-                    
-                    # Job 완료 처리
-                    
-                    Recorder.log_done(part, EoModel.get_time())
-                    done_ev = Event('job_completed', {'part': part}, dest_model='transducer')
-                    self.schedule(done_ev, 0)
-                    self.running = None
-                    self.status = 'idle'
-                    ev = Event('machine_idle_check', dest_model=self.name)
-                    self.schedule(ev, 0)
-                    return
-            
-            spec = self.transfer.get(nxt, {})
-            dist = spec.get('distribution')
-            if dist=='normal':
-                delay = max(0, random.gauss(spec['mean'], spec['std']))
-            elif dist=='uniform':
-                delay = random.uniform(spec.get('low',0), spec.get('high',0))
-            elif dist=='exponential':
-                delay = random.expovariate(spec['rate'])
-            else:
-                # 🚨 기본 전송 시간 설정으로 겹치는 문제 방지
-                delay = 1.0  # 최소 1초 전송 시간 보장
-                print(f"[{self.name}] {nxt}로의 전송 시간이 정의되지 않음 - 기본값 {delay}초 사용")
-
-            # Job 상태를 TRANSFER로 설정
             part.job.set_status(JobStatus.TRANSFER)
-            part.job.set_location(f"{self.name}->{nxt}")
-            
-            # queued_jobs에서 제거 (전송 중이므로)
+            part.job.set_location(self.name)  # f"{self.name}->(TBD)"처럼 표기해도 됨
             if part.job in self.queued_jobs:
                 self.queued_jobs.remove(part.job)
-            
-            # 정적 스케줄링이므로 이 부분은 무시됩니다.
-            # if self.control_tower:
-            #     job_status = {
-            #         'status': 'transfer',
-            #         'from_machine': self.name,
-            #         'to_machine': nxt,
-            #         'transfer_time': delay,
-            #         'next_operation': part.job.current_op().id
-            #     }
-            #     self.control_tower.update_job_status(part.job.id, job_status)
-
-            # AGV 배송 시작 로깅
-            self.log_agv_activity('fetch_request', part.job.id, nxt, 0.0)
-            
-            Recorder.log_transfer(part, self.name, nxt, EoModel.get_time(), delay)
+            # (선택) 로깅: 목적지 미정이므로 hint 없이 fetch 요청만 기록
+            self.log_agv_activity('fetch_request', part.job.id, None, 0.0)
 
             fetch_ev = Event('agv_fetch_request', {
                 'part': part,

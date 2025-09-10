@@ -1,0 +1,44 @@
+[
+  {
+    "operation_id": "O11",
+    "job_id": "J1",
+    "type": "drilling",
+    "machines": ["M1", "M2"]
+  },
+  {
+    "operation_id": "O12",
+    "job_id": "J1",
+    "type": "welding",
+    "machines": ["M2", "M3"]
+  },
+  {
+    "operation_id": "O13",
+    "job_id": "J1",
+    "type": "testing",
+    "machines": ["M1"]
+  },
+  {
+    "operation_id": "O21",
+    "job_id": "J2",
+    "type": "drilling",
+    "machines": ["M1"]
+  },
+  {
+    "operation_id": "O22",
+    "job_id": "J2",
+    "type": "welding",
+    "machines": ["M2"]
+  },
+  {
+    "operation_id": "O31",
+    "job_id": "J3",
+    "type": "testing",
+    "machines": ["M2"]
+  },
+  {
+    "operation_id": "O32",
+    "job_id": "J3",
+    "type": "drilling",
+    "machines": ["M1"]
+  }
+]

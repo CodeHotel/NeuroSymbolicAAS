@@ -20,7 +20,7 @@ class Generator(EoModel):
             candidates = job.current_op().candidates
             if candidates:
                 # 첫 번째 후보 기계에만 전송 (실제 할당은 최적화 알고리즘이 결정)
-                dest = candidates[0]
+                dest = "GEN"
                 ev = Event('material_arrival', {'part': part}, dest_model=dest)
                 self.schedule(ev, release_time)
                 print(f"[Generator] Job {job.id}을 {release_time}초에 {dest}로 전송 예약 (동적 할당 대기)")

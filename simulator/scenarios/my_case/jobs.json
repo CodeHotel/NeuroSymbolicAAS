@@ -2,16 +2,276 @@
   {
     "job_id": "J1",
     "part_id": "P1",
-    "operations": ["O11", "O12", "O13"]
+    "operations": [
+      "O011",
+      "O012"
+    ]
   },
   {
     "job_id": "J2",
     "part_id": "P2",
-    "operations": ["O21", "O22"]
-  },  
+    "operations": [
+      "O021",
+      "O022"
+    ]
+  },
   {
     "job_id": "J3",
     "part_id": "P3",
-    "operations": ["O31", "O32"]  
+    "operations": [
+      "O031",
+      "O032"
+    ]
+  },
+  {
+    "job_id": "J4",
+    "part_id": "P4",
+    "operations": [
+      "O041",
+      "O042"
+    ]
+  },
+  {
+    "job_id": "J5",
+    "part_id": "P5",
+    "operations": [
+      "O051",
+      "O052",
+      "O053",
+      "O054"
+    ]
+  },
+  {
+    "job_id": "J6",
+    "part_id": "P6",
+    "operations": [
+      "O061",
+      "O062",
+      "O063",
+      "O064"
+    ]
+  },
+  {
+    "job_id": "J7",
+    "part_id": "P7",
+    "operations": [
+      "O071",
+      "O072",
+      "O073"
+    ]
+  },
+  {
+    "job_id": "J8",
+    "part_id": "P8",
+    "operations": [
+      "O081",
+      "O082",
+      "O083"
+    ]
+  },
+  {
+    "job_id": "J9",
+    "part_id": "P9",
+    "operations": [
+      "O091",
+      "O092",
+      "O093"
+    ]
+  },
+  {
+    "job_id": "J10",
+    "part_id": "P10",
+    "operations": [
+      "O101",
+      "O102",
+      "O103",
+      "O104"
+    ]
+  },
+  {
+    "job_id": "J11",
+    "part_id": "P11",
+    "operations": [
+      "O111",
+      "O112",
+      "O113"
+    ]
+  },
+  {
+    "job_id": "J12",
+    "part_id": "P12",
+    "operations": [
+      "O121",
+      "O122",
+      "O123",
+      "O124"
+    ]
+  },
+  {
+    "job_id": "J13",
+    "part_id": "P13",
+    "operations": [
+      "O131",
+      "O132"
+    ]
+  },
+  {
+    "job_id": "J14",
+    "part_id": "P14",
+    "operations": [
+      "O141",
+      "O142"
+    ]
+  },
+  {
+    "job_id": "J15",
+    "part_id": "P15",
+    "operations": [
+      "O151",
+      "O152"
+    ]
+  },
+  {
+    "job_id": "J16",
+    "part_id": "P16",
+    "operations": [
+      "O161",
+      "O162",
+      "O163"
+    ]
+  },
+  {
+    "job_id": "J17",
+    "part_id": "P17",
+    "operations": [
+      "O171",
+      "O172",
+      "O173",
+      "O174"
+    ]
+  },
+  {
+    "job_id": "J18",
+    "part_id": "P18",
+    "operations": [
+      "O181",
+      "O182",
+      "O183"
+    ]
+  },
+  {
+    "job_id": "J19",
+    "part_id": "P19",
+    "operations": [
+      "O191",
+      "O192",
+      "O193",
+      "O194"
+    ]
+  },
+  {
+    "job_id": "J20",
+    "part_id": "P20",
+    "operations": [
+      "O201",
+      "O202",
+      "O203",
+      "O204"
+    ]
+  },
+  {
+    "job_id": "J21",
+    "part_id": "P21",
+    "operations": [
+      "O211",
+      "O212",
+      "O213",
+      "O214"
+    ]
+  },
+  {
+    "job_id": "J22",
+    "part_id": "P22",
+    "operations": [
+      "O221",
+      "O222",
+      "O223"
+    ]
+  },
+  {
+    "job_id": "J23",
+    "part_id": "P23",
+    "operations": [
+      "O231",
+      "O232",
+      "O233",
+      "O234"
+    ]
+  },
+  {
+    "job_id": "J24",
+    "part_id": "P24",
+    "operations": [
+      "O241",
+      "O242",
+      "O243",
+      "O244"
+    ]
+  },
+  {
+    "job_id": "J25",
+    "part_id": "P25",
+    "operations": [
+      "O251",
+      "O252",
+      "O253",
+      "O254"
+    ]
+  },
+  {
+    "job_id": "J26",
+    "part_id": "P26",
+    "operations": [
+      "O261",
+      "O262",
+      "O263",
+      "O264"
+    ]
+  },
+  {
+    "job_id": "J27",
+    "part_id": "P27",
+    "operations": [
+      "O271",
+      "O272"
+    ]
+  },
+  {
+    "job_id": "J28",
+    "part_id": "P28",
+    "operations": [
+      "O281",
+      "O282",
+      "O283",
+      "O284"
+    ]
+  },
+  {
+    "job_id": "J29",
+    "part_id": "P29",
+    "operations": [
+      "O291",
+      "O292",
+      "O293",
+      "O294"
+    ]
+  },
+  {
+    "job_id": "J30",
+    "part_id": "P30",
+    "operations": [
+      "O301",
+      "O302"
+    ]
   }
 ]

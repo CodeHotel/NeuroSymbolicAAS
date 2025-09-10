@@ -545,4 +545,3 @@ def nsga2_run_partial(scenario_path: str,
     fronts = nondominated_sort(fits)                       # ← 비지배 정렬
     pareto  = [(pop[i], fits[i]) for i in fronts[0]]       # ← 파레토 프론트 구성
     return pareto, metrics, sel_ops
-

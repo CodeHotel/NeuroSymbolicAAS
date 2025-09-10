@@ -1,5 +1,18 @@
 {
-  "M1": { "status": "idle", "next_available_time": 0.0 },
-  "M2": { "status": "idle", "next_available_time": 0.0 },
-  "M3": { "status": "idle", "next_available_time": 0.0 }
+  "M1": {
+    "status": "idle",
+    "next_available_time": 20
+  },
+  "M2": {
+    "status": "idle",
+    "next_available_time": 3
+  },
+  "M3": {
+    "status": "idle",
+    "next_available_time": 0
+  },
+  "M4": {
+    "status": "idle",
+    "next_available_time": 23
+  }
 }

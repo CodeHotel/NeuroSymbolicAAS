@@ -16,10 +16,11 @@ class AGV(EoModel):
         self.agv_id = agv_id
         self.speed = speed  # 단위: m/s
         self.capacity = capacity  # 동시에 운반할 수 있는 작업 수
+        self.transfer_time_map = {}  # (source, destination): time in seconds
         
         # 상태 관리
         self.status = AGVStatus.IDLE
-        self.current_location = None  # 현재 위치 (머신 이름)
+        self.current_location = "GEN"  # 현재 위치 (머신 이름)
         self.destination = None       # 목적지 (머신 이름)
         
         # 작업 관리
@@ -38,6 +39,37 @@ class AGV(EoModel):
     def set_logger(self, logger):
         """로거 설정"""
         self.logger = logger
+
+    def set_transfer_times(self, transfer_map: dict): 
+        self.transfer_time_map = transfer_map or {}
+    
+    def _lookup_transfer_time(self, source: str, destination: str):
+        if source in self.transfer_time_map:
+            m = self.transfer_time_map[source]
+            if isinstance(m, dict):
+                spec = m.get(destination)
+                if spec:
+                    # (a) 숫자일 경우
+                    if isinstance(spec, (int, float)):
+                        return float(spec)
+
+                    # (b) 분포(dict)일 경우
+                    dist = spec.get("distribution")
+                    if dist == "normal":
+                        return float(spec.get("mean", 0.0))
+                    if dist == "uniform":
+                        low, high = float(spec.get("low", 0.0)), float(spec.get("high", 0.0))
+                        return (low + high) / 2.0
+                    if dist == "exponential":
+                        rate = float(spec.get("rate", 0.0))
+                        return (1.0 / rate) if rate > 0 else None
+
+                    # (c) 단순 시간 필드
+                    if "time" in spec:
+                        return float(spec["time"])
+
+                    return None
+        return self.transfer_time_map.get((source, destination), None)
         
     def _log_event(self, event_type, details):
         """이벤트 로깅"""
@@ -118,42 +150,53 @@ class AGV(EoModel):
         
         # 작업 시작 시간 기록
         self.task_start_time = EoModel.get_time()
-        
+
         # AGV를 source machine으로 이동
-        self._move_to(source_machine)
+        self._move_to(source_machine, "fetch")
     
     def _handle_delivery_request(self, payload):
-        """작업 배송 요청 처리"""
-        if self.status not in (AGVStatus.IDLE, AGVStatus.LOADING):
-            print(f"[{self.name}] 현재 {self.status.name} 상태로 인해 delivery 요청을 거부합니다.")
-            return
-            
-        part = payload['part']               
-        job  = part.job
-        destination_machine = payload['destination_machine']
-        
-        print(f"[{self.name}] {destination_machine}로 Job {job.id} delivery 시작")
+        part = payload['part']
+        job = part.job
+        current_op = job.current_op()
 
-        self._log_event('delivery_request', {'destination_machine': destination_machine, 'job_id': job.id})
+        # 후보 집합
+        candidates = current_op.candidates if (current_op and current_op.candidates) else []
+        if not candidates:
+            raise ValueError(f"{self.name}: Job {job.id} 다음 작업 후보가 없습니다.")
 
+        # 콜백 필수
+        sel_cb = getattr(self, "simulator", None) and getattr(self.simulator, "select_next_machine", None)
+        if not sel_cb:
+            raise RuntimeError(f"{self.name}: select_next_machine 콜백이 설정되지 않았습니다. (기본 룰: AGV가 delivery 시점에 결정)")
+
+        # 목적지 결정 (반드시 콜백)
+        destination = self.simulator.select_next_machine(job.id, current_op.id, candidates)
+        if destination not in candidates:
+            raise ValueError(f"{self.name}: 콜백이 후보 외 목적지('{destination}')를 반환했습니다. candidates={candidates}")
+
+        # ✅ 여기서 'delivery' 태스크로 전환 + 목적지 기록
         self.current_task = {
             'type': 'delivery',
-            'destination_machine': destination_machine,
-            'part': part,                  
-            'job': job
+            'source_machine': self.current_location,   # 참고용(로그 등)
+            'destination_machine': destination,
+            'part': part,
+            'job': job,
         }
-
-        
-        # 작업 시작 시간 기록
         self.task_start_time = EoModel.get_time()
-        
-        # AGV를 destination machine으로 이동
-        self._move_to(destination_machine)
-    
-    def _move_to(self, destination):
+
+        self._log_event('delivery_request', {'current_location': self.current_location, 'job_id': job.id})
+
+        print(f"[{self.name}] {self.current_location}→{destination}로 Job {job.id} delivery 시작")
+        self._move_to(destination, "delivery")
+
+    def _move_to(self, destination, task_type):
         """지정된 목적지로 이동"""
-        if self.current_location == destination:
+        self.destination = destination
+        if self.current_location == self.destination:
             # 이미 목적지에 있는 경우
+            now = EoModel.get_time()
+            self.departure_time = now
+            self.arrival_time = now
             self._arrive_at_destination()
             return
             
@@ -166,11 +209,29 @@ class AGV(EoModel):
         
         # 이동 거리 계산 (간단한 유클리드 거리)
         # 실제 구현에서는 좌표 기반 거리 계산 사용
-        self.distance = self._calculate_distance(self.current_location, destination)
-        
+        self.distance = self._lookup_transfer_time(self.current_location, destination)
+
+        if self.distance is None:
+            raise ValueError(f"{self.name}: {self.current_location}→{destination} 경로 없음")
+
         # 이동 시간 계산
         travel_time = self.distance / self.speed
-        
+
+        from simulator.result.recorder import Recorder
+        if task_type == "delivery":
+            try:
+                part = self.current_task.get('part') if self.current_task else None
+                if part is not None:
+                    Recorder.log_delivery(
+                        part,
+                        self.current_location,   # 출발지 (예: M1, GEN)
+                        destination,             # 목적지 (콜백으로 확정됨)
+                        EoModel.get_time(),
+                        travel_time
+                    )
+            except Exception:
+                pass
+
         # 출발 시간과 도착 시간 설정
         current_time = EoModel.get_time()
         self.departure_time = current_time
@@ -187,21 +248,6 @@ class AGV(EoModel):
             'destination': destination
         }, dest_model=self.name)
         self.schedule(ev, travel_time)
-    
-    def _calculate_distance(self, source, destination):
-        """두 머신 간의 거리 계산 (간단한 구현)"""
-        # 실제 구현에서는 머신 좌표를 사용하여 정확한 거리 계산
-        # 현재는 머신 이름을 기반으로 한 간단한 거리 계산
-        
-        # 머신 이름에서 숫자 추출 (M1, M2, M3 등)
-        try:
-            source_num = int(source[1:]) if source and source[0] == 'M' else 0
-            dest_num = int(destination[1:]) if destination and destination[0] == 'M' else 0
-            # 간단한 거리 계산 (머신 간격을 10m로 가정)
-            return abs(dest_num - source_num) * 10.0
-        except:
-            # 기본 거리
-            return 20.0
     
     def _arrive_at_destination(self):
         """목적지 도착 처리"""
@@ -232,7 +278,7 @@ class AGV(EoModel):
             'job': job,
             'source_machine': source_machine
         }, dest_model=self.name)
-        self.schedule(ev, 2.0)  # 2초 로딩 시간
+        self.schedule(ev, 0.0)  # 2초 로딩 시간 -> 0으로 변경
     
     def _start_unloading(self):
         """작업 하역 시작"""
@@ -253,18 +299,20 @@ class AGV(EoModel):
             'job': job,
             'destination_machine': destination_machine
         }, dest_model=self.name)
-        self.schedule(ev, 2.0)  # 2초 하역 시간
+        self.schedule(ev, 0.0)  # 2초 하역 시간 -> 0으로 변경
     
     def _handle_fetch_complete(self, payload):
         """작업 가져오기 완료 처리"""
         part = self.current_task.get('part') if self.current_task else None
         job = payload['job']
         source_machine = payload['source_machine']
+        dest = payload.get('destination_machine')
         
         # 작업을 AGV에 적재
         self.carried_jobs.append(part)
         old_status = self.status
         self.status = AGVStatus.LOADING
+        self._request_delivery(part)
         
         # 상태 변화 로깅
         self._log_status_change(old_status, self.status)
@@ -274,31 +322,15 @@ class AGV(EoModel):
         # 작업 로깅
         if self.task_start_time is not None:
             self._log_task('fetch', source_machine, None, job.id, self.task_start_time, EoModel.get_time())
-        
-        # 적재 완료 후 delivery 요청
-        self._request_delivery(part)
     
     def _request_delivery(self, part):
-        """배송 요청"""
-        # 현재 작업의 다음 operation이 할당된 기계 찾기
-        job = part.job
-        current_op = job.current_op()
-        if current_op and current_op.candidates:
-            # 첫 번째 후보 기계로 배송 (실제로는 최적화 알고리즘이 결정)
-            destination = current_op.candidates[0]
-            
-            print(f"[{self.name}] Job {job.id}를 {destination}로 배송 요청")
-            
-            # AGV 컨트롤러에 배송 요청
-            ev = Event('agv_delivery_request', {
+        # 목적지 계산 금지! (힌트/콜백 모두 X)
+        ev = Event('agv_delivery_request', {
             'agv_id': self.agv_id,
-            'destination_machine': destination,
-            'part': part              # ✅ Part 전달
-            }, dest_model='AGVController')
-            self.schedule(ev, 0)
-        else:
-            print(f"[{self.name}] Job {job.id}의 다음 작업이 없습니다.")
-            self._return_to_idle()
+            'part': part
+        }, dest_model='AGVController')
+        self.schedule(ev, 0)
+
     
     def _handle_delivery_complete(self, payload):
         """배송 완료 처리"""

@@ -1,21 +1,35 @@
-[
-  {
-    "machine_id": "M1",
-    "name": "Machine1",
-    "status": "idle",
-    "dispatch_rule": "fifo"
-  },
-  {
-    "machine_id": "M2", 
-    "name": "Machine2",
-    "status": "idle",
-    "dispatch_rule": "fifo"
+{
+  "machines": [
+    {
+      "name": "M1",
+      "status": "idle"
+    },
+    {
+      "name": "M2",
+      "status": "idle"
+    },
+    {
+      "name": "M3",
+      "status": "idle"
+    },
+    {
+      "name": "M4",
+      "status": "idle"
+    },
+    {
+      "name": "M5",
+      "status": "idle"
+    },
+    {
+      "name": "M6",
+      "status": "idle"
+    },
+    {
+      "name": "M7",
+      "status": "idle"
+    }
+  ],
+  "source": {
+    "name": "GEN"
   }
-]
-
-
-
-
-
-
-
+}

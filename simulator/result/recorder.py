@@ -58,14 +58,29 @@ class Recorder:
         })
 
     @classmethod
-    def log_transfer(cls, part, src_machine, dest_machine, time, delay):
+    def log_fetch(cls, part, src_machine, dest_machine, time, delay):
         if not cls._on(): return
         cls.records.append({
             'part': part.id,
             'job': part.job.id,
             'operation': part.job.current_op().id if part.job.current_op() else None,
             'machine': f"{src_machine}->{dest_machine}",
-            'event': 'transfer',
+            'event': 'fetch',
+            'time': time,
+            'delay': delay,
+            'queue_length': None,
+            'queue_ops': None
+        })
+
+    @classmethod
+    def log_delivery(cls, part, src_machine, dest_machine, time, delay):
+        if not cls._on(): return
+        cls.records.append({
+            'part': part.id,
+            'job': part.job.id,
+            'operation': part.job.current_op().id if part.job.current_op() else None,
+            'machine': f"{src_machine}->{dest_machine}",
+            'event': 'delivery',
             'time': time,
             'delay': delay,
             'queue_length': None,

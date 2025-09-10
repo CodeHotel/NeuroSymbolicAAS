@@ -61,6 +61,7 @@ def main():
     ax.set_xlabel('Time')
     ax.set_ylabel('Machine')
     ax.set_title('Machine Operation Timeline')
+    ax.set_xlim(left=0)
     plt.tight_layout()
 
     # Save & show

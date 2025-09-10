@@ -1,45 +1,298 @@
 {
-  "M1": {
+  "GEN": {
+    "M1": {
+      "distribution": "normal",
+      "mean": 7,
+      "std": 0.0
+    },
     "M2": {
       "distribution": "normal",
-      "mean": 1.0,
-      "std": 0.2
+      "mean": 6,
+      "std": 0.0
     },
     "M3": {
       "distribution": "normal",
-      "mean": 1.5,
-      "std": 0.3
+      "mean": 7,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    },
+    "M5": {
+      "distribution": "normal",
+      "mean": 8,
+      "std": 0.0
+    },
+    "M6": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M7": {
+      "distribution": "normal",
+      "mean": 1,
+      "std": 0.0
+    }
+  },
+  "M1": {
+    "GEN": {
+      "distribution": "normal",
+      "mean": 7,
+      "std": 0.0
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 4,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M5": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    },
+    "M6": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    },
+    "M7": {
+      "distribution": "normal",
+      "mean": 4,
+      "std": 0.0
     }
   },
   "M2": {
+    "GEN": {
+      "distribution": "normal",
+      "mean": 6,
+      "std": 0.0
+    },
     "M1": {
-      "distribution": "normal", 
-      "mean": 1.0,
-      "std": 0.2
+      "distribution": "normal",
+      "mean": 4,
+      "std": 0.0
     },
     "M3": {
       "distribution": "normal",
-      "mean": 1.2,
-      "std": 0.25
+      "mean": 7,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 5,
+      "std": 0.0
+    },
+    "M5": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    },
+    "M6": {
+      "distribution": "normal",
+      "mean": 5,
+      "std": 0.0
+    },
+    "M7": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
     }
   },
   "M3": {
+    "GEN": {
+      "distribution": "normal",
+      "mean": 7,
+      "std": 0.0
+    },
     "M1": {
       "distribution": "normal",
-      "mean": 1.5,
-      "std": 0.3
+      "mean": 3,
+      "std": 0.0
     },
     "M2": {
       "distribution": "normal",
-      "mean": 1.2,
-      "std": 0.25
+      "mean": 7,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M5": {
+      "distribution": "normal",
+      "mean": 6,
+      "std": 0.0
+    },
+    "M6": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M7": {
+      "distribution": "normal",
+      "mean": 6,
+      "std": 0.0
+    }
+  },
+  "M4": {
+    "GEN": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    },
+    "M1": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 5,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M5": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    },
+    "M6": {
+      "distribution": "normal",
+      "mean": 5,
+      "std": 0.0
+    },
+    "M7": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    }
+  },
+  "M5": {
+    "GEN": {
+      "distribution": "normal",
+      "mean": 8,
+      "std": 0.0
+    },
+    "M1": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 6,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    },
+    "M6": {
+      "distribution": "normal",
+      "mean": 10,
+      "std": 0.0
+    },
+    "M7": {
+      "distribution": "normal",
+      "mean": 6,
+      "std": 0.0
+    }
+  },
+  "M6": {
+    "GEN": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M1": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 5,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 5,
+      "std": 0.0
+    },
+    "M5": {
+      "distribution": "normal",
+      "mean": 10,
+      "std": 0.0
+    },
+    "M7": {
+      "distribution": "normal",
+      "mean": 2,
+      "std": 0.0
+    }
+  },
+  "M7": {
+    "GEN": {
+      "distribution": "normal",
+      "mean": 1,
+      "std": 0.0
+    },
+    "M1": {
+      "distribution": "normal",
+      "mean": 4,
+      "std": 0.0
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 6,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 3,
+      "std": 0.0
+    },
+    "M5": {
+      "distribution": "normal",
+      "mean": 6,
+      "std": 0.0
+    },
+    "M6": {
+      "distribution": "normal",
+      "mean": 2,
+      "std": 0.0
     }
   }
 }
-
-
-
-
-
-
-

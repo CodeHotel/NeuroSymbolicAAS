@@ -1,0 +1,12 @@
+{
+  "release_time": 16,
+  "n_max": 4,
+  "mode": "partial_nsga",
+  "objective": {
+    "makespan": 443
+  },
+  "selection": {
+    "encoded_ops": [],
+    "pins_applied": {}
+  }
+}

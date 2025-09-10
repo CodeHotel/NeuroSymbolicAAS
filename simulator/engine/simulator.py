@@ -633,3 +633,55 @@ class Simulator:
                 if key != 'type':
                     print(f"   {key}: {value}")
             print()
+
+    def _pop_next_event(self):
+        """이벤트 큐에서 다음 이벤트를 하나 꺼내고 현재시간을 갱신한다."""
+        if not self.event_queue:
+            return None
+        evt = heapq.heappop(self.event_queue)   # event_queue는 heapq 로 관리됨
+        self.current_time = getattr(evt, "time", self.current_time)
+        return evt
+
+    def step_events(self, max_events: int = 100,
+                    print_queues_interval: float | None = None,
+                    print_job_summary_interval: float | None = None) -> int:
+        """
+        시뮬레이터를 '부분 실행'한다: 최대 max_events개의 이벤트만 처리하고 멈춘다.
+        통합 루프의 무작위 개입 지점을 만들기 위해 사용.
+        반환값: 실제 처리한 이벤트 개수
+        """
+        processed = 0
+        last_print_time = getattr(self, "_last_print_time_step", 0.0)
+        last_summary_time = getattr(self, "_last_summary_time_step", 0.0)
+
+        while processed < max_events and self.event_queue:
+            if not self.event_queue:
+                break
+
+            evt = self._pop_next_event()
+            if evt is None:
+                break
+
+            # (옵션) 주기적 상태 출력
+            if print_queues_interval and (self.current_time - last_print_time) >= print_queues_interval:
+                self.print_machine_queues()
+                last_print_time = self.current_time
+
+            if print_job_summary_interval and (self.current_time - last_summary_time) >= print_job_summary_interval:
+                self.print_job_status_summary()
+                last_summary_time = self.current_time
+
+            m = self.models.get(evt.dest_model)
+            if not m:
+                # 원래 run()은 KeyError를 내지만, 부분 실행에서는 그냥 스킵해도 됨
+                # 필요하면 raise로 바꿔도 OK
+                continue
+            m.handle_event(evt)
+            processed += 1
+
+        # 다음 step 호출에도 간격 계산이 이어지도록 내부 상태 저장
+        self._last_print_time_step = last_print_time
+        self._last_summary_time_step = last_summary_time
+        return processed
+
+

@@ -1,57 +1,113 @@
 {
-  "O11": {
+  "drilling": {
     "M1": {
       "distribution": "normal",
-      "mean": 5.0,
-      "std": 1.0
+      "mean": 30,
+      "std": 0.0
     },
     "M2": {
-      "distribution": "normal", 
-      "mean": 6.0,
-      "std": 1.2
+      "distribution": "normal",
+      "mean": 7,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 13,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 15,
+      "std": 0.0
+    },
+    "M5": {
+      "distribution": "normal",
+      "mean": 8,
+      "std": 0.0
+    },
+    "M6": {
+      "distribution": "normal",
+      "mean": 13,
+      "std": 0.0
+    },
+    "M7": {
+      "distribution": "normal",
+      "mean": 9,
+      "std": 0.0
     }
   },
-  "O12": {
+  "welding": {
     "M1": {
       "distribution": "normal",
-      "mean": 4.0,
-      "std": 0.8
+      "mean": 15,
+      "std": 0.0
     },
     "M2": {
       "distribution": "normal",
-      "mean": 3.0,
-      "std": 0.5
+      "mean": 27,
+      "std": 0.0
+    },
+    "M3": {
+      "distribution": "normal",
+      "mean": 18,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 18,
+      "std": 0.0
+    },
+    "M5": {
+      "distribution": "normal",
+      "mean": 12,
+      "std": 0.0
+    },
+    "M6": {
+      "distribution": "normal",
+      "mean": 14,
+      "std": 0.0
+    },
+    "M7": {
+      "distribution": "normal",
+      "mean": 38,
+      "std": 0.0
     }
   },
-  "O21": {
+  "testing": {
     "M1": {
       "distribution": "normal",
-      "mean": 4.0,
-      "std": 0.8
+      "mean": 28,
+      "std": 0.0
     },
     "M2": {
       "distribution": "normal",
-      "mean": 5.0,
-      "std": 1.0
-    }
-  },
-  "O22": {
-    "M1": {
-      "distribution": "normal",
-      "mean": 7.0,
-      "std": 1.5
+      "mean": 26,
+      "std": 0.0
     },
-    "M2": {
+    "M3": {
       "distribution": "normal",
-      "mean": 6.0,
-      "std": 1.2
+      "mean": 11,
+      "std": 0.0
+    },
+    "M4": {
+      "distribution": "normal",
+      "mean": 31,
+      "std": 0.0
+    },
+    "M5": {
+      "distribution": "normal",
+      "mean": 11,
+      "std": 0.0
+    },
+    "M6": {
+      "distribution": "normal",
+      "mean": 18,
+      "std": 0.0
+    },
+    "M7": {
+      "distribution": "normal",
+      "mean": 40,
+      "std": 0.0
     }
   }
 }
-
-
-
-
-
-
-
