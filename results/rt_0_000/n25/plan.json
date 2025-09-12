@@ -1,0 +1,102 @@
+{
+  "O361": {
+    "machine": "M5",
+    "agv": "4"
+  },
+  "O124": {
+    "machine": "M4",
+    "agv": "5"
+  },
+  "O012": {
+    "machine": "M6",
+    "agv": "2"
+  },
+  "O112": {
+    "machine": "M5",
+    "agv": "2"
+  },
+  "O191": {
+    "machine": "M8",
+    "agv": "3"
+  },
+  "O093": {
+    "machine": "M5",
+    "agv": "4"
+  },
+  "O363": {
+    "machine": "M4",
+    "agv": "2"
+  },
+  "O401": {
+    "machine": "M6",
+    "agv": "2"
+  },
+  "O135": {
+    "machine": "M5",
+    "agv": "2"
+  },
+  "O232": {
+    "machine": "M7",
+    "agv": "4"
+  },
+  "O382": {
+    "machine": "M8",
+    "agv": "3"
+  },
+  "O203": {
+    "machine": "M4",
+    "agv": "1"
+  },
+  "O172": {
+    "machine": "M4",
+    "agv": "5"
+  },
+  "O181": {
+    "machine": "M4",
+    "agv": "2"
+  },
+  "O062": {
+    "machine": "M4",
+    "agv": "5"
+  },
+  "O063": {
+    "machine": "M1",
+    "agv": "1"
+  },
+  "O241": {
+    "machine": "M8",
+    "agv": "2"
+  },
+  "O083": {
+    "machine": "M7",
+    "agv": "1"
+  },
+  "O072": {
+    "machine": "M1",
+    "agv": "3"
+  },
+  "O161": {
+    "machine": "M6",
+    "agv": "5"
+  },
+  "O324": {
+    "machine": "M5",
+    "agv": "4"
+  },
+  "O204": {
+    "machine": "M5",
+    "agv": "1"
+  },
+  "O281": {
+    "machine": "M4",
+    "agv": "4"
+  },
+  "O023": {
+    "machine": "M5",
+    "agv": "5"
+  },
+  "O081": {
+    "machine": "M5",
+    "agv": "4"
+  }
+}

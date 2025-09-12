@@ -6,6 +6,8 @@ from simulator.result.recorder import Recorder
 import os, csv, json, time, random
 from simulator.domain.domain import Job, Part
 
+from collections import OrderedDict 
+
 from simulator.NSGA.NSGA import Chromosome, crossover, mutate, repair_partial
 from random import shuffle
 
@@ -13,6 +15,30 @@ from random import shuffle
 class EvalResult:
     chrom: Chromosome
     objectives: Tuple[float, ...]  # (예: (makespan, 이동거리, 지연패널티) 등)
+
+class _LRU:
+    def __init__(self, maxsize=10000):
+        self.maxsize = int(maxsize)
+        self._od = OrderedDict()
+    def get(self, k):
+        if k not in self._od: return None
+        v = self._od.pop(k)
+        self._od[k] = v
+        return v
+    def put(self, k, v):
+        if k in self._od:
+            self._od.pop(k)
+        elif len(self._od) >= self.maxsize:
+            self._od.popitem(last=False)
+        self._od[k] = v
+    def clear(self):
+        self._od.clear()
+
+def _canonical_key_for_chrom(ch: "Chromosome") -> tuple:
+    triples = [(str(o), str(m), str(a)) for o, m, a in zip(ch.op_seq, ch.mac_seq, ch.agv_seq)]
+    triples.sort()  # 순서 불변
+    base_key = ("len", len(triples), "assign", tuple(triples))
+    return base_key
 
 class OptimizationManager(EoModel):
     """
@@ -30,6 +56,8 @@ class OptimizationManager(EoModel):
         self.op_ids, self.op_to_cands = [], {}
         self.default_policy = None   # 기본 콜백 백업용
         self.nmax_list = nmax_list
+
+        self._eval_cache = _LRU(maxsize=100000)
 
     # ---- 유틸: 현재 시점의 최적화 대상(op, candidates) 수집 ---- 수정 필요 
     def _collect_frontier_ops(self, sim):
@@ -107,6 +135,11 @@ class OptimizationManager(EoModel):
 
     def _evaluate(self, sim, chrom: Chromosome, fallback_rule) -> EvalResult:
         print(f"[OptimizationManager] 개체 평가: {chrom}")
+        ck = _canonical_key_for_chrom(chrom)
+        cached = self._eval_cache.get(ck)
+        if cached is not None:
+            # 동일 (op→machine,agv) 할당이면 시뮬 없이 즉시 반환
+            return cached
         snap = sim.snapshot()
         try:
             sim.restore(snap)
@@ -116,7 +149,9 @@ class OptimizationManager(EoModel):
             sim.run()                                       # 동일 메커니즘으로 평가
             # 다목적: (makespan, agv_total_travel)
             makespan, agv_travel = sim.objective_multi()    # 아래 4)에서 추가
-            return EvalResult(chrom, (makespan, agv_travel))
+            res = EvalResult(chrom, (makespan, agv_travel))
+            self._eval_cache.put(ck, res)
+            return res
         finally:
             sim._suspend_optimize = False
             sim.restore(snap)
@@ -129,6 +164,8 @@ class OptimizationManager(EoModel):
 
         sim = self.simulator
         all_ops, op2cands = self._collect_frontier_ops(sim)
+
+        self._eval_cache.clear()  # 시점 변경 시 캐시 초기화
 
         agv_ctrl = sim.models.get('AGVController')
         agv_ids = list(getattr(agv_ctrl, 'agvs', {}).keys()) if agv_ctrl else []
@@ -159,9 +196,9 @@ class OptimizationManager(EoModel):
         sim.start_time = time.time()
         snap = sim.snapshot()
         for n_max in self.nmax_list:
+            self._eval_cache.clear()  # n_max마다 캐시 초기화
             if n_max > len(all_ops):
                 continue
-
             # ===== 1) 진화/평가 단계: 로깅 비활성 =====
             sim.restore(snap)
             start_time = time.time()
