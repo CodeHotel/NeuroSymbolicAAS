@@ -40,14 +40,34 @@ def mutate(ind: Chromosome, op_to_candidates, p=0.1):
             if cands:
                 ind.mac_seq[t] = random.choice(cands)
 
-def repair_partial(ch: Chromosome, op_to_candidates):
+def repair_partial(ch: Chromosome, op_to_candidates, op_ids, op_to_cands):
     fixed = False
     mac_seq = ch.mac_seq[:]
-    for i, oid in enumerate(ch.op_seq):
-        cands = op_to_candidates.get(oid, [])
-        if not cands:
-            continue
-        if mac_seq[i] not in cands:
-            mac_seq[i] = random.choice(cands)  # 후보군에 맞게 치환
-            fixed = True
-    return Chromosome(ch.op_seq[:], mac_seq, ch.agv_seq[:]) if fixed else ch
+    agv_seq = ch.agv_seq[:]
+    op_seq = ch.op_seq[:]
+
+    used = set()  # 이미 사용된 oid 추적
+    for i, oid in enumerate(op_seq):
+        # 중복 검사
+        if oid in used:
+            # 아직 사용되지 않은 op_id 후보
+            available = [x for x in op_ids if x not in used]
+            if available:
+                new_oid = random.choice(available)
+                op_seq[i] = new_oid
+                # 후보군에서 적합한 mac 할당
+                cands = op_to_candidates.get(new_oid, [])
+                if cands:
+                    mac_seq[i] = random.choice(cands)
+                fixed = True
+            # available 없으면 그대로 둠 (이미 모든 op_ids 사용된 경우)
+        else:
+            used.add(oid)
+            # 원래처럼 mac 후보 확인
+            cands = op_to_candidates.get(oid, [])
+            if cands and mac_seq[i] not in cands:
+                mac_seq[i] = random.choice(cands)
+                fixed = True
+
+    return Chromosome(op_seq, mac_seq, agv_seq) if fixed else ch
+

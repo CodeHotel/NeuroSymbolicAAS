@@ -95,6 +95,40 @@ class Operation:
                     })
         
         return violations
+    
+    def save_state(self) -> dict:
+        return {
+            'id': self.id,
+            'assigned_machine': self.assigned_machine,
+            'candidates': list(self.candidates or []),
+            'distribution': dict(self.distribution or {}),
+            'start_time': self.start_time,
+            'end_time': self.end_time,
+            'duration': self.duration,
+            'agv': {
+                'pickup_start': self.agv_pickup_time,
+                'pickup_end': self.agv_pickup_end_time,
+                'delivery_start': self.agv_delivery_start_time,
+                'delivery_end': self.agv_delivery_end_time,
+                'unload_start': self.agv_unload_start_time,
+                'unload_end': self.agv_unload_end_time,
+            },
+        }
+
+    def load_state(self, st: dict):
+        self.assigned_machine = st.get('assigned_machine')
+        self.candidates = list(st.get('candidates', []) or [])
+        self.distribution = dict(st.get('distribution', {}) or {})
+        self.start_time = st.get('start_time')
+        self.end_time = st.get('end_time')
+        self.duration = st.get('duration')
+        agv = st.get('agv', {}) or {}
+        self.agv_pickup_time = agv.get('pickup_start')
+        self.agv_pickup_end_time = agv.get('pickup_end')
+        self.agv_delivery_start_time = agv.get('delivery_start')
+        self.agv_delivery_end_time = agv.get('delivery_end')
+        self.agv_unload_start_time = agv.get('unload_start')
+        self.agv_unload_end_time = agv.get('unload_end')
 
 class Job:
     def __init__(self, job_id, part_id, operations, release_time=0.0):
@@ -240,12 +274,59 @@ class Job:
         self.last_completion_time = state['last_completion_time']
         self.completed_operations = state['completed_operations']
 
+    def save_state(self) -> dict:
+        return {
+            'job_id': self.id,
+            'part_id': self.part_id,
+            'idx': int(self.idx),
+            'status': self.status.name,
+            'current_location': self.current_location,
+            'last_completion_time': self.last_completion_time,
+            'completion_time': self.completion_time,
+            'total_operations': self.total_operations,
+            'completed_operations': self.completed_operations,
+            'release_time': self.release_time,
+            'queue_entry_time': self.queue_entry_time,
+            'ops': [op.save_state() for op in self.ops],
+        }
+
+    def load_state(self, st: dict):
+        from .domain import JobStatus
+        self.idx = int(st.get('idx', 0))
+        self.status = JobStatus[st.get('status', 'QUEUED')]
+        self.current_location = st.get('current_location')
+        self.last_completion_time = st.get('last_completion_time')
+        self.completion_time = st.get('completion_time')
+        self.total_operations = int(st.get('total_operations', len(self.ops)))
+        self.completed_operations = int(st.get('completed_operations', 0))
+        self.release_time = float(st.get('release_time', 0.0))
+        self.queue_entry_time = st.get('queue_entry_time')
+
+        # operation 상태 복원
+        ops_state = st.get('ops', [])
+        id_to_op = {op.id: op for op in self.ops}
+        for op_st in ops_state:
+            oid = op_st.get('id')
+            if oid in id_to_op:
+                id_to_op[oid].load_state(op_st)
 class Part:
     def __init__(self, part_id, job):
-        """
-        :param part_id: Part identifier
-        :param job: Job instance this part belongs to
-        """
         self.id = part_id
         self.job = job
         self.status = 'new'
+
+    # ⬇️ 추가: 직렬화/역직렬화 (링크는 job_id로만 들고가고, 복원 시 실제 Job 객체로 연결)
+    def save_state(self) -> dict:
+        return {
+            'part_id': self.id,
+            'job_id': getattr(self.job, 'id', None),
+            'status': self.status,
+        }
+
+    def load_state(self, st: dict, reg: dict):
+        self.status = st.get('status', 'new')
+        jid = st.get('job_id')
+        if jid is None or jid not in reg['jobs']:
+            # 요청대로 자동 복구를 하지 않고 바로 실패
+            raise ValueError(f"Part({self.id}) restore failed: job_id={jid} not found in registry.")
+        self.job = reg['jobs'][jid]

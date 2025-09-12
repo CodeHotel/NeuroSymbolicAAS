@@ -5,7 +5,10 @@ import pandas as pd
 
 class Recorder:
     records = []
-    enabled = True  # ← 스위치
+    enabled = True   # trace on/off
+    outdir = 'results'
+    basedir = ''
+    run_meta = {}    # ← 오타 수정
 
     @classmethod
     def reset(cls):
@@ -17,7 +20,7 @@ class Recorder:
 
     @classmethod
     def log_queue(cls, part, machine, time, operation_id, queue_length, queue_ops):
-        if not cls._on(): return            # ← 필수
+        if not cls._on(): return
         cls.records.append({
             'part': part.id,
             'job': part.job.id,
@@ -26,7 +29,8 @@ class Recorder:
             'event': 'queued',
             'time': time,
             'queue_length': queue_length,
-            'queue_ops': ','.join(queue_ops)
+            'queue_ops': ','.join(queue_ops),
+            'run_meta': cls.run_meta    # ← run_meta로 통일
         })
 
     @classmethod
@@ -40,7 +44,8 @@ class Recorder:
             'event': 'start',
             'time': time,
             'queue_length': queue_length,
-            'queue_ops': None
+            'queue_ops': None,
+            'run_meta': cls.run_meta
         })
 
     @classmethod
@@ -54,7 +59,8 @@ class Recorder:
             'event': 'end',
             'time': time,
             'queue_length': None,
-            'queue_ops': None
+            'queue_ops': None,
+            'run_meta': cls.run_meta
         })
 
     @classmethod
@@ -69,7 +75,8 @@ class Recorder:
             'time': time,
             'delay': delay,
             'queue_length': None,
-            'queue_ops': None
+            'queue_ops': None,
+            'run_meta': cls.run_meta
         })
 
     @classmethod
@@ -84,7 +91,8 @@ class Recorder:
             'time': time,
             'delay': delay,
             'queue_length': None,
-            'queue_ops': None
+            'queue_ops': None,
+            'run_meta': cls.run_meta
         })
 
     @classmethod
@@ -98,15 +106,29 @@ class Recorder:
             'event': 'done',
             'time': time,
             'queue_length': None,
-            'queue_ops': None
+            'queue_ops': None,
+            'run_meta': cls.run_meta
         })
 
     @classmethod
+    def set_base_dir(cls, basedir: str):
+        cls.basedir = basedir
+
+    @classmethod
+    def set_dir(cls, outdir: str):
+        cls.outdir = outdir
+
+    @classmethod
+    def set_meta(cls, **kwargs):     # ← 인덴트 통일
+        cls.run_meta = dict(kwargs)
+
+    @classmethod
     def save(cls):
-        os.makedirs('results', exist_ok=True)
+        full_dir = os.path.join(cls.basedir, cls.outdir)
+        os.makedirs(full_dir, exist_ok=True)
         df = pd.DataFrame(cls.records)
-        df.to_csv('results/trace.csv', index=False)
+        df.to_csv(os.path.join(full_dir, 'trace.csv'), index=False)
         try:
-            df.to_excel('results/trace.xlsx', index=False)
+            df.to_excel(os.path.join(full_dir, 'trace.xlsx'), index=False)
         except ImportError:
             pass

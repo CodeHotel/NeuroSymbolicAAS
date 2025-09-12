@@ -1,103 +1,103 @@
 [
   {
     "job_id": "J1",
-    "release_time": 18
+    "release_time": 0
   },
   {
     "job_id": "J2",
-    "release_time": 7
+    "release_time": 0
   },
   {
     "job_id": "J3",
-    "release_time": 12
+    "release_time": 0
   },
   {
     "job_id": "J4",
-    "release_time": 11
+    "release_time": 0
   },
   {
     "job_id": "J5",
-    "release_time": 19
+    "release_time": 0
   },
   {
     "job_id": "J6",
-    "release_time": 12
+    "release_time": 0
   },
   {
     "job_id": "J7",
-    "release_time": 7
+    "release_time": 0
   },
   {
     "job_id": "J8",
-    "release_time": 8
+    "release_time": 0
   },
   {
     "job_id": "J9",
-    "release_time": 6
+    "release_time": 0
   },
   {
     "job_id": "J10",
-    "release_time": 8
+    "release_time": 0
   },
   {
     "job_id": "J11",
-    "release_time": 18
+    "release_time": 0
   },
   {
     "job_id": "J12",
-    "release_time": 4
+    "release_time": 0
   },
   {
     "job_id": "J13",
-    "release_time": 4
+    "release_time": 0
   },
   {
     "job_id": "J14",
-    "release_time": 12
+    "release_time": 0
   },
   {
     "job_id": "J15",
-    "release_time": 17
+    "release_time": 0
   },
   {
     "job_id": "J16",
-    "release_time": 13
+    "release_time": 0
   },
   {
     "job_id": "J17",
-    "release_time": 8
+    "release_time": 0
   },
   {
     "job_id": "J18",
-    "release_time": 4
+    "release_time": 0
   },
   {
     "job_id": "J19",
-    "release_time": 15
+    "release_time": 0
   },
   {
     "job_id": "J20",
-    "release_time": 9
+    "release_time": 0
   },
   {
     "job_id": "J21",
-    "release_time": 18
+    "release_time": 0
   },
   {
     "job_id": "J22",
-    "release_time": 2
+    "release_time": 0
   },
   {
     "job_id": "J23",
-    "release_time": 8
+    "release_time": 0
   },
   {
     "job_id": "J24",
-    "release_time": 12
+    "release_time": 0
   },
   {
     "job_id": "J25",
-    "release_time": 7
+    "release_time": 0
   },
   {
     "job_id": "J26",
@@ -105,18 +105,58 @@
   },
   {
     "job_id": "J27",
-    "release_time": 20
+    "release_time": 0
   },
   {
     "job_id": "J28",
-    "release_time": 1
+    "release_time": 0
   },
   {
     "job_id": "J29",
-    "release_time": 15
+    "release_time": 0
   },
   {
     "job_id": "J30",
-    "release_time": 7
+    "release_time": 0
+  },
+  {
+    "job_id": "J31",
+    "release_time": 0
+  },
+  {
+    "job_id": "J32",
+    "release_time": 0
+  },
+  {
+    "job_id": "J33",
+    "release_time": 0
+  },
+  {
+    "job_id": "J34",
+    "release_time": 0
+  },
+  {
+    "job_id": "J35",
+    "release_time": 0
+  },
+  {
+    "job_id": "J36",
+    "release_time": 0
+  },
+  {
+    "job_id": "J37",
+    "release_time": 0
+  },
+  {
+    "job_id": "J38",
+    "release_time": 0
+  },
+  {
+    "job_id": "J39",
+    "release_time": 0
+  },
+  {
+    "job_id": "J40",
+    "release_time": 0
   }
 ]

@@ -1,0 +1,62 @@
+{
+  "O063": {
+    "machine": "M5",
+    "agv": "1"
+  },
+  "O222": {
+    "machine": "M1",
+    "agv": "2"
+  },
+  "O363": {
+    "machine": "M8",
+    "agv": "5"
+  },
+  "O164": {
+    "machine": "M7",
+    "agv": "2"
+  },
+  "O283": {
+    "machine": "M4",
+    "agv": "4"
+  },
+  "O211": {
+    "machine": "M1",
+    "agv": "5"
+  },
+  "O203": {
+    "machine": "M1",
+    "agv": "3"
+  },
+  "O241": {
+    "machine": "M7",
+    "agv": "4"
+  },
+  "O201": {
+    "machine": "M5",
+    "agv": "1"
+  },
+  "O354": {
+    "machine": "M6",
+    "agv": "3"
+  },
+  "O163": {
+    "machine": "M2",
+    "agv": "2"
+  },
+  "O373": {
+    "machine": "M1",
+    "agv": "5"
+  },
+  "O105": {
+    "machine": "M6",
+    "agv": "2"
+  },
+  "O094": {
+    "machine": "M4",
+    "agv": "5"
+  },
+  "O012": {
+    "machine": "M5",
+    "agv": "3"
+  }
+}

@@ -1,8 +1,8 @@
 from simulator.engine.simulator import Simulator
 from simulator.builder import ModelBuilder
+from simulator.control.optimizer import OptimizationManager
 import pandas as pd
-import os
-import argparse
+import os, argparse, time
 from typing import List
 
 def _op_mean(op) -> float:
@@ -31,6 +31,18 @@ def rule_next_machine(job_id: str, op_id: str, candidates: List[str]):
     if not candidates: return None
     # 입력큐 처리시간 합이 최소인 머신 선택 (동률시 min 사전순)
     return min(candidates, key=_est_input_load)
+
+def hybrid_next_machine(job_id: str, op_id: str, candidates: list[str]) -> str | None:
+    plan = getattr(sim, "optim_plan", {}) or {}
+    # 1) NSGA 계획 확인
+    if op_id in plan:
+        dest = plan[op_id].get("machine")
+        if dest in candidates:
+            return dest
+        # 계획이 후보 밖이면 계획 무효 → 폴백
+    # 2) 폴백: 기존 rule
+    return rule_next_machine(job_id, op_id, candidates)
+
 
 def print_all_machine_queues(machines):
     """모든 기계의 큐 상태를 출력"""
@@ -112,6 +124,8 @@ def save_all_operation_info(machines, filename='results/operation_info.csv'):
         pd.DataFrame(all_ops).to_csv(filename, index=False)
         print(f"[경고] 저장할 operation 정보가 없습니다. (빈 CSV 저장) -> {filename}")
 
+
+
 if __name__ == '__main__':
     # 명령행 인수 파싱 (최적화 관련 옵션 제거)
     parser = argparse.ArgumentParser(description='시뮬레이터 실행기 (NSGA-II 지원)')
@@ -133,11 +147,15 @@ if __name__ == '__main__':
 
     # 시뮬레이터 설정
     # 기존과 동일하게 use_dynamic_scheduling=True 유지 (동적 스케줄링 사용 시)
-    builder = ModelBuilder(scenario_path, use_dynamic_scheduling=True)
+    builder = ModelBuilder(scenario_path, use_dynamic_scheduling=True, agv_count=args.agv_count)
+
+    agv_count = args.agv_count
     machines, gen, tx, agv_controller, agvs, src = builder.build()
 
     # Simulator 생성
     sim = Simulator()
+    sim.optim_plan = {}  # 최적화 계획 초기화
+    sim.start_time = time.time()
 
     # 모델 등록
     # (엔진이 각 모델의 simulator 참조가 필요하면 설정)
@@ -158,7 +176,11 @@ if __name__ == '__main__':
     if hasattr(gen, "initialize"):
         gen.initialize()
 
-    sim.select_next_machine = rule_next_machine
+    sim.select_next_machine = hybrid_next_machine
+
+    optimizer = OptimizationManager()
+    optimizer.simulator = sim
+    sim.register(optimizer)
 
     # 시뮬레이션 실행 (한 번만)
     sim.run(print_queues_interval=args.print_queues_interval, 

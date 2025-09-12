@@ -120,21 +120,31 @@ def sample_op_types_for_job(op_types: List[str], n_ops: int) -> List[str]:
     return [random.choice(op_types) for _ in range(n_ops)]
 
 def gen_jobs_ops_release_json(cfg: GenCfg, op_durations: Dict) -> tuple[list, list, list]:
-    """
-    returns jobs, operations, job_release
-    - jobs: [{"job_id":J1,"part_id":P1,"operations":[O11,O12,...]}, ...]
-    - operations: [{"operation_id":O11,"job_id":J1,"type":T,"machines":[...]}]
-    - job_release: [{"job_id":J1,"release_time":t}, ...]  # t is INT seconds
-    """
     op_types = list(op_durations.keys())
     type_to_machines = {t: list(mmap.keys()) for t, mmap in op_durations.items()}
+
+    # --- release_time 배치 생성 ---
+    rmin, rmax = int(cfg.release_min), int(cfg.release_max)
+    if rmax < rmin:
+        rmax = rmin
+    batch_size = 10   # 필요시 인자로 조정 가능
+    num_batches = (cfg.num_jobs + batch_size - 1) // batch_size
+
+    # 각 배치 release_time 샘플링
+    batch_release_times = [int(random.randint(rmin, rmax)) for _ in range(num_batches)]
+
+    # 최소값을 찾아 전체에서 빼줌 → 최소값 배치는 0이 됨
+    min_val = min(batch_release_times)
+    batch_release_times = [t - min_val for t in batch_release_times]
+    # --------------------------------
 
     jobs, operations, releases = [], [], []
     for i in range(1, cfg.num_jobs + 1):
         job_id, part_id = jid(i), pid(i)
         n_ops = random.randint(cfg.min_ops, cfg.max_ops)
-        seq = sample_op_types_for_job(op_types, n_ops)
+        seq = [random.choice(op_types) for _ in range(n_ops)]
         op_ids = []
+
         for k, t in enumerate(seq, start=1):
             op_id = oid(i, k)
             op_ids.append(op_id)
@@ -145,20 +155,22 @@ def gen_jobs_ops_release_json(cfg: GenCfg, op_durations: Dict) -> tuple[list, li
                 "type": t,
                 "machines": machines
             })
+
         jobs.append({
             "job_id": job_id,
             "part_id": part_id,
             "operations": op_ids
         })
-        # Integer release_time
-        rmin, rmax = int(cfg.release_min), int(cfg.release_max)
-        if rmax < rmin:
-            rmax = rmin
+
+        # i번째 job이 속한 배치 인덱스
+        batch_idx = (i - 1) // batch_size
         releases.append({
             "job_id": job_id,
-            "release_time": int(random.randint(rmin, rmax))
+            "release_time": batch_release_times[batch_idx]
         })
+
     return jobs, operations, releases
+
 
 # ----------------------------
 # Main
@@ -185,6 +197,9 @@ def main():
     ap.add_argument("--proc_mean_max", type=float, default=40.0)
     ap.add_argument("--transfer_mean_min", type=float, default=1.0)
     ap.add_argument("--transfer_mean_max", type=float, default=10.0)
+
+    ap.add_argument("--batch_size", type=int, default=10,
+                    help="Batch size for job release time sampling (default: 10)")
     args = ap.parse_args()
 
     cfg = GenCfg(

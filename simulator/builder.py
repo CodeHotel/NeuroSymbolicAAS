@@ -13,7 +13,7 @@ def load(fp):
         return json.load(f)
 
 class ModelBuilder:
-    def __init__(self, subpath, use_dynamic_scheduling=False, agv_count: int = 1):
+    def __init__(self, subpath, use_dynamic_scheduling=False, agv_count = 1):
         # 절대 경로로 변환
         if os.path.isabs(subpath):
             self.path = subpath
@@ -96,6 +96,6 @@ class ModelBuilder:
             agvs.append(agv)
         agv_controller = AGVController(agvs)
 
-        gen = Generator(releases, jobs)
+        gen = Generator(releases, jobs, optimize_on_release=True, optimizer_model='OptimizationManager', epsilon=1e-6)
         tx  = Transducer()
         return machines, gen, tx, agv_controller, agvs, src

@@ -1,0 +1,4 @@
+release_time,total_ops,n_max,makespan,agv_travel
+1e-06,154,5,730.1,1974.0
+1e-06,154,10,732.1,1977.0
+1e-06,154,15,731.0,1936.0

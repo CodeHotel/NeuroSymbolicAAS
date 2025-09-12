@@ -31,6 +31,7 @@ class AGV(EoModel):
         self.departure_time = 0.0    # 출발 시간
         self.arrival_time = 0.0      # 도착 예정 시간
         self.distance = 0.0          # 이동 거리
+        self.total_distance = 0.0    # 누적 이동 거리
         
         # 로깅 관련
         self.logger = None  # AGVLogger 인스턴스
@@ -38,10 +39,26 @@ class AGV(EoModel):
         
     def save_state(self):
         def task_to_dict(t):
-            if not t: return None
-            d = dict(t)
-            if 'part' in d and d['part'] is not None: d['part'] = {'__type__':'part','id': d['part'].id}
-            if 'job'  in d and d['job']  is not None: d['job']  = {'__type__':'job', 'id': d['job'].id}
+            if not t : return None
+            d = dict(t)  # shallow copy
+            part_obj = d.get('part', None)
+            job_obj  = d.get('job', None)
+            op_obj   = d.get('op', None)   # 나중에 2번 패치에서 넣을 예정
+
+            if part_obj is not None:
+                d['part'] = {'__type__':'part','id': part_obj.id}
+            else:
+                d['part'] = None
+
+            if job_obj is not None:
+                d['job']  = {'__type__':'job','id': job_obj.id}
+            else:
+                d['job']  = None
+
+            if op_obj is not None:
+                d['op']   = {'__type__':'op','id': getattr(op_obj, 'id', None)}
+            # op이 아직 없다면 생략
+
             return d
 
         return {
@@ -54,7 +71,8 @@ class AGV(EoModel):
             'departure_time': self.departure_time,
             'arrival_time': self.arrival_time,
             'distance': self.distance,
-            'task_start_time': self.task_start_time
+            'task_start_time': self.task_start_time,
+            'total_distance': self.total_distance
         }
 
     def load_state(self, st, reg):
@@ -65,10 +83,22 @@ class AGV(EoModel):
         self.carried_jobs = [reg['parts'][pid] for pid in st.get('carried_parts', []) if pid in reg['parts']]
         ct = st.get('current_task')
         if ct:
+            part_obj = reg['parts'].get(ct['part']['id']) if ct.get('part') else None
+            job_obj  = reg['jobs'].get(ct['job']['id'])  if ct.get('job')  else None
+            if job_obj is None:
+                raise ValueError(f"AGV.load_state: missing job for task (agv={self.agv_id})")
+
+            # op 복원(있으면)
+            op_obj = None
+            if ct.get('op') and job_obj:
+                op_id = ct['op']['id']
+                op_obj = next((o for o in getattr(job_obj, 'ops', []) if getattr(o, 'id', None) == op_id), None)
+
             self.current_task = {
-                **{k:v for k,v in ct.items() if k not in ('part','job')},
-                'part': reg['parts'].get(ct['part']['id']) if ct.get('part') else None,
-                'job':  reg['jobs'].get(ct['job']['id'])  if ct.get('job') else None,
+                **{k:v for k,v in ct.items() if k not in ('part','job','op')},
+                'part': part_obj,
+                'job':  job_obj,
+                'op':   op_obj,
             }
         else:
             self.current_task = None
@@ -76,6 +106,7 @@ class AGV(EoModel):
         self.arrival_time   = st.get('arrival_time', 0.0)
         self.distance       = st.get('distance', 0.0)
         self.task_start_time = st.get('task_start_time', None)
+        self.total_distance = st.get('total_distance', 0.0)
 
     def set_logger(self, logger):
         """로거 설정"""
@@ -174,9 +205,9 @@ class AGV(EoModel):
         part = payload.get('part')          # ✅ Part 받기
         job  = part.job if part else payload['job']  # 하위호환
         source_machine = payload['source_machine']
-        
-        print(f"[{self.name}] {source_machine}에서 Job {job.id} fetch 시작")
-        
+
+        print(f"[{self.name}] {source_machine}에서 Job {job.id}, Op {job.current_op().id} fetch 시작")
+
         # 로깅
         self._log_event('fetch_request', {'source_machine': source_machine, 'job_id': job.id})
 
@@ -203,7 +234,7 @@ class AGV(EoModel):
         # 후보 집합
         candidates = current_op.candidates if (current_op and current_op.candidates) else []
         if not candidates:
-            raise ValueError(f"{self.name}: Job {job.id} 다음 작업 후보가 없습니다.")
+            raise ValueError(f"{self.name}: Job {job.id} Op {current_op.id} 다음 작업 후보가 없습니다.")
 
         # 콜백 필수
         sel_cb = getattr(self, "simulator", None) and getattr(self.simulator, "select_next_machine", None)
@@ -222,12 +253,13 @@ class AGV(EoModel):
             'destination_machine': destination,
             'part': part,
             'job': job,
+            'op': current_op
         }
         self.task_start_time = EoModel.get_time()
 
         self._log_event('delivery_request', {'current_location': self.current_location, 'job_id': job.id})
 
-        print(f"[{self.name}] {self.current_location}→{destination}로 Job {job.id} delivery 시작")
+        print(f"[{self.name}] {self.current_location}→{destination}로 Job {job.id}, Op {job.current_op().id} delivery 시작")
         self._move_to(destination, "delivery")
 
     def _move_to(self, destination, task_type):
@@ -257,6 +289,7 @@ class AGV(EoModel):
 
         # 이동 시간 계산
         travel_time = self.distance / self.speed
+        self.total_distance += self.distance  # 누적 거리 업데이트
 
         from simulator.result.recorder import Recorder
         if task_type == "delivery":
@@ -310,9 +343,9 @@ class AGV(EoModel):
         
         source_machine = self.current_task['source_machine']
         job = self.current_task['job']
-        
-        print(f"[{self.name}] {source_machine}에서 Job {job.id} fetch 중...")
-        
+
+        print(f"[{self.name}] {source_machine}에서 Job {job.id}, Op {job.current_op().id} fetch 중...")
+
         # fetch 완료 이벤트 스케줄링 (간단한 로딩 시간)
         ev = Event('agv_fetch_complete', {
             'agv_id': self.agv_id,
@@ -331,17 +364,21 @@ class AGV(EoModel):
         
         destination_machine = self.current_task['destination_machine']
         job = self.current_task['job']
-        
-        print(f"[{self.name}] {destination_machine}에서 Job {job.id} unload 중...")
-        
+
+        if(job.id == "J26") :
+            a=1
+        print("test unloading : ", job.id)
+        print(f"[{self.name}] {destination_machine}에서 Job {job.id}, Op {job.current_op().id} unload 중...")
+
         # unload 완료 이벤트 스케줄링 (간단한 하역 시간)
         ev = Event('agv_delivery_complete', {
             'agv_id': self.agv_id,
             'job': job,
+            'op_id': job.current_op().id if job.current_op() else None,
             'destination_machine': destination_machine
         }, dest_model=self.name)
-        self.schedule(ev, 0.0)  # 2초 하역 시간 -> 0으로 변경
-    
+        self.schedule(ev, 1.0)  # 2초 하역 시간 -> 1초로 변경
+
     def _handle_fetch_complete(self, payload):
         """작업 가져오기 완료 처리"""
         part = self.current_task.get('part') if self.current_task else None
@@ -353,13 +390,19 @@ class AGV(EoModel):
         self.carried_jobs.append(part)
         old_status = self.status
         self.status = AGVStatus.LOADING
+        pickup_ev = Event("source_pickup",
+                          {"part": part},
+                          dest_model=source_machine)
+        self.schedule(pickup_ev, 0.0)
         self._request_delivery(part)
         
         # 상태 변화 로깅
         self._log_status_change(old_status, self.status)
+
         
-        print(f"[{self.name}] Job {job.id} 적재 완료")
-        
+
+        print(f"[{self.name}] Job {job.id}, Op {job.current_op().id} 적재 완료")
+
         # 작업 로깅
         if self.task_start_time is not None:
             self._log_task('fetch', source_machine, None, job.id, self.task_start_time, EoModel.get_time())
@@ -382,9 +425,9 @@ class AGV(EoModel):
         # 작업을 AGV에서 제거
         if part in self.carried_jobs:
             self.carried_jobs.remove(part)
-        
-        print(f"[{self.name}] Job {job.id}를 {destination_machine}에 배송 완료")
-        
+
+        print(f"[{self.name}] Job {job.id}, Op {job.current_op().id}를 {destination_machine}에 배송 완료")
+
         # 작업 로깅
         if self.task_start_time is not None:
             self._log_task('delivery', None, destination_machine, job.id, self.task_start_time, EoModel.get_time())

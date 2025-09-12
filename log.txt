@@ -1,0 +1,1285 @@
+============================================================
+단일 패스 시뮬레이션 실행
+============================================================
+시나리오: scenarios/my_case
+============================================================
+[ModelBuilder] Job J1 생성: 2개의 Operation, Release Time: 18
+[ModelBuilder] Job J2 생성: 2개의 Operation, Release Time: 7
+[ModelBuilder] Job J3 생성: 3개의 Operation, Release Time: 12
+[ModelBuilder] Job J4 생성: 3개의 Operation, Release Time: 11
+[ModelBuilder] Job J5 생성: 3개의 Operation, Release Time: 19
+[ModelBuilder] Job J6 생성: 4개의 Operation, Release Time: 12
+[ModelBuilder] Job J7 생성: 3개의 Operation, Release Time: 7
+[ModelBuilder] Job J8 생성: 2개의 Operation, Release Time: 8
+[ModelBuilder] Job J9 생성: 2개의 Operation, Release Time: 6
+[ModelBuilder] Job J10 생성: 4개의 Operation, Release Time: 8
+[ModelBuilder] Job J11 생성: 2개의 Operation, Release Time: 18
+[ModelBuilder] Job J12 생성: 3개의 Operation, Release Time: 4
+[ModelBuilder] Job J13 생성: 4개의 Operation, Release Time: 4
+[ModelBuilder] Job J14 생성: 4개의 Operation, Release Time: 12
+[ModelBuilder] Job J15 생성: 4개의 Operation, Release Time: 17
+[ModelBuilder] Job J16 생성: 3개의 Operation, Release Time: 13
+[ModelBuilder] Job J17 생성: 2개의 Operation, Release Time: 8
+[ModelBuilder] Job J18 생성: 4개의 Operation, Release Time: 4
+[ModelBuilder] Job J19 생성: 3개의 Operation, Release Time: 15
+[ModelBuilder] Job J20 생성: 2개의 Operation, Release Time: 9
+[ModelBuilder] Job J21 생성: 2개의 Operation, Release Time: 18
+[ModelBuilder] Job J22 생성: 2개의 Operation, Release Time: 2
+[ModelBuilder] Job J23 생성: 4개의 Operation, Release Time: 8
+[ModelBuilder] Job J24 생성: 4개의 Operation, Release Time: 12
+[ModelBuilder] Job J25 생성: 4개의 Operation, Release Time: 7
+[ModelBuilder] Job J26 생성: 2개의 Operation, Release Time: 0
+[ModelBuilder] Job J27 생성: 4개의 Operation, Release Time: 20
+[ModelBuilder] Job J28 생성: 2개의 Operation, Release Time: 1
+[ModelBuilder] Job J29 생성: 3개의 Operation, Release Time: 15
+[ModelBuilder] Job J30 생성: 2개의 Operation, Release Time: 7
+[Generator] Job J26 (Part P26) 릴리스 시간: 0.0
+[Generator] Job J26을 0.0초에 GEN로 전송 예약
+[Generator] Job J28 (Part P28) 릴리스 시간: 1.0
+[Generator] Job J28을 1.0초에 GEN로 전송 예약
+[Generator] Job J22 (Part P22) 릴리스 시간: 2.0
+[Generator] Job J22을 2.0초에 GEN로 전송 예약
+[Generator] Job J12 (Part P12) 릴리스 시간: 4.0
+[Generator] Job J12을 4.0초에 GEN로 전송 예약
+[Generator] Job J13 (Part P13) 릴리스 시간: 4.0
+[Generator] Job J13을 4.0초에 GEN로 전송 예약
+[Generator] Job J18 (Part P18) 릴리스 시간: 4.0
+[Generator] Job J18을 4.0초에 GEN로 전송 예약
+[Generator] Job J9 (Part P9) 릴리스 시간: 6.0
+[Generator] Job J9을 6.0초에 GEN로 전송 예약
+[Generator] Job J2 (Part P2) 릴리스 시간: 7.0
+[Generator] Job J2을 7.0초에 GEN로 전송 예약
+[Generator] Job J7 (Part P7) 릴리스 시간: 7.0
+[Generator] Job J7을 7.0초에 GEN로 전송 예약
+[Generator] Job J25 (Part P25) 릴리스 시간: 7.0
+[Generator] Job J25을 7.0초에 GEN로 전송 예약
+[Generator] Job J30 (Part P30) 릴리스 시간: 7.0
+[Generator] Job J30을 7.0초에 GEN로 전송 예약
+[Generator] Job J8 (Part P8) 릴리스 시간: 8.0
+[Generator] Job J8을 8.0초에 GEN로 전송 예약
+[Generator] Job J10 (Part P10) 릴리스 시간: 8.0
+[Generator] Job J10을 8.0초에 GEN로 전송 예약
+[Generator] Job J17 (Part P17) 릴리스 시간: 8.0
+[Generator] Job J17을 8.0초에 GEN로 전송 예약
+[Generator] Job J23 (Part P23) 릴리스 시간: 8.0
+[Generator] Job J23을 8.0초에 GEN로 전송 예약
+[Generator] Job J20 (Part P20) 릴리스 시간: 9.0
+[Generator] Job J20을 9.0초에 GEN로 전송 예약
+[Generator] Job J4 (Part P4) 릴리스 시간: 11.0
+[Generator] Job J4을 11.0초에 GEN로 전송 예약
+[Generator] Job J3 (Part P3) 릴리스 시간: 12.0
+[Generator] Job J3을 12.0초에 GEN로 전송 예약
+[Generator] Job J6 (Part P6) 릴리스 시간: 12.0
+[Generator] Job J6을 12.0초에 GEN로 전송 예약
+[Generator] Job J14 (Part P14) 릴리스 시간: 12.0
+[Generator] Job J14을 12.0초에 GEN로 전송 예약
+[Generator] Job J24 (Part P24) 릴리스 시간: 12.0
+[Generator] Job J24을 12.0초에 GEN로 전송 예약
+[Generator] Job J16 (Part P16) 릴리스 시간: 13.0
+[Generator] Job J16을 13.0초에 GEN로 전송 예약
+[Generator] Job J19 (Part P19) 릴리스 시간: 15.0
+[Generator] Job J19을 15.0초에 GEN로 전송 예약
+[Generator] Job J29 (Part P29) 릴리스 시간: 15.0
+[Generator] Job J29을 15.0초에 GEN로 전송 예약
+[Generator] Job J15 (Part P15) 릴리스 시간: 17.0
+[Generator] Job J15을 17.0초에 GEN로 전송 예약
+[Generator] Job J1 (Part P1) 릴리스 시간: 18.0
+[Generator] Job J1을 18.0초에 GEN로 전송 예약
+[Generator] Job J11 (Part P11) 릴리스 시간: 18.0
+[Generator] Job J11을 18.0초에 GEN로 전송 예약
+[Generator] Job J21 (Part P21) 릴리스 시간: 18.0
+[Generator] Job J21을 18.0초에 GEN로 전송 예약
+[Generator] Job J5 (Part P5) 릴리스 시간: 19.0
+[Generator] Job J5을 19.0초에 GEN로 전송 예약
+[Generator] Job J27 (Part P27) 릴리스 시간: 20.0
+[Generator] Job J27을 20.0초에 GEN로 전송 예약
+[AGV_1] GEN에서 Job J26, Op O261 fetch 시작
+[AGV_1] GEN에서 Job J26, Op O261 fetch 중...
+[AGV_1] Job J26, Op O261 적재 완료
+[AGV_1] GEN→M1로 Job J26, Op O261 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[OptimizationManager] 최적화 시작
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J26, Op O261 unload 중...
+[AGV_1] Job J26, Op O261를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J26의 Operation O261 시작 (예상 소요 시간: 31.00초)
+[AGV_1] GEN에서 Job J10, Op O101 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J10, Op O101 fetch 중...
+[AGV_1] Job J10, Op O101 적재 완료
+[AGV_1] GEN→M2로 Job J10, Op O101 delivery 시작
+[AGV_1] GEN → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J10, Op O101 unload 중...
+[AGV_1] Job J10, Op O101를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M2] Job J10의 Operation O101 시작 (예상 소요 시간: 15.00초)
+[AGV_1] GEN에서 Job J14, Op O141 fetch 시작
+[AGV_1] M2 → GEN 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J14, Op O141 fetch 중...
+[AGV_1] Job J14, Op O141 적재 완료
+[AGV_1] GEN→M1로 Job J14, Op O141 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J14, Op O141 unload 중...
+[AGV_1] Job J14, Op O141를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J27, Op O271 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M2] Operation O101 완료 시간 기록: 33.000
+[AGV M2] fetch_request: Job J10, Op O102 → None (시간: 0.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J27, Op O271 fetch 중...
+[AGV_1] Job J27, Op O271 적재 완료
+[AGV_1] GEN→M4로 Job J27, Op O271 delivery 시작
+[AGV_1] GEN → M4 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M1] Operation O261 완료 시간 기록: 39.000
+[AGV M1] fetch_request: Job J26, Op O262 → None (시간: 0.00초)
+[M1] Job J14의 Operation O141 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J27, Op O271 unload 중...
+[AGV_1] Job J27, Op O271를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J27의 Operation O271 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M2에서 Job J10, Op O102 fetch 시작
+[AGV_1] M4 → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J10, Op O102 fetch 중...
+[AGV_1] Job J10, Op O102 적재 완료
+[AGV_1] M2→M2로 Job J10, Op O102 delivery 시작
+[AGV_1] M2에서 Job J10, Op O102 unload 중...
+[AGV_1] Job J10, Op O102를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M2] Job J10의 Operation O102 시작 (예상 소요 시간: 15.00초)
+[AGV_1] GEN에서 Job J4, Op O041 fetch 시작
+[AGV_1] M2 → GEN 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J4, Op O041 fetch 중...
+[AGV_1] Job J4, Op O041 적재 완료
+[AGV_1] GEN→M2로 Job J4, Op O041 delivery 시작
+[AGV_1] GEN → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[M1] Operation O141 완료 시간 기록: 45.000
+[AGV M1] fetch_request: Job J14, Op O142 → None (시간: 0.00초)
+[M4] Operation O271 완료 시간 기록: 46.200
+[AGV M4] fetch_request: Job J27, Op O272 → None (시간: 0.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J4, Op O041 unload 중...
+[AGV_1] Job J4, Op O041를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J24, Op O241 fetch 시작
+[AGV_1] M2 → GEN 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J24, Op O241 fetch 중...
+[AGV_1] Job J24, Op O241 적재 완료
+[AGV_1] GEN→M4로 Job J24, Op O241 delivery 시작
+[AGV_1] GEN → M4 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J24, Op O241 unload 중...
+[AGV_1] Job J24, Op O241를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J24의 Operation O241 시작 (예상 소요 시간: 15.00초)
+[AGV_1] GEN에서 Job J7, Op O071 fetch 시작
+[AGV_1] M4 → GEN 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J7, Op O071 fetch 중...
+[AGV_1] Job J7, Op O071 적재 완료
+[AGV_1] GEN→M1로 Job J7, Op O071 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M2] Operation O102 완료 시간 기록: 57.300
+[AGV M2] fetch_request: Job J10, Op O103 → None (시간: 0.00초)
+[M2] Job J4의 Operation O041 시작 (예상 소요 시간: 15.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J7, Op O071 unload 중...
+[AGV_1] Job J7, Op O071를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J7의 Operation O071 시작 (예상 소요 시간: 6.00초)
+[AGV_1] GEN에서 Job J30, Op O301 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M4] Operation O241 완료 시간 기록: 67.500
+[AGV M4] fetch_request: Job J24, Op O242 → None (시간: 0.00초)
+[M1] Operation O071 완료 시간 기록: 70.600
+[AGV M1] fetch_request: Job J7, Op O072 → None (시간: 0.00초)
+[M2] Operation O041 완료 시간 기록: 72.300
+[AGV M2] fetch_request: Job J4, Op O042 → None (시간: 0.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J30, Op O301 fetch 중...
+[AGV_1] Job J30, Op O301 적재 완료
+[AGV_1] GEN→M1로 Job J30, Op O301 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J30, Op O301 unload 중...
+[AGV_1] Job J30, Op O301를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J30의 Operation O301 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M2에서 Job J4, Op O042 fetch 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J4, Op O042 fetch 중...
+[AGV_1] Job J4, Op O042 적재 완료
+[AGV_1] M2→M1로 Job J4, Op O042 delivery 시작
+[AGV_1] M2 → M1 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M1] Operation O301 완료 시간 기록: 86.700
+[AGV M1] fetch_request: Job J30, Op O302 → None (시간: 0.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J4, Op O042 unload 중...
+[AGV_1] Job J4, Op O042를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J4의 Operation O042 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M2에서 Job J10, Op O103 fetch 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J10, Op O103 fetch 중...
+[AGV_1] Job J10, Op O103 적재 완료
+[AGV_1] M2→M2로 Job J10, Op O103 delivery 시작
+[AGV_1] M2에서 Job J10, Op O103 unload 중...
+[AGV_1] Job J10, Op O103를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M2] Job J10의 Operation O103 시작 (예상 소요 시간: 15.00초)
+[AGV_1] GEN에서 Job J18, Op O181 fetch 시작
+[AGV_1] M2 → GEN 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J18, Op O181 fetch 중...
+[AGV_1] Job J18, Op O181 적재 완료
+[AGV_1] GEN→M1로 Job J18, Op O181 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M1] Operation O042 완료 시간 기록: 101.800
+[AGV M1] fetch_request: Job J4, Op O043 → None (시간: 0.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J18, Op O181 unload 중...
+[AGV_1] Job J18, Op O181를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J18의 Operation O181 시작 (예상 소요 시간: 6.00초)
+[AGV_1] GEN에서 Job J13, Op O131 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M2] Operation O103 완료 시간 기록: 107.900
+[AGV M2] fetch_request: Job J10, Op O104 → None (시간: 0.00초)
+[M1] Operation O181 완료 시간 기록: 109.000
+[AGV M1] fetch_request: Job J18, Op O182 → None (시간: 0.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J13, Op O131 fetch 중...
+[AGV_1] Job J13, Op O131 적재 완료
+[AGV_1] GEN→M2로 Job J13, Op O131 delivery 시작
+[AGV_1] GEN → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J13, Op O131 unload 중...
+[AGV_1] Job J13, Op O131를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M2] Job J13의 Operation O131 시작 (예상 소요 시간: 15.00초)
+[AGV_1] M1에서 Job J18, Op O182 fetch 시작
+[AGV_1] M2 → M1 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J18, Op O182 fetch 중...
+[AGV_1] Job J18, Op O182 적재 완료
+[AGV_1] M1→M1로 Job J18, Op O182 delivery 시작
+[AGV_1] M1에서 Job J18, Op O182 unload 중...
+[AGV_1] Job J18, Op O182를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J18의 Operation O182 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M1에서 Job J7, Op O072 fetch 시작
+[AGV_1] M1에서 Job J7, Op O072 fetch 중...
+[AGV_1] Job J7, Op O072 적재 완료
+[AGV_1] M1→M1로 Job J7, Op O072 delivery 시작
+[AGV_1] M1에서 Job J7, Op O072 unload 중...
+[AGV_1] Job J7, Op O072를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J22, Op O221 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J22, Op O221 fetch 중...
+[AGV_1] Job J22, Op O221 적재 완료
+[AGV_1] GEN→M2로 Job J22, Op O221 delivery 시작
+[AGV_1] GEN → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J22, Op O221 unload 중...
+[AGV_1] Job J22, Op O221를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J30, Op O302 fetch 시작
+[AGV_1] M2 → M1 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M2] Operation O131 완료 시간 기록: 128.100
+[AGV M2] fetch_request: Job J13, Op O132 → None (시간: 0.00초)
+[M2] Job J22의 Operation O221 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J30, Op O302 fetch 중...
+[AGV_1] Job J30, Op O302 적재 완료
+[AGV_1] M1→M2로 Job J30, Op O302 delivery 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J30, Op O302 unload 중...
+[AGV_1] Job J30, Op O302를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J3, Op O031 fetch 시작
+[AGV_1] M2 → GEN 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J3, Op O031 fetch 중...
+[AGV_1] Job J3, Op O031 적재 완료
+[AGV_1] GEN→M3로 Job J3, Op O031 delivery 시작
+[AGV_1] GEN → M3 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J3, Op O031 unload 중...
+[AGV_1] Job J3, Op O031를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M3] Job J3의 Operation O031 시작 (예상 소요 시간: 31.00초)
+[AGV_1] GEN에서 Job J15, Op O151 fetch 시작
+[AGV_1] M3 → GEN 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J15, Op O151 fetch 중...
+[AGV_1] Job J15, Op O151 적재 완료
+[AGV_1] GEN→M4로 Job J15, Op O151 delivery 시작
+[AGV_1] GEN → M4 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M1] Operation O182 완료 시간 기록: 148.200
+[AGV M1] fetch_request: Job J18, Op O183 → None (시간: 0.00초)
+[M1] Job J7의 Operation O072 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J15, Op O151 unload 중...
+[AGV_1] Job J15, Op O151를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J15의 Operation O151 시작 (예상 소요 시간: 15.00초)
+[AGV_1] GEN에서 Job J17, Op O171 fetch 시작
+[AGV_1] M4 → GEN 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J17, Op O171 fetch 중...
+[AGV_1] Job J17, Op O171 적재 완료
+[AGV_1] GEN→M4로 Job J17, Op O171 delivery 시작
+[AGV_1] GEN → M4 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J17, Op O171 unload 중...
+[AGV_1] Job J17, Op O171를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J6, Op O061 fetch 시작
+[AGV_1] M4 → GEN 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M2] Operation O221 완료 시간 기록: 159.100
+[AGV M2] fetch_request: Job J22, Op O222 → None (시간: 0.00초)
+[M2] Job J30의 Operation O302 시작 (예상 소요 시간: 15.00초)
+[M1] Operation O072 완료 시간 기록: 161.200
+[AGV M1] fetch_request: Job J7, Op O073 → None (시간: 0.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J6, Op O061 fetch 중...
+[AGV_1] Job J6, Op O061 적재 완료
+[AGV_1] GEN→M1로 Job J6, Op O061 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M4] Operation O151 완료 시간 기록: 164.600
+[AGV M4] fetch_request: Job J15, Op O152 → None (시간: 0.00초)
+[M4] Job J17의 Operation O171 시작 (예상 소요 시간: 15.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J6, Op O061 unload 중...
+[AGV_1] Job J6, Op O061를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J6의 Operation O061 시작 (예상 소요 시간: 6.00초)
+[AGV_1] GEN에서 Job J21, Op O211 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M3] Operation O031 완료 시간 기록: 172.500
+[AGV M3] fetch_request: Job J3, Op O032 → None (시간: 0.00초)
+[M2] Operation O302 완료 시간 기록: 174.100
+[Transducer] Job J30 완료 기록
+[M1] Operation O061 완료 시간 기록: 175.800
+[AGV M1] fetch_request: Job J6, Op O062 → None (시간: 0.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J21, Op O211 fetch 중...
+[AGV_1] Job J21, Op O211 적재 완료
+[AGV_1] GEN→M1로 Job J21, Op O211 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M4] Operation O171 완료 시간 기록: 179.600
+[AGV M4] fetch_request: Job J17, Op O172 → None (시간: 0.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J21, Op O211 unload 중...
+[AGV_1] Job J21, Op O211를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J21의 Operation O211 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M1에서 Job J6, Op O062 fetch 시작
+[AGV_1] M1에서 Job J6, Op O062 fetch 중...
+[AGV_1] Job J6, Op O062 적재 완료
+[AGV_1] M1→M1로 Job J6, Op O062 delivery 시작
+[AGV_1] M1에서 Job J6, Op O062 unload 중...
+[AGV_1] Job J6, Op O062를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M2에서 Job J13, Op O132 fetch 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J13, Op O132 fetch 중...
+[AGV_1] Job J13, Op O132 적재 완료
+[AGV_1] M2→M2로 Job J13, Op O132 delivery 시작
+[AGV_1] M2에서 Job J13, Op O132 unload 중...
+[AGV_1] Job J13, Op O132를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M2] Job J13의 Operation O132 시작 (예상 소요 시간: 31.00초)
+[AGV_1] GEN에서 Job J11, Op O111 fetch 시작
+[AGV_1] M2 → GEN 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J11, Op O111 fetch 중...
+[AGV_1] Job J11, Op O111 적재 완료
+[AGV_1] GEN→M4로 Job J11, Op O111 delivery 시작
+[AGV_1] GEN → M4 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J11, Op O111 unload 중...
+[AGV_1] Job J11, Op O111를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J11의 Operation O111 시작 (예상 소요 시간: 6.00초)
+[AGV_1] GEN에서 Job J29, Op O291 fetch 시작
+[AGV_1] M4 → GEN 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J29, Op O291 fetch 중...
+[AGV_1] Job J29, Op O291 적재 완료
+[AGV_1] GEN→M2로 Job J29, Op O291 delivery 시작
+[AGV_1] GEN → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[M4] Operation O111 완료 시간 기록: 202.100
+[AGV M4] fetch_request: Job J11, Op O112 → None (시간: 0.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J29, Op O291 unload 중...
+[AGV_1] Job J29, Op O291를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J25, Op O251 fetch 시작
+[AGV_1] M2 → GEN 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J25, Op O251 fetch 중...
+[AGV_1] Job J25, Op O251 적재 완료
+[AGV_1] GEN→M3로 Job J25, Op O251 delivery 시작
+[AGV_1] GEN → M3 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J25, Op O251 unload 중...
+[AGV_1] Job J25, Op O251를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M3] Job J25의 Operation O251 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M1에서 Job J4, Op O043 fetch 시작
+[AGV_1] M3 → M1 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J4, Op O043 fetch 중...
+[AGV_1] Job J4, Op O043 적재 완료
+[AGV_1] M1→M4로 Job J4, Op O043 delivery 시작
+[AGV_1] M1 → M4 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J4, Op O043 unload 중...
+[AGV_1] Job J4, Op O043를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J4의 Operation O043 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M4에서 Job J15, Op O152 fetch 시작
+[AGV_1] M4에서 Job J15, Op O152 fetch 중...
+[AGV_1] Job J15, Op O152 적재 완료
+[AGV_1] M4→M3로 Job J15, Op O152 delivery 시작
+[AGV_1] M4 → M3 이동 시작 (거리: 9.00m, 시간: 9.00초)
+[M1] Operation O211 완료 시간 기록: 216.900
+[AGV M1] fetch_request: Job J21, Op O212 → None (시간: 0.00초)
+[M1] Job J6의 Operation O062 시작 (예상 소요 시간: 6.00초)
+[M4] Operation O043 완료 시간 기록: 218.400
+[Transducer] Job J4 완료 기록
+[M2] Operation O132 완료 시간 기록: 221.000
+[AGV M2] fetch_request: Job J13, Op O133 → None (시간: 0.00초)
+[M2] Job J29의 Operation O291 시작 (예상 소요 시간: 31.00초)
+[M3] Operation O251 완료 시간 기록: 221.300
+[AGV M3] fetch_request: Job J25, Op O252 → None (시간: 0.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J15, Op O152 unload 중...
+[AGV_1] Job J15, Op O152를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M3] Job J15의 Operation O152 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M1에서 Job J7, Op O073 fetch 시작
+[AGV_1] M3 → M1 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[M1] Operation O062 완료 시간 기록: 222.900
+[AGV M1] fetch_request: Job J6, Op O063 → None (시간: 0.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J7, Op O073 fetch 중...
+[AGV_1] Job J7, Op O073 적재 완료
+[AGV_1] M1→M1로 Job J7, Op O073 delivery 시작
+[AGV_1] M1에서 Job J7, Op O073 unload 중...
+[AGV_1] Job J7, Op O073를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J7의 Operation O073 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M3에서 Job J25, Op O252 fetch 시작
+[AGV_1] M1 → M3 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J25, Op O252 fetch 중...
+[AGV_1] Job J25, Op O252 적재 완료
+[AGV_1] M3→M2로 Job J25, Op O252 delivery 시작
+[AGV_1] M3 → M2 이동 시작 (거리: 5.00m, 시간: 5.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J25, Op O252 unload 중...
+[AGV_1] Job J25, Op O252를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J20, Op O201 fetch 시작
+[AGV_1] M2 → GEN 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[M3] Operation O152 완료 시간 기록: 234.500
+[AGV M3] fetch_request: Job J15, Op O153 → None (시간: 0.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J20, Op O201 fetch 중...
+[AGV_1] Job J20, Op O201 적재 완료
+[AGV_1] GEN→M1로 Job J20, Op O201 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J20, Op O201 unload 중...
+[AGV_1] Job J20, Op O201를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J18, Op O183 fetch 시작
+[AGV_1] M1에서 Job J18, Op O183 fetch 중...
+[AGV_1] Job J18, Op O183 적재 완료
+[AGV_1] M1→M3로 Job J18, Op O183 delivery 시작
+[AGV_1] M1 → M3 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J18, Op O183 unload 중...
+[AGV_1] Job J18, Op O183를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M3] Job J18의 Operation O183 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M2에서 Job J13, Op O133 fetch 시작
+[AGV_1] M3 → M2 이동 시작 (거리: 5.00m, 시간: 5.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J13, Op O133 fetch 중...
+[AGV_1] Job J13, Op O133 적재 완료
+[AGV_1] M2→M3로 Job J13, Op O133 delivery 시작
+[AGV_1] M2 → M3 이동 시작 (거리: 5.00m, 시간: 5.00초)
+[M2] Operation O291 완료 시간 기록: 252.000
+[AGV M2] fetch_request: Job J29, Op O292 → None (시간: 0.00초)
+[M2] Job J25의 Operation O252 시작 (예상 소요 시간: 15.00초)
+[M1] Operation O073 완료 시간 기록: 255.600
+[Transducer] Job J7 완료 기록
+[M1] Job J20의 Operation O201 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J13, Op O133 unload 중...
+[AGV_1] Job J13, Op O133를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J21, Op O212 fetch 시작
+[AGV_1] M3 → M1 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[M3] Operation O183 완료 시간 기록: 258.900
+[AGV M3] fetch_request: Job J18, Op O184 → None (시간: 0.00초)
+[M3] Job J13의 Operation O133 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J21, Op O212 fetch 중...
+[AGV_1] Job J21, Op O212 적재 완료
+[AGV_1] M1→M1로 Job J21, Op O212 delivery 시작
+[AGV_1] M1에서 Job J21, Op O212 unload 중...
+[AGV_1] Job J21, Op O212를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M2에서 Job J22, Op O222 fetch 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J22, Op O222 fetch 중...
+[AGV_1] Job J22, Op O222 적재 완료
+[AGV_1] M2→M2로 Job J22, Op O222 delivery 시작
+[AGV_1] M2에서 Job J22, Op O222 unload 중...
+[AGV_1] Job J22, Op O222를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M3에서 Job J18, Op O184 fetch 시작
+[AGV_1] M2 → M3 이동 시작 (거리: 5.00m, 시간: 5.00초)
+[M2] Operation O252 완료 시간 기록: 267.000
+[AGV M2] fetch_request: Job J25, Op O253 → None (시간: 0.00초)
+[M2] Job J22의 Operation O222 시작 (예상 소요 시간: 15.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J18, Op O184 fetch 중...
+[AGV_1] Job J18, Op O184 적재 완료
+[AGV_1] M3→M4로 Job J18, Op O184 delivery 시작
+[AGV_1] M3 → M4 이동 시작 (거리: 9.00m, 시간: 9.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J18, Op O184 unload 중...
+[AGV_1] Job J18, Op O184를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J18의 Operation O184 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M2에서 Job J29, Op O292 fetch 시작
+[AGV_1] M4 → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J29, Op O292 fetch 중...
+[AGV_1] Job J29, Op O292 적재 완료
+[AGV_1] M2→M4로 Job J29, Op O292 delivery 시작
+[AGV_1] M2 → M4 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J29, Op O292 unload 중...
+[AGV_1] Job J29, Op O292를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M2에서 Job J10, Op O104 fetch 시작
+[AGV_1] M4 → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[M2] Operation O222 완료 시간 기록: 282.000
+[Transducer] Job J22 완료 기록
+[M4] Operation O184 완료 시간 기록: 283.300
+[Transducer] Job J18 완료 기록
+[M4] Job J29의 Operation O292 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J10, Op O104 fetch 중...
+[AGV_1] Job J10, Op O104 적재 완료
+[AGV_1] M2→M4로 Job J10, Op O104 delivery 시작
+[AGV_1] M2 → M4 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J10, Op O104 unload 중...
+[AGV_1] Job J10, Op O104를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J14, Op O142 fetch 시작
+[AGV_1] M4 → M1 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[M1] Operation O201 완료 시간 기록: 286.600
+[AGV M1] fetch_request: Job J20, Op O202 → None (시간: 0.00초)
+[M1] Job J21의 Operation O212 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J14, Op O142 fetch 중...
+[AGV_1] Job J14, Op O142 적재 완료
+[AGV_1] M1→M2로 Job J14, Op O142 delivery 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M4] Operation O292 완료 시간 기록: 289.300
+[AGV M4] fetch_request: Job J29, Op O293 → None (시간: 0.00초)
+[M4] Job J10의 Operation O104 시작 (예상 소요 시간: 6.00초)
+[M3] Operation O133 완료 시간 기록: 289.900
+[AGV M3] fetch_request: Job J13, Op O134 → None (시간: 0.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J14, Op O142 unload 중...
+[AGV_1] Job J14, Op O142를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M2] Job J14의 Operation O142 시작 (예상 소요 시간: 15.00초)
+[AGV_1] M4에서 Job J29, Op O293 fetch 시작
+[AGV_1] M2 → M4 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[M1] Operation O212 완료 시간 기록: 292.600
+[Transducer] Job J21 완료 기록
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J29, Op O293 fetch 중...
+[AGV_1] Job J29, Op O293 적재 완료
+[AGV_1] M4→M1로 Job J29, Op O293 delivery 시작
+[AGV_1] M4 → M1 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J29, Op O293 unload 중...
+[AGV_1] Job J29, Op O293를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J29의 Operation O293 시작 (예상 소요 시간: 13.00초)
+[AGV_1] GEN에서 Job J23, Op O231 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M4] Operation O104 완료 시간 기록: 295.300
+[Transducer] Job J10 완료 기록
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J23, Op O231 fetch 중...
+[AGV_1] Job J23, Op O231 적재 완료
+[AGV_1] GEN→M1로 Job J23, Op O231 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M2] Operation O142 완료 시간 기록: 305.600
+[AGV M2] fetch_request: Job J14, Op O143 → None (시간: 0.00초)
+[M1] Operation O293 완료 시간 기록: 306.700
+[Transducer] Job J29 완료 기록
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J23, Op O231 unload 중...
+[AGV_1] Job J23, Op O231를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J23의 Operation O231 시작 (예상 소요 시간: 6.00초)
+[AGV_1] GEN에서 Job J2, Op O021 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M1] Operation O231 완료 시간 기록: 315.800
+[AGV M1] fetch_request: Job J23, Op O232 → None (시간: 0.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J2, Op O021 fetch 중...
+[AGV_1] Job J2, Op O021 적재 완료
+[AGV_1] GEN→M1로 Job J2, Op O021 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J2, Op O021 unload 중...
+[AGV_1] Job J2, Op O021를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J2의 Operation O021 시작 (예상 소요 시간: 31.00초)
+[AGV_1] GEN에서 Job J16, Op O161 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J16, Op O161 fetch 중...
+[AGV_1] Job J16, Op O161 적재 완료
+[AGV_1] GEN→M1로 Job J16, Op O161 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J16, Op O161 unload 중...
+[AGV_1] Job J16, Op O161를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J5, Op O051 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J5, Op O051 fetch 중...
+[AGV_1] Job J5, Op O051 적재 완료
+[AGV_1] GEN→M4로 Job J5, Op O051 delivery 시작
+[AGV_1] GEN → M4 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J5, Op O051 unload 중...
+[AGV_1] Job J5, Op O051를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J5의 Operation O051 시작 (예상 소요 시간: 6.00초)
+[AGV_1] GEN에서 Job J9, Op O091 fetch 시작
+[AGV_1] M4 → GEN 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M1] Operation O021 완료 시간 기록: 356.900
+[AGV M1] fetch_request: Job J2, Op O022 → None (시간: 0.00초)
+[M1] Job J16의 Operation O161 시작 (예상 소요 시간: 13.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J9, Op O091 fetch 중...
+[AGV_1] Job J9, Op O091 적재 완료
+[AGV_1] GEN→M1로 Job J9, Op O091 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M4] Operation O051 완료 시간 기록: 360.100
+[AGV M4] fetch_request: Job J5, Op O052 → None (시간: 0.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J9, Op O091 unload 중...
+[AGV_1] Job J9, Op O091를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M3에서 Job J3, Op O032 fetch 시작
+[AGV_1] M1 → M3 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J3, Op O032 fetch 중...
+[AGV_1] Job J3, Op O032 적재 완료
+[AGV_1] M3→M4로 Job J3, Op O032 delivery 시작
+[AGV_1] M3 → M4 이동 시작 (거리: 9.00m, 시간: 9.00초)
+[M1] Operation O161 완료 시간 기록: 369.900
+[AGV M1] fetch_request: Job J16, Op O162 → None (시간: 0.00초)
+[M1] Job J9의 Operation O091 시작 (예상 소요 시간: 6.00초)
+[M1] Operation O091 완료 시간 기록: 375.900
+[AGV M1] fetch_request: Job J9, Op O092 → None (시간: 0.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J3, Op O032 unload 중...
+[AGV_1] Job J3, Op O032를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J3의 Operation O032 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M2에서 Job J14, Op O143 fetch 시작
+[AGV_1] M4 → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J14, Op O143 fetch 중...
+[AGV_1] Job J14, Op O143 적재 완료
+[AGV_1] M2→M1로 Job J14, Op O143 delivery 시작
+[AGV_1] M2 → M1 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M4] Operation O032 완료 시간 기록: 384.300
+[AGV M4] fetch_request: Job J3, Op O033 → None (시간: 0.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J14, Op O143 unload 중...
+[AGV_1] Job J14, Op O143를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J14의 Operation O143 시작 (예상 소요 시간: 31.00초)
+[AGV_1] GEN에서 Job J28, Op O281 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J28, Op O281 fetch 중...
+[AGV_1] Job J28, Op O281 적재 완료
+[AGV_1] GEN→M1로 Job J28, Op O281 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J28, Op O281 unload 중...
+[AGV_1] Job J28, Op O281를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J6, Op O063 fetch 시작
+[AGV_1] M1에서 Job J6, Op O063 fetch 중...
+[AGV_1] Job J6, Op O063 적재 완료
+[AGV_1] M1→M4로 Job J6, Op O063 delivery 시작
+[AGV_1] M1 → M4 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J6, Op O063 unload 중...
+[AGV_1] Job J6, Op O063를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J6의 Operation O063 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M1에서 Job J20, Op O202 fetch 시작
+[AGV_1] M4 → M1 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J20, Op O202 fetch 중...
+[AGV_1] Job J20, Op O202 적재 완료
+[AGV_1] M1→M2로 Job J20, Op O202 delivery 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J20, Op O202 unload 중...
+[AGV_1] Job J20, Op O202를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M2] Job J20의 Operation O202 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M4에서 Job J17, Op O172 fetch 시작
+[AGV_1] M2 → M4 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[M4] Operation O063 완료 시간 기록: 407.600
+[AGV M4] fetch_request: Job J6, Op O064 → None (시간: 0.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J17, Op O172 fetch 중...
+[AGV_1] Job J17, Op O172 적재 완료
+[AGV_1] M4→M2로 Job J17, Op O172 delivery 시작
+[AGV_1] M4 → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J17, Op O172 unload 중...
+[AGV_1] Job J17, Op O172를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J16, Op O162 fetch 시작
+[AGV_1] M2 → M1 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J16, Op O162 fetch 중...
+[AGV_1] Job J16, Op O162 적재 완료
+[AGV_1] M1→M3로 Job J16, Op O162 delivery 시작
+[AGV_1] M1 → M3 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[M1] Operation O143 완료 시간 기록: 415.400
+[AGV M1] fetch_request: Job J14, Op O144 → None (시간: 0.00초)
+[M1] Job J28의 Operation O281 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J16, Op O162 unload 중...
+[AGV_1] Job J16, Op O162를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M3] Job J16의 Operation O162 시작 (예상 소요 시간: 31.00초)
+[AGV_1] GEN에서 Job J12, Op O121 fetch 시작
+[AGV_1] M3 → GEN 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M2] Operation O202 완료 시간 기록: 419.700
+[Transducer] Job J20 완료 기록
+[M2] Job J17의 Operation O172 시작 (예상 소요 시간: 31.00초)
+[M1] Operation O281 완료 시간 기록: 421.400
+[AGV M1] fetch_request: Job J28, Op O282 → None (시간: 0.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J12, Op O121 fetch 중...
+[AGV_1] Job J12, Op O121 적재 완료
+[AGV_1] GEN→M2로 Job J12, Op O121 delivery 시작
+[AGV_1] GEN → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J12, Op O121 unload 중...
+[AGV_1] Job J12, Op O121를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J23, Op O232 fetch 시작
+[AGV_1] M2 → M1 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J23, Op O232 fetch 중...
+[AGV_1] Job J23, Op O232 적재 완료
+[AGV_1] M1→M1로 Job J23, Op O232 delivery 시작
+[AGV_1] M1에서 Job J23, Op O232 unload 중...
+[AGV_1] Job J23, Op O232를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J23의 Operation O232 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M1에서 Job J28, Op O282 fetch 시작
+[AGV_1] M1에서 Job J28, Op O282 fetch 중...
+[AGV_1] Job J28, Op O282 적재 완료
+[AGV_1] M1→M1로 Job J28, Op O282 delivery 시작
+[AGV_1] M1에서 Job J28, Op O282 unload 중...
+[AGV_1] Job J28, Op O282를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J8, Op O081 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M1] Operation O232 완료 시간 기록: 434.100
+[AGV M1] fetch_request: Job J23, Op O233 → None (시간: 0.00초)
+[M1] Job J28의 Operation O282 시작 (예상 소요 시간: 31.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J8, Op O081 fetch 중...
+[AGV_1] Job J8, Op O081 적재 완료
+[AGV_1] GEN→M1로 Job J8, Op O081 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J8, Op O081 unload 중...
+[AGV_1] Job J8, Op O081를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M3에서 Job J15, Op O153 fetch 시작
+[AGV_1] M1 → M3 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J15, Op O153 fetch 중...
+[AGV_1] Job J15, Op O153 적재 완료
+[AGV_1] M3→M3로 Job J15, Op O153 delivery 시작
+[AGV_1] M3에서 Job J15, Op O153 unload 중...
+[AGV_1] Job J15, Op O153를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M4에서 Job J5, Op O052 fetch 시작
+[AGV_1] M3 → M4 이동 시작 (거리: 9.00m, 시간: 9.00초)
+[M3] Operation O162 완료 시간 기록: 448.900
+[AGV M3] fetch_request: Job J16, Op O163 → None (시간: 0.00초)
+[M3] Job J15의 Operation O153 시작 (예상 소요 시간: 31.00초)
+[M2] Operation O172 완료 시간 기록: 450.700
+[Transducer] Job J17 완료 기록
+[M2] Job J12의 Operation O121 시작 (예상 소요 시간: 15.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J5, Op O052 fetch 중...
+[AGV_1] Job J5, Op O052 적재 완료
+[AGV_1] M4→M2로 Job J5, Op O052 delivery 시작
+[AGV_1] M4 → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J5, Op O052 unload 중...
+[AGV_1] Job J5, Op O052를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M4에서 Job J3, Op O033 fetch 시작
+[AGV_1] M2 → M4 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J3, Op O033 fetch 중...
+[AGV_1] Job J3, Op O033 적재 완료
+[AGV_1] M4→M3로 Job J3, Op O033 delivery 시작
+[AGV_1] M4 → M3 이동 시작 (거리: 9.00m, 시간: 9.00초)
+[M1] Operation O282 완료 시간 기록: 465.100
+[Transducer] Job J28 완료 기록
+[M1] Job J8의 Operation O081 시작 (예상 소요 시간: 13.00초)
+[M2] Operation O121 완료 시간 기록: 465.700
+[AGV M2] fetch_request: Job J12, Op O122 → None (시간: 0.00초)
+[M2] Job J5의 Operation O052 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J3, Op O033 unload 중...
+[AGV_1] Job J3, Op O033를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M3에서 Job J16, Op O163 fetch 시작
+[AGV_1] M3에서 Job J16, Op O163 fetch 중...
+[AGV_1] Job J16, Op O163 적재 완료
+[AGV_1] M3→M1로 Job J16, Op O163 delivery 시작
+[AGV_1] M3 → M1 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J16, Op O163 unload 중...
+[AGV_1] Job J16, Op O163를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M2에서 Job J25, Op O253 fetch 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J25, Op O253 fetch 중...
+[AGV_1] Job J25, Op O253 적재 완료
+[AGV_1] M2→M2로 Job J25, Op O253 delivery 시작
+[AGV_1] M2에서 Job J25, Op O253 unload 중...
+[AGV_1] Job J25, Op O253를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J1, Op O011 fetch 시작
+[AGV_1] M2 → GEN 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[M1] Operation O081 완료 시간 기록: 478.100
+[AGV M1] fetch_request: Job J8, Op O082 → None (시간: 0.00초)
+[M1] Job J16의 Operation O163 시작 (예상 소요 시간: 13.00초)
+[M2] Operation O052 완료 시간 기록: 478.700
+[AGV M2] fetch_request: Job J5, Op O053 → None (시간: 0.00초)
+[M2] Job J25의 Operation O253 시작 (예상 소요 시간: 15.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J1, Op O011 fetch 중...
+[AGV_1] Job J1, Op O011 적재 완료
+[AGV_1] GEN→M1로 Job J1, Op O011 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M3] Operation O153 완료 시간 기록: 479.900
+[AGV M3] fetch_request: Job J15, Op O154 → None (시간: 0.00초)
+[M3] Job J3의 Operation O033 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J1, Op O011 unload 중...
+[AGV_1] Job J1, Op O011를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] GEN에서 Job J19, Op O191 fetch 시작
+[AGV_1] M1 → GEN 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[M1] Operation O163 완료 시간 기록: 491.100
+[Transducer] Job J16 완료 기록
+[M1] Job J1의 Operation O011 시작 (예상 소요 시간: 13.00초)
+[M2] Operation O253 완료 시간 기록: 493.700
+[AGV M2] fetch_request: Job J25, Op O254 → None (시간: 0.00초)
+[AGV_1] GEN 도착 완료
+[AGV_1] GEN에서 Job J19, Op O191 fetch 중...
+[AGV_1] Job J19, Op O191 적재 완료
+[AGV_1] GEN→M1로 Job J19, Op O191 delivery 시작
+[AGV_1] GEN → M1 이동 시작 (거리: 8.00m, 시간: 8.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J19, Op O191 unload 중...
+[AGV_1] Job J19, Op O191를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M3에서 Job J15, Op O154 fetch 시작
+[AGV_1] M1 → M3 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[M1] Operation O011 완료 시간 기록: 504.100
+[AGV M1] fetch_request: Job J1, Op O012 → None (시간: 0.00초)
+[M1] Job J19의 Operation O191 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J15, Op O154 fetch 중...
+[AGV_1] Job J15, Op O154 적재 완료
+[AGV_1] M3→M1로 Job J15, Op O154 delivery 시작
+[AGV_1] M3 → M1 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J15, Op O154 unload 중...
+[AGV_1] Job J15, Op O154를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J14, Op O144 fetch 시작
+[AGV_1] M1에서 Job J14, Op O144 fetch 중...
+[AGV_1] Job J14, Op O144 적재 완료
+[AGV_1] M1→M2로 Job J14, Op O144 delivery 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M1] Operation O191 완료 시간 기록: 510.100
+[AGV M1] fetch_request: Job J19, Op O192 → None (시간: 0.00초)
+[M1] Job J15의 Operation O154 시작 (예상 소요 시간: 31.00초)
+[M3] Operation O033 완료 시간 기록: 510.900
+[Transducer] Job J3 완료 기록
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J14, Op O144 unload 중...
+[AGV_1] Job J14, Op O144를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M2] Job J14의 Operation O144 시작 (예상 소요 시간: 15.00초)
+[AGV_1] M4에서 Job J27, Op O272 fetch 시작
+[AGV_1] M2 → M4 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J27, Op O272 fetch 중...
+[AGV_1] Job J27, Op O272 적재 완료
+[AGV_1] M4→M1로 Job J27, Op O272 delivery 시작
+[AGV_1] M4 → M1 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J27, Op O272 unload 중...
+[AGV_1] Job J27, Op O272를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J8, Op O082 fetch 시작
+[AGV_1] M1에서 Job J8, Op O082 fetch 중...
+[AGV_1] Job J8, Op O082 적재 완료
+[AGV_1] M1→M2로 Job J8, Op O082 delivery 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J8, Op O082 unload 중...
+[AGV_1] Job J8, Op O082를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M2에서 Job J5, Op O053 fetch 시작
+[AGV_1] M2에서 Job J5, Op O053 fetch 중...
+[AGV_1] Job J5, Op O053 적재 완료
+[AGV_1] M2→M3로 Job J5, Op O053 delivery 시작
+[AGV_1] M2 → M3 이동 시작 (거리: 5.00m, 시간: 5.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J5, Op O053 unload 중...
+[AGV_1] Job J5, Op O053를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M3] Job J5의 Operation O053 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M1에서 Job J19, Op O192 fetch 시작
+[AGV_1] M3 → M1 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[M2] Operation O144 완료 시간 기록: 528.100
+[Transducer] Job J14 완료 기록
+[M2] Job J8의 Operation O082 시작 (예상 소요 시간: 15.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J19, Op O192 fetch 중...
+[AGV_1] Job J19, Op O192 적재 완료
+[AGV_1] M1→M2로 Job J19, Op O192 delivery 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J19, Op O192 unload 중...
+[AGV_1] Job J19, Op O192를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M4에서 Job J24, Op O242 fetch 시작
+[AGV_1] M2 → M4 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J24, Op O242 fetch 중...
+[AGV_1] Job J24, Op O242 적재 완료
+[AGV_1] M4→M4로 Job J24, Op O242 delivery 시작
+[AGV_1] M4에서 Job J24, Op O242 unload 중...
+[AGV_1] Job J24, Op O242를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J24의 Operation O242 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M1에서 Job J23, Op O233 fetch 시작
+[AGV_1] M4 → M1 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J23, Op O233 fetch 중...
+[AGV_1] Job J23, Op O233 적재 완료
+[AGV_1] M1→M4로 Job J23, Op O233 delivery 시작
+[AGV_1] M1 → M4 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J23, Op O233 unload 중...
+[AGV_1] Job J23, Op O233를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J26, Op O262 fetch 시작
+[AGV_1] M4 → M1 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J26, Op O262 fetch 중...
+[AGV_1] Job J26, Op O262 적재 완료
+[AGV_1] M1→M3로 Job J26, Op O262 delivery 시작
+[AGV_1] M1 → M3 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[M4] Operation O242 완료 시간 기록: 540.600
+[AGV M4] fetch_request: Job J24, Op O243 → None (시간: 0.00초)
+[M4] Job J23의 Operation O233 시작 (예상 소요 시간: 15.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J26, Op O262 unload 중...
+[AGV_1] Job J26, Op O262를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M4에서 Job J24, Op O243 fetch 시작
+[AGV_1] M3 → M4 이동 시작 (거리: 9.00m, 시간: 9.00초)
+[M1] Operation O154 완료 시간 기록: 541.100
+[Transducer] Job J15 완료 기록
+[M1] Job J27의 Operation O272 시작 (예상 소요 시간: 6.00초)
+[M2] Operation O082 완료 시간 기록: 543.100
+[Transducer] Job J8 완료 기록
+[M2] Job J19의 Operation O192 시작 (예상 소요 시간: 31.00초)
+[M1] Operation O272 완료 시간 기록: 547.100
+[AGV M1] fetch_request: Job J27, Op O273 → None (시간: 0.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J24, Op O243 fetch 중...
+[AGV_1] Job J24, Op O243 적재 완료
+[AGV_1] M4→M1로 Job J24, Op O243 delivery 시작
+[AGV_1] M4 → M1 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J24, Op O243 unload 중...
+[AGV_1] Job J24, Op O243를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M1] Job J24의 Operation O243 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M1에서 Job J27, Op O273 fetch 시작
+[AGV_1] M1에서 Job J27, Op O273 fetch 중...
+[AGV_1] Job J27, Op O273 적재 완료
+[AGV_1] M1→M1로 Job J27, Op O273 delivery 시작
+[AGV_1] M1에서 Job J27, Op O273 unload 중...
+[AGV_1] Job J27, Op O273를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M4에서 Job J6, Op O064 fetch 시작
+[AGV_1] M1 → M4 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J6, Op O064 fetch 중...
+[AGV_1] Job J6, Op O064 적재 완료
+[AGV_1] M4→M2로 Job J6, Op O064 delivery 시작
+[AGV_1] M4 → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J6, Op O064 unload 중...
+[AGV_1] Job J6, Op O064를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M2에서 Job J12, Op O122 fetch 시작
+[AGV_1] M2에서 Job J12, Op O122 fetch 중...
+[AGV_1] Job J12, Op O122 적재 완료
+[AGV_1] M2→M4로 Job J12, Op O122 delivery 시작
+[AGV_1] M2 → M4 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[M4] Operation O233 완료 시간 기록: 555.600
+[AGV M4] fetch_request: Job J23, Op O234 → None (시간: 0.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J12, Op O122 unload 중...
+[AGV_1] Job J12, Op O122를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J12의 Operation O122 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M2에서 Job J25, Op O254 fetch 시작
+[AGV_1] M4 → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[M3] Operation O053 완료 시간 기록: 556.400
+[Transducer] Job J5 완료 기록
+[M3] Job J26의 Operation O262 시작 (예상 소요 시간: 13.00초)
+[M1] Operation O243 완료 시간 기록: 556.900
+[AGV M1] fetch_request: Job J24, Op O244 → None (시간: 0.00초)
+[M1] Job J27의 Operation O273 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J25, Op O254 fetch 중...
+[AGV_1] Job J25, Op O254 적재 완료
+[AGV_1] M2→M1로 Job J25, Op O254 delivery 시작
+[AGV_1] M2 → M1 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J25, Op O254 unload 중...
+[AGV_1] Job J25, Op O254를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M4에서 Job J23, Op O234 fetch 시작
+[AGV_1] M1 → M4 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J23, Op O234 fetch 중...
+[AGV_1] Job J23, Op O234 적재 완료
+[AGV_1] M4→M4로 Job J23, Op O234 delivery 시작
+[AGV_1] M4에서 Job J23, Op O234 unload 중...
+[AGV_1] Job J23, Op O234를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M4에서 Job J11, Op O112 fetch 시작
+[AGV_1] M4에서 Job J11, Op O112 fetch 중...
+[AGV_1] Job J11, Op O112 적재 완료
+[AGV_1] M4→M3로 Job J11, Op O112 delivery 시작
+[AGV_1] M4 → M3 이동 시작 (거리: 9.00m, 시간: 9.00초)
+[M4] Operation O122 완료 시간 기록: 569.200
+[AGV M4] fetch_request: Job J12, Op O123 → None (시간: 0.00초)
+[M4] Job J23의 Operation O234 시작 (예상 소요 시간: 6.00초)
+[M3] Operation O262 완료 시간 기록: 569.400
+[Transducer] Job J26 완료 기록
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J11, Op O112 unload 중...
+[AGV_1] Job J11, Op O112를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M3] Job J11의 Operation O112 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M3에서 Job J13, Op O134 fetch 시작
+[AGV_1] M3에서 Job J13, Op O134 fetch 중...
+[AGV_1] Job J13, Op O134 적재 완료
+[AGV_1] M3→M3로 Job J13, Op O134 delivery 시작
+[AGV_1] M3에서 Job J13, Op O134 unload 중...
+[AGV_1] Job J13, Op O134를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J24, Op O244 fetch 시작
+[AGV_1] M3 → M1 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[M2] Operation O192 완료 시간 기록: 574.100
+[AGV M2] fetch_request: Job J19, Op O193 → None (시간: 0.00초)
+[M2] Job J6의 Operation O064 시작 (예상 소요 시간: 15.00초)
+[M4] Operation O234 완료 시간 기록: 575.200
+[Transducer] Job J23 완료 기록
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J24, Op O244 fetch 중...
+[AGV_1] Job J24, Op O244 적재 완료
+[AGV_1] M1→M2로 Job J24, Op O244 delivery 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J24, Op O244 unload 중...
+[AGV_1] Job J24, Op O244를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M4에서 Job J12, Op O123 fetch 시작
+[AGV_1] M2 → M4 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J12, Op O123 fetch 중...
+[AGV_1] Job J12, Op O123 적재 완료
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/doyoung/Desktop/Work/AASX/simulator/main.py", line 184, in <module>
+    sim.run(print_queues_interval=args.print_queues_interval, 
+  File "/home/doyoung/Desktop/Work/AASX/simulator/engine/simulator.py", line 331, in run
+    m.handle_event(evt)
+  File "/home/doyoung/Desktop/Work/AASX/simulator/control/optimizer.py", line 141, in handle_event
+    scores = [self._evaluate(sim, ch, None) for ch in cur_pop]
+  File "/home/doyoung/Desktop/Work/AASX/simulator/control/optimizer.py", line 141, in <listcomp>
+    scores = [self._evaluate(sim, ch, None) for ch in cur_pop]
+  File "/home/doyoung/Desktop/Work/AASX/simulator/control/optimizer.py", line 112, in _evaluate
+    sim.run()                                       # 동일 메커니즘으로 평가
+  File "/home/doyoung/Desktop/Work/AASX/simulator/engine/simulator.py", line 331, in run
+    m.handle_event(evt)
+  File "/home/doyoung/Desktop/Work/AASX/simulator/model/agv.py", line 168, in handle_event
+    self._handle_move_complete(event.payload)
+  File "/home/doyoung/Desktop/Work/AASX/simulator/model/agv.py", line 410, in _handle_move_complete
+    self._arrive_at_destination()
+  File "/home/doyoung/Desktop/Work/AASX/simulator/model/agv.py", line 304, in _arrive_at_destination
+    self._start_unloading()
+  File "/home/doyoung/Desktop/Work/AASX/simulator/model/agv.py", line 338, in _start_unloading
+    print(f"[{self.name}] {destination_machine}에서 Job {job.id}, Op {job.current_op().id} unload 중...")
+AttributeError: 'NoneType' object has no attribute 'id'
+[AGV_1] M4→M4로 Job J12, Op O123 delivery 시작
+[AGV_1] M4에서 Job J12, Op O123 unload 중...
+[AGV_1] Job J12, Op O123를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J12의 Operation O123 시작 (예상 소요 시간: 6.00초)
+[AGV_1] M1에서 Job J2, Op O022 fetch 시작
+[AGV_1] M4 → M1 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J2, Op O022 fetch 중...
+[AGV_1] Job J2, Op O022 적재 완료
+[AGV_1] M1→M2로 Job J2, Op O022 delivery 시작
+[AGV_1] M1 → M2 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M3] Operation O112 완료 시간 기록: 585.500
+[Transducer] Job J11 완료 기록
+[M3] Job J13의 Operation O134 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J2, Op O022 unload 중...
+[AGV_1] Job J2, Op O022를 M2에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J1, Op O012 fetch 시작
+[AGV_1] M2 → M1 이동 시작 (거리: 4.00m, 시간: 4.00초)
+[M4] Operation O123 완료 시간 기록: 587.800
+[Transducer] Job J12 완료 기록
+[M1] Operation O273 완료 시간 기록: 587.900
+[AGV M1] fetch_request: Job J27, Op O274 → None (시간: 0.00초)
+[M1] Job J25의 Operation O254 시작 (예상 소요 시간: 31.00초)
+[M2] Operation O064 완료 시간 기록: 589.100
+[Transducer] Job J6 완료 기록
+[M2] Job J24의 Operation O244 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J1, Op O012 fetch 중...
+[AGV_1] Job J1, Op O012 적재 완료
+[AGV_1] M1→M1로 Job J1, Op O012 delivery 시작
+[AGV_1] M1에서 Job J1, Op O012 unload 중...
+[AGV_1] Job J1, Op O012를 M1에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J27, Op O274 fetch 시작
+[AGV_1] M1에서 Job J27, Op O274 fetch 중...
+[AGV_1] Job J27, Op O274 적재 완료
+[AGV_1] M1→M3로 Job J27, Op O274 delivery 시작
+[AGV_1] M1 → M3 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[AGV_1] M3 도착 완료
+[AGV_1] M3에서 Job J27, Op O274 unload 중...
+[AGV_1] Job J27, Op O274를 M3에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[AGV_1] M1에서 Job J9, Op O092 fetch 시작
+[AGV_1] M3 → M1 이동 시작 (거리: 3.00m, 시간: 3.00초)
+[AGV_1] M1 도착 완료
+[AGV_1] M1에서 Job J9, Op O092 fetch 중...
+[AGV_1] Job J9, Op O092 적재 완료
+[AGV_1] M1→M4로 Job J9, Op O092 delivery 시작
+[AGV_1] M1 → M4 이동 시작 (거리: 1.00m, 시간: 1.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J9, Op O092 unload 중...
+[AGV_1] Job J9, Op O092를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Job J9의 Operation O092 시작 (예상 소요 시간: 13.00초)
+[AGV_1] M2에서 Job J19, Op O193 fetch 시작
+[AGV_1] M4 → M2 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[AGV_1] M2 도착 완료
+[AGV_1] M2에서 Job J19, Op O193 fetch 중...
+[AGV_1] Job J19, Op O193 적재 완료
+[AGV_1] M2→M4로 Job J19, Op O193 delivery 시작
+[AGV_1] M2 → M4 이동 시작 (거리: 2.00m, 시간: 2.00초)
+[M2] Operation O244 완료 시간 기록: 602.100
+[Transducer] Job J24 완료 기록
+[M2] Job J2의 Operation O022 시작 (예상 소요 시간: 31.00초)
+[AGV_1] M4 도착 완료
+[AGV_1] M4에서 Job J19, Op O193 unload 중...
+[AGV_1] Job J19, Op O193를 M4에 배송 완료
+[AGV_1] 유휴 상태로 전환
+[M4] Operation O092 완료 시간 기록: 611.200
+[Transducer] Job J9 완료 기록
+[M4] Job J19의 Operation O193 시작 (예상 소요 시간: 13.00초)
+[M3] Operation O134 완료 시간 기록: 616.500
+[Transducer] Job J13 완료 기록
+[M3] Job J27의 Operation O274 시작 (예상 소요 시간: 31.00초)
+[M1] Operation O254 완료 시간 기록: 618.900
+[Transducer] Job J25 완료 기록
+[M1] Job J1의 Operation O012 시작 (예상 소요 시간: 13.00초)
+[M4] Operation O193 완료 시간 기록: 624.200
+[Transducer] Job J19 완료 기록
+[M1] Operation O012 완료 시간 기록: 631.900
+[Transducer] Job J1 완료 기록
+[M2] Operation O022 완료 시간 기록: 633.100
+[Transducer] Job J2 완료 기록
+[M3] Operation O274 완료 시간 기록: 647.500
+[Transducer] Job J27 완료 기록
+[AGV_1] M1 도착 완료

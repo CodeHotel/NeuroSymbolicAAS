@@ -39,6 +39,8 @@ class Machine(EoModel):
         self.dispatch = FIFO() if dispatch_rule=='fifo' else FIFO()
         self.next_available_time = 0.0  # 다음 사용 가능 시간
         self.simulator = simulator  # 시뮬레이터 참조
+        self.waiting_for_pickup = []  # AGV가 오기 전까지 임시로 보관
+
         
         # Job 상태 관리를 위한 큐들 (OperationInfo 대신 Job 상태 직접 관리)
         self.queued_jobs = deque()  # 대기 중인 Job들
@@ -61,6 +63,7 @@ class Machine(EoModel):
             'queued_jobs': [j.id for j in list(self.queued_jobs)],
             'running_jobs': [j.id for j in list(self.running_jobs)],
             'finished_jobs': [j.id for j in list(self.finished_jobs)],
+            'waiting_for_pickup': [p.id for p in list(self.waiting_for_pickup)],
             'transfer_counts': dict(self.transfer_counts)
         }
 
@@ -74,8 +77,9 @@ class Machine(EoModel):
         self.queued_jobs  = deque([reg['jobs'][jid] for jid in st.get('queued_jobs', []) if jid in reg['jobs']])
         self.running_jobs = deque([reg['jobs'][jid] for jid in st.get('running_jobs', []) if jid in reg['jobs']])
         self.finished_jobs = [reg['jobs'][jid] for jid in st.get('finished_jobs', []) if jid in reg['jobs']]
+        self.waiting_for_pickup = [reg['parts'][pid] for pid in st.get('waiting_for_pickup', []) if pid in reg['parts']]
         
-    def log_agv_activity(self, activity_type, job_id, destination=None, duration=0.0):
+    def log_agv_activity(self, activity_type, job_id, op_id, destination=None, duration=0.0):
         """AGV 활동 로깅"""
         log_entry = {
             'timestamp': EoModel.get_time(),
@@ -86,8 +90,8 @@ class Machine(EoModel):
             'duration': duration
         }
         self.agv_logs.append(log_entry)
-        print(f"[AGV {self.name}] {activity_type}: Job {job_id} → {destination} (시간: {duration:.2f}초)")
-        
+        print(f"[AGV {self.name}] {activity_type}: Job {job_id}, Op {op_id} → {destination} (시간: {duration:.2f}초)")
+
     def save_agv_logs(self, output_dir='results'):
         """AGV 로그를 엑셀 파일로 저장"""
         if not self.agv_logs:
@@ -123,8 +127,12 @@ class Machine(EoModel):
         elif et == 'agv_delivery_complete':
             # AGV 배송 완료 및 복귀 처리
             payload = evt.payload
-            self.log_agv_activity('delivery_complete', payload['job_id'], payload['destination'], payload['delivery_time'])
-            self.log_agv_activity('return_home', payload['job_id'], self.name, payload['return_time'])
+            self.log_agv_activity('delivery_complete', payload['job_id'], payload['op_id'], payload['destination'], payload['delivery_time'])
+            self.log_agv_activity('return_home', payload['job_id'], payload['op_id'], self.name, payload['return_time'])
+        elif et == "source_pickup" :
+            part = evt.payload.get("part")
+            if part in self.waiting_for_pickup:
+                self.waiting_for_pickup.remove(part)
 
     def _enqueue(self, part):
         self.queue.append(part)
@@ -309,10 +317,11 @@ class Machine(EoModel):
                 self.queued_jobs.remove(part.job)
             
             # Job 완료 처리
-            
+           
             Recorder.log_done(part, EoModel.get_time())
             done_ev = Event('job_completed', {'part': part}, dest_model='transducer')
             self.schedule(done_ev, 0)
+        
         else:
             if part in self.queue:
                 self.queue.remove(part)
@@ -320,8 +329,10 @@ class Machine(EoModel):
             part.job.set_location(self.name)  # f"{self.name}->(TBD)"처럼 표기해도 됨
             if part.job in self.queued_jobs:
                 self.queued_jobs.remove(part.job)
+            if part not in self.waiting_for_pickup:
+                self.waiting_for_pickup.append(part)
             # (선택) 로깅: 목적지 미정이므로 hint 없이 fetch 요청만 기록
-            self.log_agv_activity('fetch_request', part.job.id, None, 0.0)
+            self.log_agv_activity('fetch_request', part.job.id, part.job.current_op().id, None, 0.0)
 
             fetch_ev = Event('agv_fetch_request', {
                 'part': part,

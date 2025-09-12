@@ -5,12 +5,14 @@ class AGVController(EoModel):
         super().__init__('AGVController')
         self.agvs = {agv.agv_id: agv for agv in agv_list}
         self.idle_pool = set(self.agvs.keys())
+        self.request_queue = []  # 대기 중인 fetch 요청들
 
     def save_state(self):
         # 현재 보유 AGV ID들과 idle 풀만 저장 (객체는 그대로 유지)
         return {
             "agv_ids": list(self.agvs.keys()),
             "idle_pool": list(self.idle_pool),
+            "request_queue": self.request_queue
         }
 
     def load_state(self, st, registry=None):
@@ -26,6 +28,7 @@ class AGVController(EoModel):
                 pass
         # idle 풀 복원 (없으면 모든 AGV를 idle로 가정)
         self.idle_pool = set(st.get("idle_pool", saved_ids or list(self.agvs.keys())))
+        self.request_queue = st.get("request_queue", [])
 
     def _earliest_available_time(self):
         now = EoModel.get_time()
@@ -82,21 +85,45 @@ class AGVController(EoModel):
 
         if et == 'agv_fetch_request':
             part = p.get('part')
-            job  = part.job if part else p['job']
+            job  = part.job
             src  = p['source_machine']
-            # ▶ ETA 최소 AGV 선택
-            agv_id = self._acquire_idle_agv(src)
-            if agv_id is None:
-                t = self._earliest_available_time()
-                delay = max(0, t - EoModel.get_time()) + 0.1
-                self.schedule(Event('agv_fetch_request', p, 'AGVController'), delay)
-                return
-            ev = Event('agv_fetch_request',
-                       {'part': part,
-                        'job': job,
-                        'source_machine': src},
-                       dest_model=f"AGV_{agv_id}")
+            self.request_queue.append(part)
+
+            # 1) NSGA 계획에서 이 op의 선호 AGV 확인
+            plan = getattr(self.simulator, "optim_plan", {}) or {}
+            op    = job.current_op()
+            op_id = op.id if op else None
+            pref  = str(plan.get(op_id, {}).get("agv")) if op_id in plan else None
+
+            if pref:
+                # 2) 계획 AGV가 idle이면 즉시 배정
+                if pref in self.idle_pool:
+                    agv_id = pref
+                    self.idle_pool.remove(agv_id)
+                else:
+                    # 3) 계획 AGV가 바쁘면, 그 AGV가 idle 되는 시각에 '이 요청'을 재시도
+                    agv = self.agvs.get(pref)
+                    # 프로젝트 필드에 맞춰 사용 (available_time / busy_until / arrival_time 등)
+                    free_t = getattr(agv, "available_time", None) or getattr(agv, "arrival_time", None)
+                    if free_t is None:
+                        free_t = EoModel.get_time() + 0.5  # 보수적 재시도
+                    delay = max(0.0, free_t - EoModel.get_time()) + 0.1
+                    self.schedule(Event('agv_fetch_request', p, 'AGVController'), delay)
+                    return
+            else:
+                # 4) 계획이 없으면 기존 룰로 선택
+                agv_id = self._acquire_idle_agv(src)
+                if agv_id is None:
+                    t = self._earliest_available_time()
+                    delay = max(0, t - EoModel.get_time()) + 0.1
+                    self.schedule(Event('agv_fetch_request', p, 'AGVController'), delay)
+                    return
+
+            # 5) 최종 배정된 AGV에 fetch 이벤트 전달(기존과 동일)
+            ev = Event('agv_fetch_request', {'part': part, 'source_machine': src}, dest_model=f"AGV_{agv_id}")
+            self.request_queue.remove(part)
             self.schedule(ev, 0)
+
 
         elif et == 'agv_delivery_request':
             agv_id = p['agv_id']

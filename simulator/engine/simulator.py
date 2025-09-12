@@ -5,6 +5,8 @@ import random
 from enum import Enum, auto
 from collections import namedtuple
 
+from simulator import model
+
 class DecisionEpoch(Enum):
     MACHINE_IDLE = auto()
     JOB_RELEASE = auto()
@@ -20,12 +22,14 @@ class Action:
         return f"Action({self.operation_id} -> {self.machine_id}, pos={self.insert_position})"
 
 class SimulatorState:
-    def __init__(self, current_time, event_queue, models_state, machines_state, rng_state):
+    def __init__(self, current_time, event_queue, models_state, machines_state, rng_state, running_time, start_time):
         self.current_time = current_time
         self.event_queue = event_queue
         self.models_state = models_state
         self.machines_state = machines_state
         self.rng_state = rng_state
+        self.running_time = running_time
+        self.start_time = start_time
 
 class Event:
     __slots__ = ('time','event_type','payload','src_model','dest_model')
@@ -85,9 +89,12 @@ class Simulator:
         self.event_queue = []
         self.models = {}
         self.machines = []  # 기계 목록 저장
+        self.agvs = []      # AGV 목록 저장
         self.decision_epochs = []  # 결정 시점들
         self.best_objective = float('inf')
         self.best_schedule = None
+        self.start_time = None
+        self.running_time = 0.0
         EoModel.bind(self.push, self.now)
 
     def push(self, event):
@@ -97,10 +104,13 @@ class Simulator:
         return self.current_time
 
     def register(self, model):
+        model.simulator = self
         self.models[model.name] = model
         # 기계 모델인 경우 별도로 저장
         if hasattr(model, 'queued_jobs'):
             self.machines.append(model)
+        if hasattr(model, "carried_jobs"):
+            self.agvs.append(model)
 
 
     # RNG, 이벤트 큐, 모델 상태를 포함한 시뮬레이터 상태 스냅샷
@@ -118,31 +128,67 @@ class Simulator:
         for name, model in self.models.items():
             if hasattr(model, 'save_state'):
                 models_state[name] = model.save_state()
-        return SimulatorState(self.current_time, event_queue_copy, models_state, {}, rng_state)
+        return SimulatorState(self.current_time, event_queue_copy, models_state, {}, rng_state, self.running_time, self.start_time)
 
     # 스냅샷 상태로 복원
     def restore(self, state: SimulatorState):
+        # 1) 시간/난수 상태 복원
         self.current_time = state.current_time
         random.setstate(state.rng_state)
+        self.running_time = state.running_time
+        self.start_time = state.start_time
+
+        # 2) 먼저 기본 레지스트리를 한 번 만든다 (generator/머신 큐/AGV carried까지)
+        base_reg = self._build_registry()
+
+        # 3) 스냅샷(models_state) 안의 current_task에서 필요한 ID를 추출하여 base_reg에 미리 주입
+        ct_part_ids = set()
+        ct_job_ids  = set()
+        for name, st in state.models_state.items():
+            ct = st.get('current_task')
+            if isinstance(ct, dict) and ct:
+                if isinstance(ct.get('part'), dict) and 'id' in ct['part']:
+                    ct_part_ids.add(ct['part']['id'])
+                if isinstance(ct.get('job'), dict) and 'id' in ct['job']:
+                    ct_job_ids.add(ct['job']['id'])
+
+        gen = self.models.get('generator')
+        if gen is not None:
+            # generator의 맵에서 빠진 객체를 보강
+            for pid in ct_part_ids:
+                if pid not in base_reg['parts'] and hasattr(gen, '_parts_by_id') and pid in gen._parts_by_id:
+                    base_reg['parts'][pid] = gen._parts_by_id[pid]
+            for jid in ct_job_ids:
+                if jid not in base_reg['jobs'] and hasattr(gen, '_jobs_by_id') and jid in gen._jobs_by_id:
+                    base_reg['jobs'][jid] = gen._jobs_by_id[jid]
+
+        # 4) 이제 모든 모델에 대해 동일한 base_reg로 load_state를 수행 (모델별로 reg를 새로 만들지 말 것!)
         for name, model in self.models.items():
             if hasattr(model, 'load_state'):
-                reg = self._build_registry()
-                model.load_state(state.models_state.get(name, {}), reg)
-        reg = self._build_registry()
+                model.load_state(state.models_state.get(name, {}), base_reg)
+
+        # 5) 모델들이 살아났으니 최종 reg를 다시 만들어 이벤트 payload를 디코드
+        final_reg = self._build_registry()
         self.event_queue = []
         for ev in state.event_queue:
-            payload = self._decode_payload(ev.payload, reg)
+            payload = self._decode_payload(ev.payload, final_reg)
             ev2 = Event(ev.event_type, payload, ev.dest_model, ev.time)
             ev2.src_model = ev.src_model
             heapq.heappush(self.event_queue, ev2)
 
+
     def _build_registry(self):
         reg = {
             'machines': {m.name: m for m in self.machines},
-            'agvs': {},
+            'agvs': {m.name : m for m in self.agvs},
             'jobs': {},
             'parts': {}
         }
+        gen = self.models.get('generator')
+        if gen and hasattr(gen, '_jobs_by_id'):
+            reg['jobs'].update({jid: job for jid, job in gen._jobs_by_id.items()})
+        if gen and hasattr(gen, '_parts_by_id'):
+            reg['parts'].update({pid: part for pid, part in gen._parts_by_id.items()})
         # 1) AGVController 내부의 AGV들부터 등록
         agv_ctrl = self.models.get('AGVController')
         if agv_ctrl and hasattr(agv_ctrl, 'agvs'):
@@ -164,6 +210,11 @@ class Simulator:
             if hasattr(model, 'queue'):  # parts 큐
                 for p in list(model.queue):
                     reg['parts'][p.id] = p
+            if hasattr(model, 'waiting_for_pickup'):
+                for p in list(model.waiting_for_pickup):
+                    reg['parts'][p.id] = p
+                    if hasattr(p, 'job'):
+                        reg['jobs'][p.job.id] = p.job
 
             # AGV가 들고 있는 파트 (개별 모델이 AGV일 수도 있으니 체크)
             if hasattr(model, 'carried_jobs'):
@@ -172,6 +223,14 @@ class Simulator:
                     if hasattr(part, 'job'):
                         reg['jobs'][part.job.id] = part.job
 
+            ct = getattr(model, 'current_task', None)
+            if isinstance(ct, dict) and ct:
+                part = ct.get('part')
+                job  = ct.get('job') or (getattr(part, 'job', None) if part is not None else None)
+                if part is not None and hasattr(part, 'id'):
+                    reg['parts'][part.id] = part
+                if job is not None and hasattr(job, 'id'):
+                    reg['jobs'][job.id] = job
         return reg
 
     # 이벤트에 관련된 정보를 저장하는 함수, snapshot에 포함
@@ -208,30 +267,32 @@ class Simulator:
         return True
 
     # 목적함수 여러 개 수정 필요 
-    def objective(self):
-        """목적함수 (makespan)를 계산합니다."""
-        # 모든 작업이 완료되었는지 확인
+    def objective_multi(self):
+        """(makespan, agv_total_travel_time) 튜플 반환"""
+        # makespan 계산은 기존 objective()와 동일
         all_jobs_completed = True
         for machine in self.machines:
             if machine.queued_jobs or machine.running_jobs:
                 all_jobs_completed = False
                 break
-        
         if not all_jobs_completed:
-            return float('inf')
-        
-        # 모든 job의 완료 시간 중 최대값
-        max_completion_time = 0.0
-        for machine in self.machines:
-            for job in machine.finished_jobs:
-                if hasattr(job, 'completion_time'):
-                    max_completion_time = max(max_completion_time, job.completion_time)
-        
-        # 완료된 작업이 있으면 그 시간을 반환, 없으면 현재 시간을 반환
-        if max_completion_time > 0:
-            return max_completion_time
+            makespan = float('inf')
         else:
-            return self.current_time    
+            max_completion_time = 0.0
+            for machine in self.machines:
+                for job in machine.finished_jobs:
+                    if hasattr(job, 'completion_time'):
+                        max_completion_time = max(max_completion_time, job.completion_time)
+            makespan = max_completion_time if max_completion_time > 0 else self.current_time
+
+        # AGV 총 이동시간 합산
+        agv_total = 0.0
+        agv_ctrl = self.models.get('AGVController')
+        if agv_ctrl:
+            for agv in agv_ctrl.agvs.values():
+                agv_total += float(getattr(agv, 'total_distance', -10.0))
+
+        return makespan, agv_total  
 
 
 # 실행 관련 코드
@@ -294,7 +355,7 @@ class Simulator:
         """
         last_print_time = 0.0
         last_summary_time = 0.0
-        
+
         while self.event_queue:
             evt = heapq.heappop(self.event_queue)
             self.current_time = evt.time
