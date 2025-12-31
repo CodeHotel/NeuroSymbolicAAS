@@ -1,0 +1,51 @@
+# 41-nsga2-cronjob-template.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nsga2-simulator-template
+spec:
+  schedule: "@daily"
+  suspend: true
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          restartPolicy: Never
+
+          initContainers:
+            - name: init-nsga2-dirs
+              image: busybox:1.36
+              command:
+                - sh
+                - -c
+                - |
+                  set -eu
+                  mkdir -p /pvc/scenarios
+                  mkdir -p /pvc/results
+              volumeMounts:
+                - name: factory-shared
+                  mountPath: /pvc
+
+          containers:
+            - name: nsga2-simulator
+              image: factory-nsga2-simulator:latest
+              # IMPORTANT: local image -> never pull from internet
+              imagePullPolicy: Never
+
+              envFrom:
+                - configMapRef:
+                    name: nsga2-defaults
+
+              volumeMounts:
+                - name: factory-shared
+                  mountPath: /app/scenarios
+                  subPath: scenarios
+                - name: factory-shared
+                  mountPath: /app/results
+                  subPath: results
+
+          volumes:
+            - name: factory-shared
+              persistentVolumeClaim:
+                claimName: factory-shared-pvc

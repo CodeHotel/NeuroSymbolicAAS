@@ -1,4 +1,4 @@
-# k8s/01-api-server.yaml
+# 01-api-server.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,6 +26,8 @@ spec:
               mkdir -p /shared/aasxs
               mkdir -p /shared/jobs
               mkdir -p /shared/logs
+              mkdir -p /shared/scenarios
+              mkdir -p /shared/results
           volumeMounts:
             - name: factory-shared
               mountPath: /shared
@@ -39,6 +41,17 @@ spec:
           env:
             - name: SHARED_PATH
               value: /shared
+
+            # Optional but useful: stable paths for Goal3 artifacts
+            - name: NSGA2_SCENARIOS_DIR
+              value: /shared/scenarios
+            - name: NSGA2_RESULTS_DIR
+              value: /shared/results
+
+            # Optional: the in-cluster Job template name you can clone
+            - name: NSGA2_CRONJOB_TEMPLATE
+              value: nsga2-simulator-template
+
           volumeMounts:
             - name: factory-shared
               mountPath: /shared

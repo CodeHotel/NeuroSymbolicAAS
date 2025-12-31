@@ -2,5 +2,7 @@
 resources:
   - 00-pvc.yaml
   - 03-rbac.yaml
-  - 01-api-server.yaml
   - 02-aasx-server.yaml
+  - 01-api-server.yaml
+  - 40-nsga2-config.yaml
+  - 41-nsga2-cronjob-template.yaml

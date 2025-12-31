@@ -1,0 +1,10 @@
+# 40-nsga2-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nsga2-defaults
+data:
+  SCENARIO_NAME: "my_case"
+  ALGORITHM: "branch_and_bound"
+  TIME_LIMIT: "600"
+  MAX_NODES: "50000"
