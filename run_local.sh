@@ -17,13 +17,12 @@
 #  8) kubectl apply -k k8s
 #  9) Set API env vars (default: YES; restarts only api-server)
 # 10) Wait for rollouts to be ready
+#     - NEW: API rollout gets a FAST 8s check first.
+#            If it times out, we FORCE-KILL the api-server pods and retry.
+#            * If -y: do this automatically.
+#            * If interactive: ask before force-kill.
 # 11) Optionally run one-off NSGA2 job (--run-nsga2)
 # 12) Optionally port-forward and stay alive (--run)
-#
-# Defaults are "dev-friendly":
-# - Stable stack resources are NOT deleted unless you explicitly choose overwrite
-# - API image build/load defaults YES
-# - NSGA2 image build/load defaults YES (as requested)
 #
 set -euo pipefail
 
@@ -66,7 +65,7 @@ done
 ts() { date +"%Y-%m-%d %H:%M:%S"; }
 log() { echo "[$(ts)] [INFO] $*"; }
 warn() { echo "[$(ts)] [WARN] $*" >&2; }
-err() { echo "[$(ts)] [ERROR] $*" >&2; }
+err() { echo "[$(ts)] [ERROR] $*"; }
 die() { err "$*"; exit 1; }
 
 confirm() {
@@ -113,6 +112,11 @@ NSGA2_IMAGE="${NSGA2_IMAGE:-factory-nsga2-simulator:latest}"
 NSGA2_DOCKERFILE="${NSGA2_DOCKERFILE:-Dockerfile.nsga2}"
 NSGA2_CONTEXT_DIR="${NSGA2_CONTEXT_DIR:-$ROOT_DIR}"
 NSGA2_CRONJOB="${NSGA2_CRONJOB:-nsga2-simulator-template}"
+
+# Rollout behavior (NEW)
+# - API gets a fast check first, then force-kill + retry if needed.
+ROLLOUT_FAST_TIMEOUT_SEC="${ROLLOUT_FAST_TIMEOUT_SEC:-8}"
+ROLLOUT_FINAL_TIMEOUT_SEC="${ROLLOUT_FINAL_TIMEOUT_SEC:-240}"
 
 # Docker command (may become "sudo docker" if needed)
 DOCKER="docker"
@@ -366,7 +370,7 @@ build_nsga2_image() {
 
   log "NSGA2 image build step (assumed required)."
   echo "  $DOCKER build -t \"$NSGA2_IMAGE\" -f \"$ROOT_DIR/$NSGA2_DOCKERFILE\" \"$NSGA2_CONTEXT_DIR\""
-  # default YES: requested default behavior
+  # default YES: required
   confirm "Build/refresh NSGA2 image now?" "Y" || die "NSGA2 is assumed required; refusing to proceed without it."
   $DOCKER build -t "$NSGA2_IMAGE" -f "$ROOT_DIR/$NSGA2_DOCKERFILE" "$NSGA2_CONTEXT_DIR"
   log "NSGA2 build complete: $NSGA2_IMAGE"
@@ -397,10 +401,49 @@ set_api_env() {
     FORCE_LOCAL_MODE="$FORCE_LOCAL_MODE"
 }
 
+force_kill_pods_by_selector() {
+  local selector="$1"
+  warn "FORCE-KILL: deleting pods with selector '$selector' (grace=0, force)."
+  kubectl -n "$NAMESPACE" delete pod -l "$selector" --grace-period=0 --force --wait=false >/dev/null 2>&1 || true
+  # Give the apiserver a moment to register deletion
+  sleep 2
+}
+
+wait_ready_api_with_fast_timeout_and_force_kill() {
+  local deploy="api-server-deployment"
+  local selector="app=api-server"
+
+  log "Waiting for rollout (FAST ${ROLLOUT_FAST_TIMEOUT_SEC}s) for $deploy..."
+  if kubectl -n "$NAMESPACE" rollout status "deploy/$deploy" --timeout="${ROLLOUT_FAST_TIMEOUT_SEC}s"; then
+    log "API rollout ready (fast path)."
+    return 0
+  fi
+
+  warn "API rollout did not become ready within ${ROLLOUT_FAST_TIMEOUT_SEC}s."
+
+  # Default behavior: if -y -> force-kill automatically. If interactive -> ask.
+  if [[ "$AUTO_YES" -eq 1 ]]; then
+    warn "-y enabled: auto force-killing existing api-server pods and retrying rollout."
+  else
+    confirm "API rollout timed out. Force-kill existing api-server pods and retry?" "Y" || die "API rollout timed out."
+  fi
+
+  force_kill_pods_by_selector "$selector"
+
+  log "Retrying API rollout (FINAL ${ROLLOUT_FINAL_TIMEOUT_SEC}s)..."
+  kubectl -n "$NAMESPACE" rollout status "deploy/$deploy" --timeout="${ROLLOUT_FINAL_TIMEOUT_SEC}s"
+  log "API rollout ready."
+}
+
 wait_ready() {
   log "Waiting for rollouts..."
-  kubectl -n "$NAMESPACE" rollout status deploy/aasx-server-deployment --timeout=240s
-  kubectl -n "$NAMESPACE" rollout status deploy/api-server-deployment  --timeout=240s
+
+  # Keep AASX behavior stable (normal timeout)
+  kubectl -n "$NAMESPACE" rollout status deploy/aasx-server-deployment --timeout="${ROLLOUT_FINAL_TIMEOUT_SEC}s"
+
+  # NEW behavior for API: fast timeout -> force kill -> retry
+  wait_ready_api_with_fast_timeout_and_force_kill
+
   log "Rollouts ready."
 }
 
@@ -448,7 +491,6 @@ run_port_forwards_forever() {
 }
 
 main() {
-  # Tool installation is part of the script (restored + explicit)
   ensure_tool_or_install sudo
   ensure_tool_or_install curl
   ensure_tool_or_install git
@@ -456,23 +498,18 @@ main() {
   ensure_tool_or_install kubectl
 
   ensure_docker_works
-
-  # Cluster bootstrap if needed (k3s)
   ensure_cluster_or_bootstrap
 
   ensure_namespace
   set_default_envs_with_warnings
 
-  # default overwrite = NO (protect stable resources)
   check_collisions_and_prompt_overwrite
 
   resolve_api_build_inputs
 
-  # API: default YES (dev changes)
   build_api_image
   load_api_into_cluster
 
-  # NSGA2: DEFAULT ON (assumed required)
   build_nsga2_image
   load_nsga2_into_cluster
 
