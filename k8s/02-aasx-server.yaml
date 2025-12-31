@@ -1,0 +1,72 @@
+# k8s/02-aasx-server.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aasx-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aasx-server
+  template:
+    metadata:
+      labels:
+        app: aasx-server
+    spec:
+      initContainers:
+        - name: init-aasxs-dir
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              set -eu
+              mkdir -p /shared/aasxs
+          volumeMounts:
+            - name: factory-shared
+              mountPath: /shared
+
+      containers:
+        - name: aasx-server
+          image: docker.io/adminshellio/aasx-server-blazor-for-demo:main
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5001
+          env:
+            - name: Kestrel__Endpoints__Http__Url
+              value: "http://*:5001"
+          args:
+            - "--no-security"
+            - "--data-path"
+            - "/shared/aasxs"
+          volumeMounts:
+            - name: factory-shared
+              mountPath: /shared
+          readinessProbe:
+            tcpSocket:
+              port: 5001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 5001
+            initialDelaySeconds: 20
+            periodSeconds: 20
+
+      volumes:
+        - name: factory-shared
+          persistentVolumeClaim:
+            claimName: factory-shared-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aasx-server-service
+spec:
+  selector:
+    app: aasx-server
+  ports:
+    - name: http
+      port: 5001
+      targetPort: 5001
+  type: ClusterIP

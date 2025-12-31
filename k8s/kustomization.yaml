@@ -1,0 +1,6 @@
+# k8s/kustomization.yaml
+resources:
+  - 00-pvc.yaml
+  - 03-rbac.yaml
+  - 01-api-server.yaml
+  - 02-aasx-server.yaml
