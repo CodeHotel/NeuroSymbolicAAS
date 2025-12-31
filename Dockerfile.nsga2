@@ -1,23 +1,27 @@
-# NSGA-II Simulator Docker Container for Goal3
+# Dockerfile.nsga2
+# NSGA-II Simulator image for Goal3 (LOCAL SOURCE VERSION)
+#
+# IMPORTANT:
+# - Uses local repo content under ./simulation (your Otober subtree),
+#   instead of git clone inside the Docker build.
+#
 FROM python:3.10-slim
 
-# 시스템 패키지 업데이트 및 필요한 도구 설치
-RUN apt-get update && apt-get install -y \
+# System deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/*
 
-# 작업 디렉터리 설정
 WORKDIR /app
 
-# NSGA-II 시뮬레이터 클론
-RUN git clone -b NSGA https://github.com/Otober/AASX.git nsga2-simulator
+# Copy local simulator source
+# (You said Otober repo is now mounted inside THIS_REPO/simulation)
+COPY simulation/ /app/nsga2-simulator/
 
-# 시뮬레이터 디렉터리로 이동
 WORKDIR /app/nsga2-simulator
 
-# Python 종속성 설치
-# 기본적으로 필요한 패키지들 설치
+# Base Python deps (keep your known-good set)
 RUN pip install --no-cache-dir \
     pandas \
     numpy \
@@ -26,35 +30,27 @@ RUN pip install --no-cache-dir \
     simpy \
     scipy
 
-# 시나리오 및 결과 디렉터리 생성
-RUN mkdir -p scenarios results
+# Optional: if the simulator subtree has its own requirements.txt, install it too
+RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
 
-# 실행 스크립트 복사
-COPY scripts/run_nsga2_simulation.sh /app/
+# Default dirs (K8S mounts will override these)
+RUN mkdir -p /app/scenarios /app/results
+
+# Entry runner (must exist in repo)
+COPY scripts/run_nsga2_simulation.sh /app/run_nsga2_simulation.sh
 RUN chmod +x /app/run_nsga2_simulation.sh
 
-# 환경 변수 설정
 ENV PYTHONPATH=/app/nsga2-simulator
 ENV SCENARIO_NAME=my_case
 ENV ALGORITHM=branch_and_bound
 ENV TIME_LIMIT=600
 ENV MAX_NODES=50000
 
-# 볼륨 마운트 포인트 설정
 VOLUME ["/app/scenarios", "/app/results"]
 
-# 포트 노출 (필요시)
-# EXPOSE 8080
-
-# 헬스체크 추가
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python3 -c "import sys, os; sys.exit(0 if os.path.exists('/app/nsga2-simulator/simulator/main.py') else 1)"
+  CMD python3 -c "import os, sys; sys.exit(0 if os.path.exists('/app/nsga2-simulator/simulator/main.py') else 1)"
 
-# 작업 디렉터리를 다시 /app으로 설정
 WORKDIR /app
-
-# 실행 진입점
 ENTRYPOINT ["/app/run_nsga2_simulation.sh"]
-
-# 기본 인자 (시나리오 이름)
 CMD ["my_case"]
