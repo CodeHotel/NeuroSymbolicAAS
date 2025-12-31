@@ -1,0 +1,42 @@
+{
+  "O143": {
+    "machine": "M2",
+    "agv": "1"
+  },
+  "O325": {
+    "machine": "M8",
+    "agv": "1"
+  },
+  "O012": {
+    "machine": "M5",
+    "agv": "3"
+  },
+  "O222": {
+    "machine": "M7",
+    "agv": "2"
+  },
+  "O394": {
+    "machine": "M8",
+    "agv": "5"
+  },
+  "O153": {
+    "machine": "M8",
+    "agv": "2"
+  },
+  "O402": {
+    "machine": "M7",
+    "agv": "4"
+  },
+  "O123": {
+    "machine": "M6",
+    "agv": "5"
+  },
+  "O254": {
+    "machine": "M1",
+    "agv": "3"
+  },
+  "O182": {
+    "machine": "M1",
+    "agv": "3"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Simulator (module)",
+      "type": "python",
+      "request": "launch",
+      "module": "simulator.main", // ← -m simulator.main
+      "args": ["--scenario", "scenarios/my_case", "--agv_count", "2"],
+      "cwd": "${workspaceFolder}", // ← AASX 폴더가 워크스페이스 루트여야 함
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ]
+}

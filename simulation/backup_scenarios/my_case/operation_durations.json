@@ -1,0 +1,57 @@
+{
+  "O11": {
+    "M1": {
+      "distribution": "normal",
+      "mean": 5.0,
+      "std": 1.0
+    },
+    "M2": {
+      "distribution": "normal", 
+      "mean": 6.0,
+      "std": 1.2
+    }
+  },
+  "O12": {
+    "M1": {
+      "distribution": "normal",
+      "mean": 4.0,
+      "std": 0.8
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 3.0,
+      "std": 0.5
+    }
+  },
+  "O21": {
+    "M1": {
+      "distribution": "normal",
+      "mean": 4.0,
+      "std": 0.8
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 5.0,
+      "std": 1.0
+    }
+  },
+  "O22": {
+    "M1": {
+      "distribution": "normal",
+      "mean": 7.0,
+      "std": 1.5
+    },
+    "M2": {
+      "distribution": "normal",
+      "mean": 6.0,
+      "std": 1.2
+    }
+  }
+}
+
+
+
+
+
+
+

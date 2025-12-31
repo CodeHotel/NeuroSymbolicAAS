@@ -1,0 +1,21 @@
+[
+  {
+    "machine_id": "M1",
+    "name": "Machine1",
+    "status": "idle",
+    "dispatch_rule": "fifo"
+  },
+  {
+    "machine_id": "M2", 
+    "name": "Machine2",
+    "status": "idle",
+    "dispatch_rule": "fifo"
+  }
+]
+
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+[
+  {
+    "operation_id": "O11",
+    "type": "O11",
+    "machines": ["M1", "M2"]
+  },
+  {
+    "operation_id": "O12",
+    "type": "O12", 
+    "machines": ["M1", "M2"]
+  },
+  {
+    "operation_id": "O21",
+    "type": "O21",
+    "machines": ["M1", "M2"]
+  },
+  {
+    "operation_id": "O22",
+    "type": "O22",
+    "machines": ["M1", "M2"]
+  }
+]

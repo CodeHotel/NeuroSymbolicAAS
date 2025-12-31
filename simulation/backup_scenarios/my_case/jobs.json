@@ -1,0 +1,39 @@
+[
+  {
+    "job_id": "J1",
+    "part_id": "P1",
+    "operations": ["O11", "O12", "O13"],
+    "release_time": 0.0
+  },
+  {
+    "job_id": "J2", 
+    "part_id": "P2",
+    "operations": ["O21", "O22"],
+    "release_time": 2.0
+  },
+  {
+    "job_id": "J3",
+    "part_id": "P3", 
+    "operations": ["O31", "O32"],
+    "release_time": 4.0
+  },
+  {
+    "job_id": "J4",
+    "part_id": "P4",
+    "operations": ["O41", "O42", "O43"],
+    "release_time": 1.0
+  },
+  {
+    "job_id": "J5",
+    "part_id": "P5",
+    "operations": ["O51", "O52"],
+    "release_time": 3.0
+  }
+]
+
+
+
+
+
+
+
